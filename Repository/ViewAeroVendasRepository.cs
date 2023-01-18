@@ -28,6 +28,7 @@ internal sealed class ViewAeroVendasRepository : RepositoryBase<ViewContratoSemA
                             viewLogAeroVendasParameters.PageSize);
     }
 
+    //Busca as cidades associadas ao contrato
     public async Task<PagedList<string>> GetViewCidadeAeroVendas(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
     {
         var viewAeroVendas = await FindByCondition(x =>
@@ -43,8 +44,6 @@ internal sealed class ViewAeroVendasRepository : RepositoryBase<ViewContratoSemA
                             viewAeroVendasParameters.PageSize);
 
     }
-
-	
 
 	public async Task<PagedList<ViewContratoSemAeroVendas>> GetViewAeroVendasByAsync(string? Contrato,
 		                                                                             string? CodigoBeneficiario,
