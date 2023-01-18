@@ -10,29 +10,29 @@ public static class RepositoryViewAeroVendasExtensions
 {
 
 
-	public static IQueryable<ViewContratoSemAeroVendas> Search(this IQueryable<ViewContratoSemAeroVendas> viewAeroVendass, string searchTerm)
+	public static IQueryable<ViewContratoSemAeroVendas> Search(this IQueryable<ViewContratoSemAeroVendas> viewAeroVendas, string searchTerm)
 	{
 		if (string.IsNullOrWhiteSpace(searchTerm))
-			return viewAeroVendass;
+			return viewAeroVendas;
 
 		var lowerCaseTerm = searchTerm.Trim().ToLower();
 
-		return viewAeroVendass.Where(e => e.Contrato.ToLower().Contains(lowerCaseTerm) || 
+		return viewAeroVendas.Where(e => e.Contrato.ToLower().Contains(lowerCaseTerm) || 
 											  e.CodigoBeneficiario.ToLower().Contains(lowerCaseTerm) || 
 											  e.NomeBeneficiario.ToLower().Contains(lowerCaseTerm) || 
-											  e.EmailBeneficiario.ToLower().Contains(lowerCaseTerm));	
+											  e.Cidade.ToLower().Contains(lowerCaseTerm));	
 	}
 
-	public static IQueryable<ViewContratoSemAeroVendas> Sort(this IQueryable<ViewContratoSemAeroVendas> viewAeroVendass, string orderByQueryString)
+	public static IQueryable<ViewContratoSemAeroVendas> Sort(this IQueryable<ViewContratoSemAeroVendas> viewAeroVendas, string orderByQueryString)
 	{
 		if (string.IsNullOrWhiteSpace(orderByQueryString))
-			return viewAeroVendass.OrderBy(e => e.Contrato);
+			return viewAeroVendas.OrderBy(e => e.Contrato);
 
 		var orderQuery = OrderQueryBuilder.CreateOrderQuery<ViewContratoSemAeroVendas>(orderByQueryString);
 
 		if (string.IsNullOrWhiteSpace(orderQuery))
-			return viewAeroVendass.OrderBy(e => e.Contrato);
+			return viewAeroVendas.OrderBy(e => e.Contrato);
 
-		return viewAeroVendass.OrderBy(orderQuery);
+		return viewAeroVendas.OrderBy(orderQuery);
 	}
 }

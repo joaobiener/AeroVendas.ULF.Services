@@ -3,6 +3,7 @@ using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Extensions;
 using Shared.RequestFeatures;
+using System.Linq.Dynamic.Core;
 using System.Reflection;
 
 namespace Repository;
@@ -33,7 +34,8 @@ internal sealed class ViewAeroVendasRepository : RepositoryBase<ViewContratoSemA
                                        x.Cidade!= null
                                       , trackChanges)
                                     .Select(o => o.Cidade).Distinct()
-                                    .ToListAsync();
+                                    .OrderBy(x=>x)
+									.ToListAsync();
 
         return PagedList<string>
                .ToPagedList(viewAeroVendas,

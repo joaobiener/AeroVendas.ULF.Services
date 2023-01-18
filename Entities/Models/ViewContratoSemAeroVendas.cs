@@ -18,8 +18,17 @@ SELECT INF_CTR.CBN_COD_CONTRATO                      AS CODIGO_CONTRATO,
    FROM INFOMED.INF_CONTRATOS_DE_BENEFICIARIO INF_CTR
         ,INFOMED.INF_PESSOAS                  PES
         ,INF_PESSOAS_FISICAS                  PF
-        ,(SELECT * FROM VW_ENDERECO_PESSOA
-          WHERE IND_ENDERECO_CORRESP = 'S')   VW_CIDADE
+        ,(SELECT V.PSS_COD_PESSOA, 
+                 DECODE(UPPER(V.NOM_CIDADE),'NITEROI', 'NITERÓI',
+                                            'SAO GONCALO', 'SÃO GONÇALO',
+                                            'ITABORAI', 'ITABORAÍ',
+                                            'RIO BONITO', 'RIO BONITO',
+                                            'MARICA', 'MARICÁ',
+                                            'TANGUA', 'TANGUÁ',
+                                            'SILVA JARDIM', 'SILVA JARDIM',
+                                            'OUTROS') NOM_CIDADE
+            FROM VW_ENDERECO_PESSOA V
+           WHERE IND_ENDERECO_CORRESP = 'N')   VW_CIDADE
         ,INFOMED.INF_BENEFICIARIOS            BENEF
         ,(SELECT INF.BEN_PLC_CBN_COD_CONTRATO COD_CONTRATO,
                 COUNT(1) AS NUM_DEPENDENTES
@@ -50,6 +59,7 @@ SELECT INF_CTR.CBN_COD_CONTRATO                      AS CODIGO_CONTRATO,
                     WHERE     CBN.CBN_STATUS = 'A'
                     AND       SEX.SEX_TLA_CODIGO_TIPO_LANCAMENTO IN ('21','23'))
   ORDER BY CBN_COD_CONTRATO;
+
 
 
 

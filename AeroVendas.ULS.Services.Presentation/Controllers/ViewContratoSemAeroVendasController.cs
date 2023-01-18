@@ -8,7 +8,7 @@ using System.Text.Json;
 namespace AeroVendas.ULF.Services.Presentation.Controllers;
 
 
-[Route("ViewContratoSemAeroVendas")]
+[Route("ViewContratoSemAero")]
 [ApiController]
 public class ReportLogAeroVendasController : ControllerBase
 {
@@ -46,7 +46,7 @@ public class ReportLogAeroVendasController : ControllerBase
         return Ok(pagedResult.viewAeroVendas);
     }
 
-    [HttpGet("GetCidadeSemAeroVendas")]
+    [HttpGet("GetCidadeSemAero")]
     public async Task<IActionResult> GetViewNomeAeroVendas([FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
     {
         var pagedResult = await _service.ViewAeroVendasService.GetViewCidadeAeroVendasAsync(viewAeroVendasParameters, trackChanges: false);
