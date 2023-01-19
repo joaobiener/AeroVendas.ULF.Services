@@ -11,11 +11,17 @@ SELECT INF_CTR.CBN_COD_CONTRATO                      AS CODIGO_CONTRATO,
         ,INF_PESSOAS_FISICAS                  PF
         ,(SELECT V.PSS_COD_PESSOA,
                  DECODE(UPPER(V.NOM_CIDADE), 'NITEROI', 'NITERÓI',
+                                             'NITERÓI','NITERÓI',
                                             'SAO GONCALO', 'SÃO GONÇALO',
+                                            'SÃO GONCALO', 'SÃO GONÇALO',
+                                            'SÃO GONÇALO', 'SÃO GONÇALO',
                                             'ITABORAI', 'ITABORAÍ',
+                                            'ITABORAÍ', 'ITABORAÍ',
                                             'RIO BONITO', 'RIO BONITO',
                                             'MARICA', 'MARICÁ',
+                                            'MARICÁ', 'MARICÁ',
                                             'TANGUA', 'TANGUÁ',
+                                            'TANGUÁ', 'TANGUÁ',
                                             'SILVA JARDIM', 'SILVA JARDIM',
                                             'OUTROS') NOM_CIDADE
             FROM VW_ENDERECO_PESSOA V
