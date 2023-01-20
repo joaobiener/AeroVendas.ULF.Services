@@ -6,7 +6,7 @@ public record ViewAeroVendasDto(string? Contrato,
                                   string? CodigoBeneficiario, 
                                   string? NomeBeneficiario, 
                                   string? EmailBeneficiario,
-                                  double? PremioAnual,
+                                  double? PremioAtual,
                                   string? Cidade,
                                   int? NumeroDependentes);
 

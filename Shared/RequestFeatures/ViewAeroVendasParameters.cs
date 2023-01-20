@@ -8,7 +8,8 @@ namespace Shared.RequestFeatures;
 
     public class ViewAeroVendasParameters:RequestParameters
     {
-    public ViewAeroVendasParameters() => OrderBy = "Cidade";
+    public ViewAeroVendasParameters() {
+    }
     public string? SearchTerm { get; set; }
 }
 
