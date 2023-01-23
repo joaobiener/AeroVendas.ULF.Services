@@ -18,8 +18,8 @@ public class ReportLogAeroVendasController : ControllerBase
     public ReportLogAeroVendasController(IServiceManager service) => _service = service;
 
     [HttpGet]
-    [Authorize]
-    public async Task<IActionResult> GetAllViewAeroVendas([FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
+	[Authorize(Roles = "Manager")]
+	public async Task<IActionResult> GetAllViewAeroVendas([FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
     {
         var pagedResult = await _service.ViewAeroVendasService.GetAllViewsAeroVendasAsync(viewAeroVendasParameters, trackChanges: false);
         Response.Headers.Add("X-Pagination",       
@@ -30,7 +30,7 @@ public class ReportLogAeroVendasController : ControllerBase
             
 
     [HttpGet("GetByRequest")]
-	[Authorize]
+	[Authorize(Roles = "Manager")]
 	public async Task<IActionResult> GetAeroVendasByUser(string? Contrato,
 		                                                    string? CodigoBeneficiario,
 		                                                    string? NomeBeneficiario,
@@ -51,7 +51,7 @@ public class ReportLogAeroVendasController : ControllerBase
     }
 
     [HttpGet("GetCidadeSemAero")]
-
+	[Authorize(Roles = "Administrator")]
 
 	public async Task<IActionResult> GetCidadesAeroVendas([FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
     {
