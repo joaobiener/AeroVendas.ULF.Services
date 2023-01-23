@@ -18,6 +18,7 @@ public class AuthenticationController : ControllerBase
 	public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
 	{
 		var result = await _service.AuthenticationService.RegisterUser(userForRegistration);
+	
 		if (!result.Succeeded)
 		{
 			foreach (var error in result.Errors)

@@ -51,7 +51,7 @@ public class ReportLogAeroVendasController : ControllerBase
     }
 
     [HttpGet("GetCidadeSemAero")]
-	[Authorize(Roles = "Administrator")]
+	[Authorize(Roles = "Administrator,Manager")]
 
 	public async Task<IActionResult> GetCidadesAeroVendas([FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
     {

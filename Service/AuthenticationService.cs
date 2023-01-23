@@ -42,13 +42,25 @@ internal sealed class AuthenticationService : IAuthenticationService
 		return result;
 	}
 
+	//public async Task<bool> AddRoleToUser(UserForRegistrationDto userForAddRoles)
+	//{
+	//	User? user = await _userManager.FindByNameAsync(userForAddRoles.UserName);
+
+	//	var result = (_user != null);
+
+	//	if (result)
+	//		await _userManager.AddToRolesAsync(user, userForAddRoles.Roles);
+
+	//	return result;
+	//}
+
 	public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuth)
 	{
 		_user = await _userManager.FindByNameAsync(userForAuth.UserName);
 
 		var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password));
 		if (!result)
-			_logger.LogWarn($"{nameof(ValidateUser)}: Authentication failed. Wrong user name or password.");
+			_logger.LogWarn($"{nameof(ValidateUser)}: Authentication failed. Password ou Login errado.");
 
 		return result;
 	}
