@@ -21,6 +21,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     options.SuppressModelStateInvalidFilter = true;
 });
 
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
 builder.Services.AddControllers()
 .AddApplicationPart(typeof(AeroVendas.ULF.Services.Presentation.AssemblyReference).Assembly);
 
@@ -40,6 +42,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 
 app.UseCors("CorsPolicy");
 
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

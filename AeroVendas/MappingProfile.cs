@@ -26,7 +26,9 @@ namespace AeroVendas.ULF.Services
             //CreateMap<LogAeroVendasForCreationDto, LogAeroVendas>();
 
             CreateMap<ViewContratoSemAeroVendas,ViewAeroVendasDto>();
-        }
-        
-    }
+			CreateMap<UserForRegistrationDto, User>();
+
+		}
+
+	}
 }
