@@ -2,5 +2,6 @@
 
 public interface IServiceManager
 {
-    IViewAeroVendasService ViewAeroVendasService { get; }
+	IViewAeroVendasService ViewAeroVendasService { get; }
+	IAuthenticationService AuthenticationService { get; }
 }

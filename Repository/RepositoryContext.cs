@@ -15,6 +15,7 @@ public class RepositoryContext : IdentityDbContext<User>
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
+		modelBuilder.HasDefaultSchema("UNIMEDLF");  //Usa o squema UNIMEDLF
 		base.OnModelCreating(modelBuilder);
 		modelBuilder.ApplyConfiguration(new AeroVendasConfiguration());
 		modelBuilder.ApplyConfiguration(new RoleConfiguration());

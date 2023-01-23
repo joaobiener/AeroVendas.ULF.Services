@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.RequestFeatures;
 using System.ComponentModel.Design;
+using System.Data;
 using System.Text.Json;
 
 namespace AeroVendas.ULF.Services.Presentation.Controllers;
@@ -17,6 +18,7 @@ public class ReportLogAeroVendasController : ControllerBase
     public ReportLogAeroVendasController(IServiceManager service) => _service = service;
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetAllViewAeroVendas([FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
     {
         var pagedResult = await _service.ViewAeroVendasService.GetAllViewsAeroVendasAsync(viewAeroVendasParameters, trackChanges: false);
@@ -26,8 +28,10 @@ public class ReportLogAeroVendasController : ControllerBase
         return Ok(pagedResult.viewAeroVendas);
     }
             
+
     [HttpGet("GetByRequest")]
-    public async Task<IActionResult> GetAeroVendasByUser(string? Contrato,
+	[Authorize]
+	public async Task<IActionResult> GetAeroVendasByUser(string? Contrato,
 		                                                    string? CodigoBeneficiario,
 		                                                    string? NomeBeneficiario,
 		                                                    string? Cidade,
@@ -47,7 +51,9 @@ public class ReportLogAeroVendasController : ControllerBase
     }
 
     [HttpGet("GetCidadeSemAero")]
-    public async Task<IActionResult> GetCidadesAeroVendas([FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
+
+
+	public async Task<IActionResult> GetCidadesAeroVendas([FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
     {
         var pagedResult = await _service.ViewAeroVendasService.GetViewCidadeAeroVendasAsync(viewAeroVendasParameters, trackChanges: false);
         Response.Headers.Add("X-Pagination",

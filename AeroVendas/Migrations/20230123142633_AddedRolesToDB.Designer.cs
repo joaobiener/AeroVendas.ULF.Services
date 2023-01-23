@@ -13,7 +13,7 @@ namespace AeroVendas.ULF.Services.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
     [Migration("20230123142633_AddedRolesToD")]
-    partial class AddedRolesToD
+    partial class AddedRolesToDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

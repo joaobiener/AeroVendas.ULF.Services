@@ -1,7 +1,10 @@
+using AeroVendas.ULF.Services.Presentation.ActionFilters;
 using CompanyViewLogsAeroVendass.Extensions;
 using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
 using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,8 +24,12 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     options.SuppressModelStateInvalidFilter = true;
 });
 
+builder.Services.AddScoped<ValidationFilterAttribute>();
+
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJWT(builder.Configuration);
+
 builder.Services.AddControllers()
 .AddApplicationPart(typeof(AeroVendas.ULF.Services.Presentation.AssemblyReference).Assembly);
 
@@ -49,4 +56,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter() =>
+	new ServiceCollection().AddLogging().AddMvc().AddNewtonsoftJson()
+	.Services.BuildServiceProvider()
+	.GetRequiredService<IOptions<MvcOptions>>().Value.InputFormatters
+	.OfType<NewtonsoftJsonPatchInputFormatter>().First();
 

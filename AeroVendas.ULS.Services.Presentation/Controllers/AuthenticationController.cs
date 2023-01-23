@@ -5,7 +5,7 @@ using Shared.DataTransferObjects;
 
 namespace AeroVendas.ULF.Services.Presentation.Controllers;
 
-[Route("api/authentication")]
+[Route("authentication")]
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
