@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 using Repository;
@@ -11,9 +12,10 @@ using Repository;
 namespace AeroVendas.ULF.Services.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20230124122826_AdditionalUserFiledsForRefreshToken")]
+    partial class AdditionalUserFiledsForRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,14 +164,14 @@ namespace AeroVendas.ULF.Services.Migrations
                     b.HasData(
                         new
                         {
-							Id = "4ac8240a-8498-4869-bc86-60e5dc982d27",
+                            Id = "545e1c7f-7da6-4415-9f4e-ef1ed4bea00a",
                             ConcurrencyStamp = "3f08bdad-49c5-439f-a181-d7ff8c2aa4d6",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-							Id = "562419f5-eed1-473b-bcc1-9f2dbab182b4",
+                            Id = "d1ab536b-a2d2-4b30-9169-8303b4c5d150",
                             ConcurrencyStamp = "890c84a7-4625-48ec-928e-4381384055b0",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"

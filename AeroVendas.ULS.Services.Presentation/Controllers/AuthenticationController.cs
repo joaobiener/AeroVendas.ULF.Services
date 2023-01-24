@@ -38,10 +38,21 @@ public class AuthenticationController : ControllerBase
 		if (!await _service.AuthenticationService.ValidateUser(user))
 			return Unauthorized();
 
-		return Ok(new
-		{
-			Token = await _service
-			.AuthenticationService.CreateToken()
-		});
-	}
+		var tokenDto = await _service.AuthenticationService
+		.CreateToken(populateExp: true);
+		return Ok(tokenDto);	}
+
+	//Login de rede
+	[HttpPost("loginLDAP")]
+	[ServiceFilter(typeof(ValidationFilterAttribute))]
+	public async Task<IActionResult> AuthenticateLDAP([FromBody] UserForAuthenticationDto user)
+	{
+		if (!await _service.AuthenticationService.ValidateUserLDAP(user))
+			return Unauthorized();
+
+		var tokenDto = await _service.AuthenticationService
+		.CreateToken(populateExp: true);
+		return Ok(tokenDto);	}
+
+
 }

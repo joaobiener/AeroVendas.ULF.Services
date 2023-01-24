@@ -44,6 +44,7 @@ EXECUTE IMMEDIATE 'CREATE TABLE
     "Name" NVARCHAR2(256),
     "NormalizedName" NVARCHAR2(256),
     "ConcurrencyStamp" NVARCHAR2(2000),
+    RefreshToken
     CONSTRAINT "PK_AspNetRoles" PRIMARY KEY ("Id")
 )';
 END;
@@ -69,6 +70,8 @@ EXECUTE IMMEDIATE 'CREATE TABLE
     "LockoutEnd" TIMESTAMP(7) WITH TIME ZONE,
     "LockoutEnabled" NUMBER(1) NOT NULL,
     "AccessFailedCount" NUMBER(10) NOT NULL,
+    "refreshtoken"      NVARCHAR2(2000),
+    "refreshtokenexpirytime" TIMESTAMP(7) WITH TIME ZONE not null
     CONSTRAINT "PK_AspNetUsers" PRIMARY KEY ("Id")
 )';
 END;

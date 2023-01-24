@@ -9,6 +9,9 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
+using System.DirectoryServices.AccountManagement;
+using System.Security.Cryptography;
+using Entities.Exceptions;
 
 namespace Service;
 
@@ -65,14 +68,87 @@ internal sealed class AuthenticationService : IAuthenticationService
 		return result;
 	}
 
-	public async Task<string> CreateToken()
+
+	private string GenerateRefreshToken()
+	{
+		var randomNumber = new byte[32];
+		using (var rng = RandomNumberGenerator.Create())
+		{
+			rng.GetBytes(randomNumber);
+			return Convert.ToBase64String(randomNumber);
+
+	    }
+	}
+	private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+	{
+		var jwtSettings = _configuration.GetSection("JwtSettings");
+		var tokenValidationParameters = new TokenValidationParameters
+		{
+			ValidateAudience = true,
+			ValidateIssuer = true,
+			ValidateIssuerSigningKey = true,
+			IssuerSigningKey = new SymmetricSecurityKey(
+													Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"))),
+			ValidateLifetime = true,
+			ValidIssuer = jwtSettings["validIssuer"],
+			ValidAudience = jwtSettings["validAudience"]
+		};
+
+		var tokenHandler = new JwtSecurityTokenHandler();
+		SecurityToken securityToken;
+		var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out
+													securityToken);
+		var jwtSecurityToken = securityToken as JwtSecurityToken;
+		if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+		StringComparison.InvariantCultureIgnoreCase))
+		{
+			throw new SecurityTokenException("Invalid token");
+		}
+		return principal;
+	}
+
+	public async Task<bool> ValidateUserLDAP(UserForAuthenticationDto userForAuth)
+	{
+		_user = await _userManager.FindByNameAsync(userForAuth.UserName);
+
+		string domainName = System.Environment.UserDomainName;
+		string domainUserName = System.Environment.UserName;
+		PrincipalContext pc = new PrincipalContext(ContextType.Domain, domainName, domainUserName, ContextOptions.SimpleBind.ToString());
+		
+
+		var result = (_user != null && pc.ValidateCredentials(userForAuth.UserName.ToUpper(), userForAuth.Password));
+		if (!result)
+			_logger.LogWarn($"{nameof(ValidateUser)}: Authentication failed. Password ou Login errado.");
+
+		return result;
+	}
+	public async Task<TokenDto> CreateToken(bool populateExp)
 	{
 		var signingCredentials = GetSigningCredentials();
 		var claims = await GetClaims();
 		var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
+		var refreshToken = GenerateRefreshToken();
+		_user.RefreshToken = refreshToken;
+		if (populateExp)
+			_user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+		await _userManager.UpdateAsync(_user);
+		var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+		return new TokenDto(accessToken, refreshToken);
+	}
+	public async Task<TokenDto> RefreshToken(TokenDto tokenDto)
+	{
+		var principal = GetPrincipalFromExpiredToken(tokenDto.AccessToken);
 
-		return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+		var user = await _userManager.FindByNameAsync(principal.Identity.Name);
+		if (user == null || user.RefreshToken != tokenDto.RefreshToken ||
+			user.RefreshTokenExpiryTime <= DateTime.Now)
+			throw new RefreshTokenBadRequest();
+
+		_user = user;
+
+		return await CreateToken(populateExp: false);
 	}
+
 
 	private SigningCredentials GetSigningCredentials()
 	{

@@ -1,4 +1,11 @@
-﻿CREATE OR REPLACE VIEW UNIMEDLF.VW_CONTRATO_SEM_AERO AS
+﻿Gera script das tabelas ef:
+Script-Migration 
+ou apenas parcial:
+Script-Migration -From <PreviousMigration> -To <LastMigration>
+
+
+
+CREATE OR REPLACE VIEW UNIMEDLF.VW_CONTRATO_SEM_AERO AS
 SELECT INF_CTR.CBN_COD_CONTRATO                      AS CODIGO_CONTRATO,
          BENEF.BEN_BEN_COD_BENEFICIARIO              AS CODIGO_BENEFICIARIO,
          PF.PSF_NOME                                 AS NOME_BENEFICIARIO,
