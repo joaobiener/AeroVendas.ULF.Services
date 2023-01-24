@@ -9,6 +9,7 @@ using Service.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Entities.ConfigurationModels;
 
 namespace CompanyViewLogsAeroVendass.Extensions;
 
@@ -60,7 +61,9 @@ public static class ServiceExtensions
 	}
 	public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
 	{
-		var jwtSettings = configuration.GetSection("JwtSettings");
+		var jwtConfiguration = new JwtConfiguration();
+		configuration.Bind(jwtConfiguration.Section, jwtConfiguration);
+
 		var secretKey = Environment.GetEnvironmentVariable("SECRET");
 
 		services.AddAuthentication(opt =>
@@ -77,11 +80,14 @@ public static class ServiceExtensions
 				ValidateLifetime = true,
 				ValidateIssuerSigningKey = true,
 
-				ValidIssuer = jwtSettings["validIssuer"],
-				ValidAudience = jwtSettings["validAudience"],
+				ValidIssuer = jwtConfiguration.ValidIssuer,
+				ValidAudience = jwtConfiguration.ValidAudience,
 				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
 			};
 		});
 	}
+
+	public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration) =>
+											services.Configure<JwtConfiguration>(configuration.GetSection("JwtSettings"));
 }
 

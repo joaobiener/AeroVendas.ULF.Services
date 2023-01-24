@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Contracts;
+using Entities.ConfigurationModels;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Service.Contracts;
+using Entities.ConfigurationModels;
+using Microsoft.Extensions.Options;
 
 namespace Service;
 
@@ -16,7 +20,7 @@ public sealed class ServiceManager : IServiceManager
 						ILoggerManager logger,
 						IMapper mapper,
 						UserManager<User> userManager,
-						IConfiguration configuration)
+						IOptions<JwtConfiguration> configuration)
 	{
 		_viewAeroVendasService = new Lazy<IViewAeroVendasService>(() =>
 									new ViewAeroVendasService(repositoryManager, logger, mapper));
