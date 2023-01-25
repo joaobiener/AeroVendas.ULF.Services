@@ -44,7 +44,11 @@ internal sealed class AuthenticationService : IAuthenticationService
 	{
 		var user = _mapper.Map<User>(userForRegistration);
 
+		//Iremos colocar a Password fixa Password1000 não será usado neste momento
+		//Será usado a Pass da rede apenas
+		
 		var result = await _userManager.CreateAsync(user, userForRegistration.Password);
+		
 
 		if (result.Succeeded)
 			await _userManager.AddToRolesAsync(user, userForRegistration.Roles);

@@ -1,11 +1,13 @@
 ﻿using AeroVendas.ULF.Services.Presentation.ActionFilters;
+using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 
 namespace AeroVendas.ULF.Services.Presentation.Controllers;
 
-[Route("authentication")]
+[Route("account")]
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
@@ -13,23 +15,27 @@ public class AuthenticationController : ControllerBase
 
 	public AuthenticationController(IServiceManager service) => _service = service;
 
-	[HttpPost]
+	[HttpPost("register")]
 	[ServiceFilter(typeof(ValidationFilterAttribute))]
 	public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
 	{
+
 		var result = await _service.AuthenticationService.RegisterUser(userForRegistration);
 	
 		if (!result.Succeeded)
 		{
-			foreach (var error in result.Errors)
-			{
-				ModelState.TryAddModelError(error.Code, error.Description);
-			}
+			var errors = result.Errors.Select(e => e.Description);
+			return BadRequest(new ResponseDto { Errors = errors });
+			//foreach (var error in result.Errors)
+			//{
+			//	ModelState.TryAddModelError(error.Code, error.Description);
+			//}
 			return BadRequest(ModelState);
 		}
 
 		return StatusCode(201);
 	}
+
 
 	[HttpPost("login")]
 	[ServiceFilter(typeof(ValidationFilterAttribute))]
