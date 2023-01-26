@@ -19,6 +19,10 @@ public class TokenController : ControllerBase
 	{
 		var tokenDtoToReturn = await _service.AuthenticationService.RefreshToken(tokenDto);
 
-		return Ok(tokenDtoToReturn);
+		return Ok(new AuthResponseDto{
+			Token = tokenDtoToReturn.AccessToken,
+			RefreshToken = tokenDtoToReturn.RefreshToken,
+			IsAuthSuccessful = true
+		});
 	}
 }

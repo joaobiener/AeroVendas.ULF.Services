@@ -1,5 +1,6 @@
 ﻿using AeroVendas.ULF.Services.Presentation.ActionFilters;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
@@ -17,6 +18,7 @@ public class AuthenticationController : ControllerBase
 
 	[HttpPost("register")]
 	[ServiceFilter(typeof(ValidationFilterAttribute))]
+	[Authorize(Roles = "Administrator")]
 	public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
 	{
 
@@ -54,11 +56,20 @@ public class AuthenticationController : ControllerBase
 	public async Task<IActionResult> AuthenticateLDAP([FromBody] UserForAuthenticationDto user)
 	{
 		if (!await _service.AuthenticationService.ValidateUserLDAP(user))
-			return Unauthorized();
+			return Unauthorized(new AuthResponseDto
+			{
+				ErrorMessage = "Autenticação Inválida"
+			}) ;
 
 		var tokenDto = await _service.AuthenticationService
 		.CreateToken(populateExp: true);
-		return Ok(tokenDto);	}
+		return Ok(new AuthResponseDto
+		{
+			IsAuthSuccessful= true,
+			Token = tokenDto.AccessToken,
+			RefreshToken = tokenDto.RefreshToken
+
+		}); 	}
 
 
 }

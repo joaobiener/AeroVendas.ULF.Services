@@ -51,7 +51,9 @@ internal sealed class AuthenticationService : IAuthenticationService
 		
 
 		if (result.Succeeded)
-			await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
+			await _userManager.AddToRoleAsync(user, "AeroAdmin");
+
+		//await _userManager.AddToRolesAsync(user, userForRegistration.Roles);
 
 		return result;
 	}
@@ -79,8 +81,7 @@ internal sealed class AuthenticationService : IAuthenticationService
 		return result;
 	}
 
-
-	private string GenerateRefreshToken()
+	public string GenerateRefreshToken()
 	{
 		var randomNumber = new byte[32];
 		using (var rng = RandomNumberGenerator.Create())
@@ -88,9 +89,12 @@ internal sealed class AuthenticationService : IAuthenticationService
 			rng.GetBytes(randomNumber);
 			return Convert.ToBase64String(randomNumber);
 
-	    }
+		}
 	}
-	private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+
+
+
+	public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
 	{
 		var tokenValidationParameters = new TokenValidationParameters
 		{
@@ -116,6 +120,33 @@ internal sealed class AuthenticationService : IAuthenticationService
 		}
 		return principal;
 	}
+
+	//ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+	//{
+	//	var tokenValidationParameters = new TokenValidationParameters
+	//	{
+	//		ValidateAudience = true,
+	//		ValidateIssuer = true,
+	//		ValidateIssuerSigningKey = true,
+	//		IssuerSigningKey = new SymmetricSecurityKey(
+	//												Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET"))),
+	//		ValidateLifetime = true,
+	//		ValidIssuer = _jwtConfiguration.ValidIssuer,
+	//		ValidAudience = _jwtConfiguration.ValidAudience
+	//	};
+
+	//	var tokenHandler = new JwtSecurityTokenHandler();
+	//	SecurityToken securityToken;
+	//	var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out
+	//												securityToken);
+	//	var jwtSecurityToken = securityToken as JwtSecurityToken;
+	//	if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+	//	StringComparison.InvariantCultureIgnoreCase))
+	//	{
+	//		throw new SecurityTokenException("Invalid token");
+	//	}
+	//	return principal;
+	//}
 
 	public async Task<bool> ValidateUserLDAP(UserForAuthenticationDto userForAuth)
 	{
@@ -198,4 +229,6 @@ internal sealed class AuthenticationService : IAuthenticationService
 
 		return tokenOptions;
 	}
+
+
 }
