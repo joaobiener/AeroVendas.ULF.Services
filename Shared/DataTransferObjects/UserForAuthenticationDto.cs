@@ -4,8 +4,8 @@ namespace Shared.DataTransferObjects;
 
 public record UserForAuthenticationDto
 {
-	[Required(ErrorMessage = "User name is required")]
+	[Required(ErrorMessage = "Login é obrigatório.")]
 	public string? UserName { get; set; }
-	[Required(ErrorMessage = "Password name is required")]
+	[Required(ErrorMessage = "Password é obrigatória.")]
 	public string? Password { get; set; } 
 }
