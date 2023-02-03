@@ -14,6 +14,7 @@ using System.Security.Cryptography;
 using Entities.Exceptions;
 using Entities.ConfigurationModels;
 using Microsoft.Extensions.Options;
+using System.Data;
 
 namespace Service;
 
@@ -203,10 +204,13 @@ internal sealed class AuthenticationService : IAuthenticationService
 	{
 		var claims = new List<Claim>
 			{
-				new Claim(ClaimTypes.Name, _user.UserName)
+				new Claim(ClaimTypes.Name, _user.UserName),
+				new Claim(ClaimTypes.Name, _user.FirstName),
+				new Claim(ClaimTypes.Name, _user.LastName)
 			};
-
+		
 		var roles = await _userManager.GetRolesAsync(_user);
+		
 		foreach (var role in roles)
 		{
 			claims.Add(new Claim(ClaimTypes.Role, role));

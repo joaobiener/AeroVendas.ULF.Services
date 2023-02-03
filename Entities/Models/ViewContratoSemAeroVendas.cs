@@ -19,8 +19,8 @@ SELECT INF_CTR.CBN_COD_CONTRATO                      AS CODIGO_CONTRATO,
         ,INFOMED.INF_PESSOAS                  PES
         ,INF_PESSOAS_FISICAS                  PF
         ,(SELECT V.PSS_COD_PESSOA,
-                 DECODE(UPPER(V.NOM_CIDADE), 'NITEROI', 'NITERÓI',
-                                             'NITERÓI','NITERÓI',
+                 DECODE(UPPER(V.NOM_CIDADE),'NITEROI', 'NITERÓI',
+                                            'NITERÓI','NITERÓI',
                                             'SAO GONCALO', 'SÃO GONÇALO',
                                             'SÃO GONCALO', 'SÃO GONÇALO',
                                             'SÃO GONÇALO', 'SÃO GONÇALO',
@@ -63,7 +63,6 @@ SELECT INF_CTR.CBN_COD_CONTRATO                      AS CODIGO_CONTRATO,
                           WHERE   SEX.SEX_TLA_CODIGO_TIPO_LANCAMENTO IN ('21','23')
                             AND SEX.SEX_CODIGO_SERVICO_EXTRA = SPC.SPC_SEX_CODIGO_SERVICO_EXTRA)
   ORDER BY CBN_COD_CONTRATO;
-
 
 
 */

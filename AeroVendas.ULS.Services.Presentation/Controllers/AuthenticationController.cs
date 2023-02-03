@@ -18,7 +18,7 @@ public class AuthenticationController : ControllerBase
 
 	[HttpPost("register")]
 	[ServiceFilter(typeof(ValidationFilterAttribute))]
-	[Authorize(Roles = "Administrator")]
+	//[Authorize(Roles = "Administrator")]
 	public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
 	{
 
