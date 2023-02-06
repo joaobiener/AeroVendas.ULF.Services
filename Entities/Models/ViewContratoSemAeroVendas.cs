@@ -12,15 +12,15 @@ SELECT INF_CTR.CBN_COD_CONTRATO                      AS CODIGO_CONTRATO,
          BENEF.BEN_BEN_COD_BENEFICIARIO              AS CODIGO_BENEFICIARIO,
          PF.PSF_NOME                                 AS NOME_BENEFICIARIO,
          PES.PSS_EMAIL                               AS EMAIL_BENEFICIARIO,
-         VEN1.PREMIO_ATUAL                           AS PREMIO_ATUAL,
+         NVL(VEN1.PREMIO_ATUAL,0)                    AS PREMIO_ATUAL,
          VW_CIDADE.NOM_CIDADE                        AS CIDADE,
          NUM_BENEF.NUM_DEPENDENTES                   AS NUMERO_DEPENDENTES
    FROM INFOMED.INF_CONTRATOS_DE_BENEFICIARIO INF_CTR
         ,INFOMED.INF_PESSOAS                  PES
         ,INF_PESSOAS_FISICAS                  PF
         ,(SELECT V.PSS_COD_PESSOA,
-                 DECODE(UPPER(V.NOM_CIDADE),'NITEROI', 'NITERÓI',
-                                            'NITERÓI','NITERÓI',
+                 DECODE(UPPER(V.NOM_CIDADE), 'NITEROI', 'NITERÓI',
+                                             'NITERÓI','NITERÓI',
                                             'SAO GONCALO', 'SÃO GONÇALO',
                                             'SÃO GONCALO', 'SÃO GONÇALO',
                                             'SÃO GONÇALO', 'SÃO GONÇALO',
@@ -49,7 +49,7 @@ SELECT INF_CTR.CBN_COD_CONTRATO                      AS CODIGO_CONTRATO,
      WHERE PES.PSS_COD_PESSOA                = INF_CTR.CBN_PSS_COD_PESSOA
        AND VW_CIDADE.PSS_COD_PESSOA          = PES.PSS_COD_PESSOA
        AND PF.PSF_PSS_COD_PESSOA             = PES.PSS_COD_PESSOA
-       AND INF_CTR.CBN_COD_CONTRATO          = VEN1.VEN_CBN_COD_CONTRATO
+       AND INF_CTR.CBN_COD_CONTRATO          = VEN1.VEN_CBN_COD_CONTRATO (+)
        AND INF_CTR.CBN_STATUS                = 'A'
        AND PES.PSS_TIPO_PESSOA               = 'F'
        AND PES.PSS_EMAIL                     IS NOT NULL
@@ -63,6 +63,7 @@ SELECT INF_CTR.CBN_COD_CONTRATO                      AS CODIGO_CONTRATO,
                           WHERE   SEX.SEX_TLA_CODIGO_TIPO_LANCAMENTO IN ('21','23')
                             AND SEX.SEX_CODIGO_SERVICO_EXTRA = SPC.SPC_SEX_CODIGO_SERVICO_EXTRA)
   ORDER BY CBN_COD_CONTRATO;
+
 
 
 */
