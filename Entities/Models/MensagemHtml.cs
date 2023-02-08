@@ -12,5 +12,20 @@ namespace Entities.Models
 		[Column("MENSAGEM_HTML_ID")]
 		[Key]
 		public Guid Id { get; set; }
-	}
+
+        [Required(ErrorMessage = "O Template é obrigatório!")]
+        [Column("TEMPLATE_EMAIL_HTML")]
+        public string? TemplateEmailHtml { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [Column("CRIADO")]
+        public DateTime? CriadoEm { get; set; }
+
+        [Column("MODIFICADO")]
+        public DateTime? ModificadoEm { get; set; }
+
+        [Column("MODIFICADO_POR")]
+        public string? ModificadoPor { get; set; }
+
+    }
 }

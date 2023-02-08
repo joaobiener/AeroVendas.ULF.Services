@@ -44,7 +44,11 @@ namespace Entities.Models
 		[Column("CRIADO_POR")]
 		public string? CriadoPor { get; set; }
 
-		[Column("MODIFICADO")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [Column("CRIADO")]
+        public DateTime? CriadoEm { get; set; }
+
+        [Column("MODIFICADO")]
 		public DateTime? ModificadoEm { get; set; }
 
 		[Column("MODIFICADO_POR")]
