@@ -4,7 +4,7 @@ using Service.Contracts;
 using Shared.DataTransferObjects;
 namespace CompanyEmployees.Presentation.Controllers;
 
-[Route("api/mensagemHtml")]
+[Route("mensagemHtml")]
 [ApiController]
 public class MensagemHtmlController : ControllerBase
 {
@@ -36,8 +36,8 @@ public class MensagemHtmlController : ControllerBase
 		return Ok(mensagens);
 	}
 
-	[HttpPost]
-	public async Task<IActionResult> CreateMensagem([FromBody] MensagemHtmlForCreationDto mensagem)
+    [HttpPost("CreateMessageHTML")]
+    public async Task<IActionResult> CreateMensagem([FromBody] MensagemHtmlForCreationDto mensagem)
 	{
 		if (mensagem is null)
 			return BadRequest("MensagemHtmlForCreationDto é nula");
@@ -47,7 +47,7 @@ public class MensagemHtmlController : ControllerBase
 
 		var createdMensagem = await _service.MensagemHtmlService.CreateMensagemAsync(mensagem);
 
-		return CreatedAtRoute("CompanyById", new { id = createdMensagem.Id }, createdMensagem);
+		return CreatedAtRoute("MensagemById", new { id = createdMensagem.Id }, createdMensagem);
 	}
 
 	[HttpPost("collection")]
@@ -56,7 +56,7 @@ public class MensagemHtmlController : ControllerBase
 	{
 		var result = await _service.MensagemHtmlService.CreateMensagemCollectionAsync(MensagemCollection);
 
-		return CreatedAtRoute("CompanyCollection", new { result.ids }, result.mensagens);
+		return CreatedAtRoute("mensagemCollection", new { result.ids }, result.mensagens);
 	}
 
 	[HttpDelete("{id:guid}")]
