@@ -50,8 +50,6 @@ namespace Entities.Models
 		[Column("MODIFICADO_POR")]
 		public string? ModificadoPor { get; set; }
 
-
-
 		[ForeignKey(nameof(EnvioMailMarketing))]
 		public Guid EnvioMailMarketingId { get; set; }
 		public EnvioMailMarketing? EnvioMailMarketing { get; set; }
