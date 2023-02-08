@@ -19,10 +19,13 @@ public class RepositoryContext : IdentityDbContext<User>
 		base.OnModelCreating(modelBuilder);
 		modelBuilder.ApplyConfiguration(new AeroVendasConfiguration());
 		modelBuilder.ApplyConfiguration(new RoleConfiguration());
-	}
+        modelBuilder.ApplyConfiguration(new MensagemHtmlConfiguration());
+    }
 
-	
+    public DbSet<MensagemHtml>? MnsagemHtml { get; set; }
 
-	//public DbSet<ViewContratoSemAeroVendas>? ViewLogsAeroVendas { get; set; }
+    //public DbSet<ViewContratoSemAeroVendas>? ViewLogsAeroVendas { get; set; }
+
+
 
 }

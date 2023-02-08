@@ -45,7 +45,7 @@ public static class ServiceExtensions
 			opts.UseOracle(configuration.GetConnectionString("OracleConnection")));
 
 
-	public static void ConfigureIdentity(this IServiceCollection services)
+    public static void ConfigureIdentity(this IServiceCollection services)
 	{
 		var builder = services.AddIdentity<User, IdentityRole>(o =>
 		{

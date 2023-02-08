@@ -1,0 +1,22 @@
+﻿-- Create table
+create table UNIMEDLF.MENSAGEM_HTML
+(
+  mensagem_html_id    RAW(32) default SYS_GUID() not null,
+  template_email_html NVARCHAR2(2000),
+  criado              DATE default SYSDATE not null,
+  criado_por          VARCHAR2(50),
+  modificado          DATE,
+  modificado_por      VARCHAR2(50)
+)
+tablespace INFOMED_DADOS
+  pctfree 10
+  initrans 1
+  maxtrans 255;
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table UNIMEDLF.MENSAGEM_HTML
+  add constraint PK_MENSAGEM_HTML primary key (MENSAGEM_HTML_ID)
+  using index 
+  tablespace INFOMED_DADOS
+  pctfree 10
+  initrans 2
+  maxtrans 255;

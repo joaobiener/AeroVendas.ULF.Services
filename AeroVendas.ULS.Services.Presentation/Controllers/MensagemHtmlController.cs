@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
-
 namespace CompanyEmployees.Presentation.Controllers;
 
 [Route("api/mensagemHtml")]
@@ -69,16 +68,16 @@ public class MensagemHtmlController : ControllerBase
 	}
 
 	[HttpPut("{id:guid}")]
-	public async Task<IActionResult> UpdateCompany(Guid id, [FromBody] MensagemForUpdateDto mensagem)
+	public async Task<IActionResult> UpdateMensagem(Guid id, [FromBody] MensagemForUpdateDto mensagem)
 	{
 		if (mensagem is null)
-			return BadRequest("MensagemForUpdateDto é nula");
+            return BadRequest("MensagemForUpdateDto é nulo");
 
-		if (!ModelState.IsValid)
-			return UnprocessableEntity(ModelState);
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
 
-		await _service.MensagemHtmlService.CreateMensagemCollectionAsync(id, mensagem, trackChanges: true);
+        await _service.MensagemHtmlService.UpdateMensagemAsync(id, mensagem, trackChanges: true);
 
-		return NoContent();
-	}
+        return NoContent();
+    }
 }

@@ -21,6 +21,9 @@ namespace Entities.Models
         [Column("CRIADO")]
         public DateTime? CriadoEm { get; set; }
 
+        [Column("CRIADO_POR")]
+        public string? CriadoPor { get; set; }
+
         [Column("MODIFICADO")]
         public DateTime? ModificadoEm { get; set; }
 
