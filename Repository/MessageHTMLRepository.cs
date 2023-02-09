@@ -13,7 +13,7 @@ internal sealed class MessageHTMLRepository : RepositoryBase<MensagemHtml>, IMes
 
 	public async Task<IEnumerable<MensagemHtml>> GetAllMessagesAsync(bool trackChanges) =>
 		await FindAll(trackChanges)
-		.OrderBy(c => c.Id)
+		.OrderByDescending(c => c.CriadoEm)
 		.ToListAsync();
 
 	public async Task<MensagemHtml> GetMessageAsync(Guid mensagemId, bool trackChanges) =>
@@ -28,6 +28,5 @@ internal sealed class MessageHTMLRepository : RepositoryBase<MensagemHtml>, IMes
 
 	public void DeleteMessage(MensagemHtml mensagem) => Delete(mensagem);
 
-   
    
 }
