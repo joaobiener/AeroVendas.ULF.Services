@@ -1,20 +1,36 @@
 ﻿using Contracts;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository.Extensions;
+using Shared.RequestFeatures;
+using System.Linq.Dynamic.Core;
 
 namespace Repository;
 
 internal sealed class MessageHTMLRepository : RepositoryBase<MensagemHtml>, IMessageHTMLRepository
 {
+
 	public MessageHTMLRepository(RepositoryContext repositoryContext)
 		: base(repositoryContext)
 	{
 	}
 
-	public async Task<IEnumerable<MensagemHtml>> GetAllMessagesAsync(bool trackChanges) =>
-		await FindAll(trackChanges)
-		.OrderByDescending(c => c.CriadoEm)
-		.ToListAsync();
+	//public async Task<IEnumerable<MensagemHtml>> GetAllMessagesAsync(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges) =>
+	//	await FindAll(trackChanges)
+	//	.OrderByDescending(c => c.CriadoEm)
+	//	.ToListAsync();
+	public async Task<PagedList<MensagemHtml>> GetAllMessagesAsync(ViewAeroVendasParameters viewLogAeroVendasParameters, bool trackChanges)
+	{
+
+		var mensagens = await FindAll(trackChanges)
+			 //  .OrderBy(e => e.CriadoEm)
+			  .ToListAsync();
+
+        return PagedList<MensagemHtml>
+			   .ToPagedList(mensagens,
+							viewLogAeroVendasParameters.PageNumber,
+							viewLogAeroVendasParameters.PageSize);
+	}
 
 	public async Task<MensagemHtml> GetMessageAsync(Guid mensagemId, bool trackChanges) =>
 		await FindByCondition(c => c.Id.Equals(mensagemId), trackChanges)
@@ -28,5 +44,5 @@ internal sealed class MessageHTMLRepository : RepositoryBase<MensagemHtml>, IMes
 
 	public void DeleteMessage(MensagemHtml mensagem) => Delete(mensagem);
 
-   
+	
 }

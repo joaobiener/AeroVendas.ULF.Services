@@ -13,13 +13,17 @@ namespace Entities.Models
 		[Key]
 		public Guid Id { get; set; }
 
-        [Required(ErrorMessage = "O Template é obrigatório!")]
+		[Required(ErrorMessage = "O Título é obrigatório!")]
+		[Column("TITULO")]
+		public string? Titulo { get; set; }
+
+		[Required(ErrorMessage = "O Template é obrigatório!")]
         [Column("TEMPLATE_EMAIL_HTML")]
         public string? TemplateEmailHtml { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Column("CRIADO")]
-        public DateTime? CriadoEm { get; set; }
+        public DateTime CriadoEm { get; set; }
 
         [Column("CRIADO_POR")]
         public string? CriadoPor { get; set; }

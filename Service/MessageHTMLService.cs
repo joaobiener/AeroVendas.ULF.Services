@@ -4,6 +4,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 using System.ComponentModel.Design;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -22,19 +23,29 @@ internal sealed class MessageHTMLService : IMessageHTMLService
 		_mapper = mapper;
 	}
 
+	//public async Task<IEnumerable<MensagemHtmlDto>> GetAllMessagesAsync(bool trackChanges)
+	//{
+	//    var mensagens = await _repository.mensagemHtml.GetAllMessagesAsync(trackChanges);
+
+	//    var mensagensDto = _mapper.Map<IEnumerable<MensagemHtmlDto>>(mensagens);
+
+	//    return mensagensDto;
+	//}
+
+	public async Task<(IEnumerable<MensagemHtmlDto> mensagensHTML, MetaData metaData)> GetAllMessagesAsync(
+		ViewAeroVendasParameters viewAeroVendasParameters,bool trackChanges)
+
+	{
+		var mensagensWithMetaData = await _repository.mensagemHtml.GetAllMessagesAsync(viewAeroVendasParameters, trackChanges);
+
+		var mensagensDto = _mapper.Map<IEnumerable<MensagemHtmlDto>>(mensagensWithMetaData);
+
+		return (mensagensHTML: mensagensDto, metaData: mensagensWithMetaData.MetaData);
+
+	}
 
 
-
-    public async Task<IEnumerable<MensagemHtmlDto>> GetAllMessagesAsync(bool trackChanges)
-    {
-        var mensagens = await _repository.mensagemHtml.GetAllMessagesAsync(trackChanges);
-
-        var mensagensDto = _mapper.Map<IEnumerable<MensagemHtmlDto>>(mensagens);
-
-        return mensagensDto;
-    }
- 
-    public async Task<MensagemHtmlDto> GetMensagemByIdAsync(Guid mensagemId, bool trackChanges)
+	public async Task<MensagemHtmlDto> GetMensagemByIdAsync(Guid mensagemId, bool trackChanges)
     {
         var mensagem = await _repository.mensagemHtml.GetMessageAsync(mensagemId, trackChanges);
         if (mensagem is null)

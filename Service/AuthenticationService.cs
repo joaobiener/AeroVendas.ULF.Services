@@ -155,10 +155,11 @@ internal sealed class AuthenticationService : IAuthenticationService
 
 		string domainName = System.Environment.UserDomainName;
 		string domainUserName = System.Environment.UserName;
+		// This code runs as the application pool user
 		PrincipalContext pc = new PrincipalContext(ContextType.Domain, domainName, domainUserName, ContextOptions.SimpleBind.ToString());
-		
 
 		var result = (_user != null && pc.ValidateCredentials(userForAuth.UserName.ToUpper(), userForAuth.Password));
+		
 		if (!result)
 			_logger.LogWarn($"{nameof(ValidateUser)}: Authentication failed. Password ou Login errado.");
 

@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
+using System.Text.Json;
+
 namespace CompanyEmployees.Presentation.Controllers;
 
 [Route("mensagemHtml")]
@@ -12,13 +15,26 @@ public class MensagemHtmlController : ControllerBase
 
 	public MensagemHtmlController(IServiceManager service) => _service = service;
 
-	[HttpGet]
-	public async Task<IActionResult> GetMensagensHtml()
-	{
-		var mensagens = await _service.MensagemHtmlService.GetAllMessagesAsync(trackChanges: false);
+	//[HttpGet]
+	//public async Task<IActionResult> GetMensagensHtml()
+	//{
+	//	var mensagens = await _service.MensagemHtmlService.GetAllMessagesAsync(trackChanges: false);
 
-		return Ok(mensagens);
+	//	return Ok(mensagens);
+	//}
+
+
+
+	[HttpGet]
+	public async Task<IActionResult> GetMensagensHtml([FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
+	{
+		var pagedResult = await _service.MensagemHtmlService.GetAllMessagesAsync(viewAeroVendasParameters, trackChanges: false);
+		Response.Headers.Add("X-Pagination",
+						JsonSerializer.Serialize(pagedResult.metaData));
+
+		return Ok(pagedResult.mensagensHTML);
 	}
+
 
 	[HttpGet("{id:guid}", Name = "MensagemById")]
 	public async Task<IActionResult> GetMensagem(Guid id)

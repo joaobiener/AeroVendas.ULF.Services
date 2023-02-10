@@ -6,7 +6,8 @@ create table UNIMEDLF.MENSAGEM_HTML
   criado              DATE default SYSDATE not null,
   criado_por          VARCHAR2(50),
   modificado          DATE,
-  modificado_por      VARCHAR2(50)
+  modificado_por      VARCHAR2(50),
+  titulo              NVARCHAR2(150) not null
 )
 tablespace INFOMED_DADOS
   pctfree 10

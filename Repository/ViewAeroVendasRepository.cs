@@ -18,18 +18,18 @@ internal sealed class ViewAeroVendasRepository : RepositoryBase<ViewContratoSemA
 
     public async Task<PagedList<ViewContratoSemAeroVendas>> GetAllViewAeroVendasAsync(ViewAeroVendasParameters viewLogAeroVendasParameters, bool trackChanges)
     {
-        var viewLogsAeroVendass = await FindAll(trackChanges)
+        var viewLogsAeroVendas = await FindAll(trackChanges)
                 // .OrderBy(e => e.Cidade).ThenBy(x => x.Contrato)
                  .ToListAsync();
 
         return PagedList<ViewContratoSemAeroVendas>
-               .ToPagedList(viewLogsAeroVendass,
+               .ToPagedList(viewLogsAeroVendas,
                             viewLogAeroVendasParameters.PageNumber,
                             viewLogAeroVendasParameters.PageSize);
     }
 
-    //Busca as cidades associadas ao contrato
-    public async Task<PagedList<string>> GetViewCidadeAeroVendas(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
+	//Busca as cidades associadas ao contrato
+	public async Task<PagedList<string>> GetViewCidadeAeroVendas(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
     {
         var viewAeroVendas = await FindByCondition(x =>
                                        x.Cidade!= null

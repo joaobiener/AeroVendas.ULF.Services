@@ -1,10 +1,14 @@
 ﻿using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 
 namespace Service.Contracts;
 
 public interface IMessageHTMLService
 {
-	Task<IEnumerable<MensagemHtmlDto>> GetAllMessagesAsync(bool trackChanges);
+	Task<(IEnumerable<MensagemHtmlDto> mensagensHTML, MetaData metaData)>  GetAllMessagesAsync(
+		ViewAeroVendasParameters viewAeroVendasParameters,
+		bool trackChanges);
+
 	Task<MensagemHtmlDto> GetMensagemByIdAsync(Guid mensagemId, bool trackChanges);
 	Task<MensagemHtmlDto> CreateMensagemAsync(MensagemHtmlForCreationDto mensagem);
 	Task<IEnumerable<MensagemHtmlDto>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
