@@ -13,6 +13,4 @@ public  record MensagemHtmlForCreationDto
     public string? TemplateEmailHtml { get; set; }
     public string? CriadoPor { get; set; }
 
-    
-
 }
