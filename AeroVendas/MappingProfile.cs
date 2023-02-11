@@ -27,8 +27,11 @@ namespace AeroVendas.ULF.Services
 
             CreateMap<ViewContratoSemAeroVendas,ViewAeroVendasDto>();
             CreateMap<MensagemHtml, MensagemHtmlDto>();
-            CreateMap<UserForRegistrationDto, User>();
-            CreateMap<MensagemHtmlForCreationDto, MensagemHtml>();
+	
+
+			CreateMap<UserForRegistrationDto, User>();
+			CreateMap<MensagemForUpdateDto, MensagemHtml>();
+			CreateMap<MensagemHtmlForCreationDto, MensagemHtml>();
 			
 
 
