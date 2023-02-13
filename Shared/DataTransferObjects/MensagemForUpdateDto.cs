@@ -12,4 +12,6 @@ public record MensagemForUpdateDto
 	public string? TemplateEmailHtml { get; set; }
 	public string? ModificadoPor { get; set; }
 	public DateTime? ModificadoEm { get; set; }
+
+
 }
