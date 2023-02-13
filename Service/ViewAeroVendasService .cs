@@ -30,6 +30,9 @@ internal sealed class ViewAeroVendasService : IViewAeroVendasService
 	{
 		var viewAeroVendasWithMetaData = await _repository.viewAeroVendas.GetAllViewAeroVendasAsync(viewAeroVendasParameters, trackChanges);
 
+		if (viewAeroVendasWithMetaData is null)
+			throw new ViewAeroVendasNotFoundException();
+
 		var viewAeroVendasDto = _mapper.Map<IEnumerable<ViewAeroVendasDto>>(viewAeroVendasWithMetaData);
 
 		return (viewAeroVendas: viewAeroVendasDto, metaData: viewAeroVendasWithMetaData.MetaData);

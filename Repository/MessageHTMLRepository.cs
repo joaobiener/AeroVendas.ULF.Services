@@ -22,9 +22,13 @@ internal sealed class MessageHTMLRepository : RepositoryBase<MensagemHtml>, IMes
 	public async Task<PagedList<MensagemHtml>> GetAllMessagesAsync(ViewAeroVendasParameters viewLogAeroVendasParameters, bool trackChanges)
 	{
 
-		var mensagens = await FindAll(trackChanges)
-			 //  .OrderBy(e => e.CriadoEm)
-			  .ToListAsync();
+		var mensagens = await FindByCondition(x =>
+								   x.Titulo != null
+								  , trackChanges)
+								  .Search(viewLogAeroVendasParameters.SearchTerm)
+								.Sort(viewLogAeroVendasParameters.OrderBy)
+								.ToListAsync();
+
 
         return PagedList<MensagemHtml>
 			   .ToPagedList(mensagens,

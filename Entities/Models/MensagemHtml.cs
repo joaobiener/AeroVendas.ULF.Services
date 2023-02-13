@@ -17,7 +17,7 @@ namespace Entities.Models
 		[Column("TITULO")]
 		public string? Titulo { get; set; }
 
-		[Required(ErrorMessage = "O Template é obrigatório!")]
+		
         [Column("TEMPLATE_EMAIL_HTML")]
         public string? TemplateEmailHtml { get; set; }
 

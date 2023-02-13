@@ -9,7 +9,7 @@ public  record MensagemHtmlForCreationDto
 	[MaxLength(150, ErrorMessage = "Maximum length for the Name is 150 characters.")]
 	public string? Titulo { get; set; }
 
-	[Required(ErrorMessage = "A mensagem é obrigatória.")]
+	//[Required(ErrorMessage = "A mensagem é obrigatória.")]
     public string? TemplateEmailHtml { get; set; }
     public string? CriadoPor { get; set; }
 

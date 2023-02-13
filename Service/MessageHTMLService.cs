@@ -38,6 +38,9 @@ internal sealed class MessageHTMLService : IMessageHTMLService
 	{
 		var mensagensWithMetaData = await _repository.mensagemHtml.GetAllMessagesAsync(viewAeroVendasParameters, trackChanges);
 
+		if (mensagensWithMetaData is null)
+			throw new MensagemHtmlNotFoundExceptionAll();
+
 		var mensagensDto = _mapper.Map<IEnumerable<MensagemHtmlDto>>(mensagensWithMetaData);
 
 		return (mensagensHTML: mensagensDto, metaData: mensagensWithMetaData.MetaData);
