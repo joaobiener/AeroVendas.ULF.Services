@@ -6,5 +6,7 @@ public interface IRepositoryManager
     IViewAeroVendasRepository viewAeroVendas { get; }
     IMessageHTMLRepository mensagemHtml { get; }
 
-    Task SaveAsync();
+	IArquivoRepository arquivo { get; }
+
+	Task SaveAsync();
 }

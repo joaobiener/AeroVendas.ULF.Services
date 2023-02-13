@@ -1,4 +1,5 @@
 ﻿using AeroVendas.ULF.Services.Presentation.ModelBinders;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -96,4 +97,31 @@ public class MensagemHtmlController : ControllerBase
 
         return NoContent();
     }
+
+	/// <summary>
+	/// Single File Upload
+	/// </summary>
+	/// <param name="file"></param>
+	/// <returns></returns>
+	[HttpPost("PostSingleFile")]
+	public async Task<ActionResult> PostSingleFile([FromForm] FileUploadModel fileDetails)
+	{
+		if (fileDetails == null)
+		{
+			return BadRequest();
+		}
+		try
+		{
+			await _service.MensagemHtmlService.PostFileAsync(fileDetails);
+		return Ok();
+		}
+		catch (Exception ex)
+		{
+			throw;
+		}
+
+	}
+
+
+
 }

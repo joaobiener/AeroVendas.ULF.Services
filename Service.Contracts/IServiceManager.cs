@@ -6,4 +6,6 @@ public interface IServiceManager
 	IAuthenticationService AuthenticationService { get; }
 
     IMessageHTMLService MensagemHtmlService { get; }
+
+
 }

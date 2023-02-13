@@ -32,7 +32,10 @@ namespace AeroVendas.ULF.Services
 			CreateMap<UserForRegistrationDto, User>();
 			CreateMap<MensagemForUpdateDto, MensagemHtml>();
 			CreateMap<MensagemHtmlForCreationDto, MensagemHtml>();
-			
+
+			CreateMap<FileUploadModel, Arquivo>(); 
+
+
 
 
 

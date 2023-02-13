@@ -22,9 +22,10 @@ public class RepositoryContext : IdentityDbContext<User>
         modelBuilder.ApplyConfiguration(new MensagemHtmlConfiguration());
     }
 
-    public DbSet<MensagemHtml>? MnsagemHtml { get; set; }
+    public DbSet<MensagemHtml>? MensagensHtml { get; set; }
+	public DbSet<Arquivo>? Arquvios { get; set; }
 
-    //public DbSet<ViewContratoSemAeroVendas>? ViewLogsAeroVendas { get; set; }
+	//public DbSet<ViewContratoSemAeroVendas>? ViewLogsAeroVendas { get; set; }
 
 
 

@@ -48,5 +48,5 @@ internal sealed class MessageHTMLRepository : RepositoryBase<MensagemHtml>, IMes
 
 	public void DeleteMessage(MensagemHtml mensagem) => Delete(mensagem);
 
-	
+
 }

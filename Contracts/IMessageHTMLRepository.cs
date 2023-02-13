@@ -1,4 +1,6 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Http;
+using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
 
 namespace Contracts;
@@ -10,4 +12,5 @@ public interface IMessageHTMLRepository
 	void CreateMessage(MensagemHtml mensagem);
 	Task<IEnumerable<MensagemHtml>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
 	void DeleteMessage(MensagemHtml mensagem);
+
 }
