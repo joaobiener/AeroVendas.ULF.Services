@@ -20,8 +20,6 @@ public sealed class RepositoryManager : IRepositoryManager
 	public IMessageHTMLRepository mensagemHtml => _mensagemHTMLRepository.Value;
     public IViewAeroVendasRepository viewAeroVendas => _viewAeroVendasRepository.Value;
 
-	public IArquivoRepository arquivos => _arquivo.Value;
-
 	public IArquivoRepository arquivo => _arquivo.Value;
 
 	public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();

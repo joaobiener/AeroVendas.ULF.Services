@@ -17,8 +17,9 @@ public sealed class ServiceManager : IServiceManager
 	private readonly Lazy<IViewAeroVendasService> _viewAeroVendasService;
 	private readonly Lazy<IAuthenticationService> _authenticationService;
     private readonly Lazy<IMessageHTMLService> _mensagemHtmlService;
+	private readonly Lazy<IArquivoService> _arquivo;
 
-    public ServiceManager(IRepositoryManager repositoryManager,
+	public ServiceManager(IRepositoryManager repositoryManager,
 						ILoggerManager logger,
 						IMapper mapper,
 						UserManager<User> userManager,
@@ -30,10 +31,13 @@ public sealed class ServiceManager : IServiceManager
 								new AuthenticationService(logger, mapper, userManager,configuration));
         _mensagemHtmlService = new Lazy<IMessageHTMLService>(() =>
                                 new MessageHTMLService(repositoryManager, logger, mapper));
-    }
+		_arquivo = new Lazy<IArquivoService>(() =>
+								new ArquivoService(repositoryManager, logger, mapper));
+
+	}
 
 	public IViewAeroVendasService ViewAeroVendasService => _viewAeroVendasService.Value;
 	public IAuthenticationService AuthenticationService => _authenticationService.Value;
-
-    public IMessageHTMLService MensagemHtmlService => _mensagemHtmlService.Value;
+	public IMessageHTMLService MensagemHtmlService => _mensagemHtmlService.Value;
+	public IArquivoService ArquivoService => _arquivo.Value;
 }

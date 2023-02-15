@@ -3,10 +3,11 @@ create table UNIMEDLF.MENSAGEM_FILES
 (
   arquivo_id RAW(32) default SYS_GUID() not null,
   nome       NVARCHAR2(150) not null,
-  filetype   NVARCHAR2(100),
+  Tipo_arquivo   NVARCHAR2(100),
   arquivo    BLOB not null,
-  criado     DATE default SYSDATE,
+  criado     DATE default SYSDATE not null,
   criado_por NVARCHAR2(50)
+
 )
 tablespace INFOMED_DADOS
   pctfree 10

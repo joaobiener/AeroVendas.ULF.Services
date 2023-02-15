@@ -22,9 +22,10 @@ internal sealed class ArquivoRepository : RepositoryBase<Arquivo>, IArquivoRepos
 
 	public void CreateArquivo(Arquivo arquivo) => Create(arquivo);
 
-	
+
 	public async Task<Arquivo> DownloadFileById(Guid Id, bool trackChanges) =>
-		await FindByCondition(c => c.Id.Equals(Id), trackChanges)
-		.SingleOrDefaultAsync();
+	await FindByCondition(c => c.Id.Equals(Id), trackChanges)
+	.SingleOrDefaultAsync();
+
 
 }

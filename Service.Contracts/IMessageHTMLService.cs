@@ -19,12 +19,6 @@ public interface IMessageHTMLService
 	Task DeleteMensagemAsync(Guid mensagemId, bool trackChanges);
 	Task UpdateMensagemAsync(Guid mensagemid, MensagemForUpdateDto mensagemForUpdate, bool trackChanges);
 
-	Task PostFileAsync(FileUploadModel fileData);
-
-	Task PostMultiFileAsync(List<FileUploadModel> fileData);
-
-	Task DownloadFileById(Guid Id, bool trackChanges);
-
 
 
 

@@ -6,7 +6,7 @@ using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
 using System.Text.Json;
 
-namespace CompanyEmployees.Presentation.Controllers;
+namespace AeroVendas.ULF.Services.Controllers;
 
 [Route("mensagemHtml")]
 [ApiController]
@@ -97,31 +97,6 @@ public class MensagemHtmlController : ControllerBase
 
         return NoContent();
     }
-
-	/// <summary>
-	/// Single File Upload
-	/// </summary>
-	/// <param name="file"></param>
-	/// <returns></returns>
-	[HttpPost("PostSingleFile")]
-	public async Task<ActionResult> PostSingleFile([FromForm] FileUploadModel fileDetails)
-	{
-		if (fileDetails == null)
-		{
-			return BadRequest();
-		}
-		try
-		{
-			await _service.MensagemHtmlService.PostFileAsync(fileDetails);
-		return Ok();
-		}
-		catch (Exception ex)
-		{
-			throw;
-		}
-
-	}
-
 
 
 }

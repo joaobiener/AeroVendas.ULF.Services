@@ -24,12 +24,12 @@ public static class RepositoryMensagensHTMLExtensions
 	public static IQueryable<MensagemHtml> Sort(this IQueryable<MensagemHtml> mensagemsHTML, string orderByQueryString)
 	{
 		if (string.IsNullOrWhiteSpace(orderByQueryString))
-			return mensagemsHTML.OrderBy(e => e.CriadoEm);
+			return mensagemsHTML.OrderByDescending(e => e.CriadoEm);
 
-		var orderQuery = OrderQueryBuilder.CreateOrderQuery<ViewContratoSemAeroVendas>(orderByQueryString);
+		var orderQuery = OrderQueryBuilder.CreateOrderQuery<MensagemHtml>(orderByQueryString);
 
 		if (string.IsNullOrWhiteSpace(orderQuery))
-			return mensagemsHTML.OrderBy(e => e.CriadoEm);
+			return mensagemsHTML.OrderByDescending(e => e.Id);
 
 		return mensagemsHTML.OrderBy(orderQuery);
 	}

@@ -23,7 +23,7 @@ public class RepositoryContext : IdentityDbContext<User>
     }
 
     public DbSet<MensagemHtml>? MensagensHtml { get; set; }
-	public DbSet<Arquivo>? Arquvios { get; set; }
+	public DbSet<Arquivo>? Arquivos { get; set; }
 
 	//public DbSet<ViewContratoSemAeroVendas>? ViewLogsAeroVendas { get; set; }
 
