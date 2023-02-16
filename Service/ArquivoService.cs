@@ -38,20 +38,20 @@ internal sealed class ArquivoService : IArquivoService
 
 	}
 
-	public async Task<Arquivo> PostFileAsync(FileUploadModel fileData)
+	public async Task<Arquivo> PostFileAsync(IFormFile fileData)
 	{
 	
 		var fileDetails = new Arquivo()
 		{	
-			Nome = fileData.FileDetails.FileName,
-			Tipo = fileData.FileType,
-			CriadoPor = fileData.CriadoPor
+			Nome = fileData.FileName,
+			Tipo = "",
+			//CriadoPor = fileData.CriadoPor
 
 		};
 
 		using (var stream = new MemoryStream())
 		{
-			fileData.FileDetails.CopyTo(stream);
+			fileData.CopyTo(stream);
 			fileDetails.DataFiles = stream.ToArray();
 		}
 

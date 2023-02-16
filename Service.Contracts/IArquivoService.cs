@@ -11,7 +11,7 @@ public interface IArquivoService
 	Task<(IEnumerable<ArquivoDto> arquivos, MetaData metaData)> GetAllArquivosAsync(
 		ViewAeroVendasParameters viewAeroVendasParameters,
 		bool trackChanges);
-	Task<Arquivo> PostFileAsync(FileUploadModel fileData);
+	Task<Arquivo> PostFileAsync(IFormFile fileData);
 
 	Task PostMultiFileAsync(List<FileUploadModel> fileData);
 

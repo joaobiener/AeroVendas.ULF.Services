@@ -1,5 +1,6 @@
 ﻿using AeroVendas.ULF.Services.Presentation.ModelBinders;
 using Entities.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -20,7 +21,9 @@ public class ArquivoController : ControllerBase
 	[HttpGet]
 	public async Task<IActionResult> GetArquivos([FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
 	{
-		var pagedResult = await _service.ArquivoService.GetAllArquivosAsync(viewAeroVendasParameters, trackChanges: false);
+       
+
+        var pagedResult = await _service.ArquivoService.GetAllArquivosAsync(viewAeroVendasParameters, trackChanges: false);
 		Response.Headers.Add("X-Pagination",
 						JsonSerializer.Serialize(pagedResult.metaData));
 
@@ -33,9 +36,12 @@ public class ArquivoController : ControllerBase
 	/// <param name="file"></param>
 	/// <returns></returns>
 	[HttpPost]
-	public async Task<ActionResult> PostSingleFile([FromForm] FileUploadModel fileDetails)
+	public async Task<ActionResult> PostSingleFile()
 	{
-		if (fileDetails == null)
+        IFormFile fileDetails = Request.Form.Files[0];
+       
+
+        if (fileDetails == null)
 		{
 			return BadRequest();
 		}

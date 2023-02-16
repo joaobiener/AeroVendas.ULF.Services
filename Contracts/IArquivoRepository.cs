@@ -11,7 +11,9 @@ public interface IArquivoRepository
 	void CreateArquivo(Arquivo arquivo);
 
 
-	Task<Arquivo> DownloadFileById(Guid Id, bool trackChanges);
+
+
+    Task<Arquivo> DownloadFileById(Guid Id, bool trackChanges);
 
 
 
