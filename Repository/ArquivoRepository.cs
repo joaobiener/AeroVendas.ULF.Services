@@ -2,6 +2,7 @@
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Extensions;
+using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
 using System.Linq.Dynamic.Core;
 
@@ -23,9 +24,32 @@ internal sealed class ArquivoRepository : RepositoryBase<Arquivo>, IArquivoRepos
 	public void CreateArquivo(Arquivo arquivo) => Create(arquivo);
 
 
-	public async Task<Arquivo> DownloadFileById(Guid Id, bool trackChanges) =>
-	await FindByCondition(c => c.Id.Equals(Id), trackChanges)
-	.SingleOrDefaultAsync();
+	public async Task<Arquivo> DownloadFileById(Guid Id, bool trackChanges)
+	{ 
+	
+		var arquivo = await FindByCondition(c => c.Id.Equals(Id), trackChanges)
+		.SingleOrDefaultAsync();
+
+		return arquivo;
+
+		//return await FindByCondition(c => c.Id.Equals(Id), trackChanges)
+		//.SingleOrDefaultAsync();
+
+	}
+
+	public async Task<PagedList<Arquivo>> GetAllArquivosAsync(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
+	{
+		var arquivos = await FindByCondition(x =>
+						   x.Nome != null
+						  , trackChanges)
+						  .Search(viewAeroVendasParameters.SearchTerm)
+						.Sort(viewAeroVendasParameters.OrderBy)
+						.ToListAsync();
 
 
+		return PagedList<Arquivo>
+			   .ToPagedList(arquivos,
+							viewAeroVendasParameters.PageNumber,
+							viewAeroVendasParameters.PageSize);
+	}
 }

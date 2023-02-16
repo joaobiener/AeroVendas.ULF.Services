@@ -35,7 +35,9 @@ namespace AeroVendas.ULF.Services
 
 			CreateMap<Arquivo, FileUploadModel>();
 
-			CreateMap<FileUploadModel, Arquivo>(); 
+			CreateMap<FileUploadModel, Arquivo>();
+
+			CreateMap<Arquivo, ArquivoDto>(); 
 
 		}
 

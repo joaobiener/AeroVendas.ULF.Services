@@ -25,4 +25,14 @@
     <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Content Include="StaticFiles\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="StaticFiles\Images\" />
+	</ItemGroup>
+
 </Project>

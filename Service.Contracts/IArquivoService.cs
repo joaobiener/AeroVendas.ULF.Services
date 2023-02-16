@@ -8,7 +8,10 @@ namespace Service.Contracts;
 public interface IArquivoService
 {
 
-	Task PostFileAsync(FileUploadModel fileData);
+	Task<(IEnumerable<ArquivoDto> arquivos, MetaData metaData)> GetAllArquivosAsync(
+		ViewAeroVendasParameters viewAeroVendasParameters,
+		bool trackChanges);
+	Task<Arquivo> PostFileAsync(FileUploadModel fileData);
 
 	Task PostMultiFileAsync(List<FileUploadModel> fileData);
 

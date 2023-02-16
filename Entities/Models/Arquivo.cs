@@ -39,11 +39,12 @@ public class Arquivo
 	[Column("NOME")]
 	public string? Nome { get; set; }
 	[Column("TIPO_ARQUIVO")]
-	public FileType? Tipo { get; set; }
+	public string? Tipo { get; set; }
 	[Column("ARQUIVO", TypeName = "BLOB")]
 	public byte[] DataFiles { get; set; }
-	[Column("CRIADO_POR")]
-	public string? CriadoPor { get; set; }
+
 	[Column("CRIADO")]
 	public DateTime CriadoEm { get; set; }
+	[Column("CRIADO_POR")]
+	public string? CriadoPor { get; set; }
 }

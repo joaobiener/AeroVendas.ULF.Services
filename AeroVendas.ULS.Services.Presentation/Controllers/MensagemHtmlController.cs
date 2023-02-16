@@ -37,7 +37,7 @@ public class MensagemHtmlController : ControllerBase
 	}
 
 
-	[HttpGet("{id:guid}", Name = "	")]
+	[HttpGet("{id:guid}", Name = "MensagemById")]
 	public async Task<IActionResult> GetMensagem(Guid id)
 	{
 		var mensagem = await _service.MensagemHtmlService.GetMensagemByIdAsync(id, trackChanges: false);

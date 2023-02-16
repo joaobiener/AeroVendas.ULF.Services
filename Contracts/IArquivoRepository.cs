@@ -7,10 +7,13 @@ namespace Contracts;
 
 public interface IArquivoRepository
 {
+	Task<PagedList<Arquivo>> GetAllArquivosAsync(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges);
 	void CreateArquivo(Arquivo arquivo);
 
-	//void PostMultiFileAsync(List<FileUploadModel> fileData, ArquivoForCreateDTO arqForCreate);
 
 	Task<Arquivo> DownloadFileById(Guid Id, bool trackChanges);
+
+
+
 
 }

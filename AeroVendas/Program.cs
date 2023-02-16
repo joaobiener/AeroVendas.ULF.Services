@@ -4,6 +4,7 @@ using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using NLog;
 
@@ -43,14 +44,21 @@ if (app.Environment.IsProduction())
     app.UseHsts();
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
+
+
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.All
 });
 
 app.UseCors("CorsPolicy");
-
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(
+	Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles")),
+	RequestPath = "/StaticFiles"
+}); ;
 
 app.UseAuthentication();
 app.UseAuthorization();

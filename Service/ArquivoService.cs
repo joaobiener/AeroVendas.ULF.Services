@@ -5,8 +5,8 @@ using Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualBasic.FileIO;
 using Service.Contracts;
-
-
+using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 
 namespace Service;
 
@@ -24,7 +24,21 @@ internal sealed class ArquivoService : IArquivoService
 	}
 
 
-	public async Task PostFileAsync(FileUploadModel fileData)
+	public async Task<(IEnumerable<ArquivoDto> arquivos, MetaData metaData)> GetAllArquivosAsync(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
+	{
+		var arquivosWithMetaData = await _repository.arquivo.GetAllArquivosAsync(viewAeroVendasParameters, trackChanges);
+
+
+		if (arquivosWithMetaData is null)
+			throw new MensagemHtmlNotFoundExceptionAll();
+
+		var ArquivoDto = _mapper.Map<IEnumerable<ArquivoDto>>(arquivosWithMetaData);
+
+		return (arquivos: ArquivoDto, metaData: arquivosWithMetaData.MetaData);
+
+	}
+
+	public async Task<Arquivo> PostFileAsync(FileUploadModel fileData)
 	{
 	
 		var fileDetails = new Arquivo()
@@ -45,7 +59,7 @@ internal sealed class ArquivoService : IArquivoService
 		arquivoEntity.CriadoEm = DateTime.Now;
 		_repository.arquivo.CreateArquivo(fileDetails);
 		await _repository.SaveAsync();
-		
+		return fileDetails;
 	}
 
 
@@ -87,7 +101,7 @@ internal sealed class ArquivoService : IArquivoService
 
 			var content = new System.IO.MemoryStream(arquivo.DataFiles);
 			var path = Path.Combine(
-			   Directory.GetCurrentDirectory(), "FileDownloaded",
+			   Directory.GetCurrentDirectory(), "StaticFiles", "Images",
 			   arquivo.Nome);
 
 			await CopyStream(content, path);
@@ -104,4 +118,6 @@ internal sealed class ArquivoService : IArquivoService
 			await stream.CopyToAsync(fileStream);
 		}
 	}
+
+	
 }

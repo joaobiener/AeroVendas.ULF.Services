@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace AeroVendas.ULF.Services.Presentation.Controllers;
 
-[Route("Arquivo")]
+[Route("Upload")]
 [ApiController]
 public class ArquivoController : ControllerBase
 {
@@ -16,6 +16,16 @@ public class ArquivoController : ControllerBase
 
 	public ArquivoController(IServiceManager service) => _service = service;
 
+
+	[HttpGet]
+	public async Task<IActionResult> GetArquivos([FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
+	{
+		var pagedResult = await _service.ArquivoService.GetAllArquivosAsync(viewAeroVendasParameters, trackChanges: false);
+		Response.Headers.Add("X-Pagination",
+						JsonSerializer.Serialize(pagedResult.metaData));
+
+		return Ok(pagedResult.arquivos);
+	}
 
 	/// <summary>
 	/// Single File Upload
@@ -31,14 +41,66 @@ public class ArquivoController : ControllerBase
 		}
 		try
 		{
-			await _service.ArquivoService.PostFileAsync(fileDetails);
-			return Ok();
+			var createdArquivos = await _service.ArquivoService.PostFileAsync(fileDetails);
+			
+
+			return CreatedAtRoute("DownloadFile", new { id = createdArquivos.Id }, createdArquivos);
+			//return Ok();
 		}
 		catch (Exception ex)
 		{
 			throw;
 		}
 
+	}
+
+	/// <summary>
+	/// Multiple File Upload
+	/// </summary>
+	/// <param name="file"></param>
+	/// <returns></returns>
+	[HttpPost("PostMultipleFile")]
+	public async Task<ActionResult> PostMultipleFile([FromForm] List<FileUploadModel> fileDetails)
+	{
+		if (fileDetails == null)
+		{
+			return BadRequest();
+		}
+
+		try
+		{
+			await _service.ArquivoService.PostMultiFileAsync(fileDetails);
+			return Ok();
+		}
+		catch (Exception)
+		{
+			throw;
+		}
+	}
+
+	/// <summary>
+	/// Download File
+	/// </summary>
+	/// <param name="file"></param>
+	/// <returns></returns>
+	//[HttpGet("DownloadFile")]
+	[HttpGet("DownloadFile/{id:guid}", Name = "DownloadFile")]
+	public async Task<ActionResult> DownloadFile(Guid id)
+	{
+		if (id==null)
+		{
+			return BadRequest();
+		}
+
+		try
+		{
+			await _service.ArquivoService.DownloadFileById(id, trackChanges: false);
+			return Ok();
+		}
+		catch (Exception)
+		{
+			throw;
+		}
 	}
 
 }
