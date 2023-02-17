@@ -87,14 +87,34 @@ internal sealed class ArquivoService : IArquivoService
 		
 	}
 
+	public async Task DeleteArquivoAsync(Guid arquivoId, bool trackChanges)
+	{
+		var arquivo = await _repository.arquivo.GetFileById(arquivoId, trackChanges);
+		if (arquivo is null)
+			throw new MensagemHtmlNotFoundException(arquivoId);
 
+		_repository.arquivo.DeleteArquivo(arquivo);
+		await _repository.SaveAsync();
+	}
+
+
+	public async Task<Arquivo> GetFileById(Guid ArquivoId, bool trackChanges)
+	{
+		var arquivo = await _repository.arquivo.GetFileById(ArquivoId, trackChanges);
+
+		if (arquivo is null)
+			throw new MensagemHtmlNotFoundException(ArquivoId);
+
+		//var ar = _mapper.Map<MensagemHtmlDto>(arquivo);
+		return arquivo;
+	}
 
 	public async Task DownloadFileById(Guid Id, bool trackChanges)
 	{
 		try
 		{
 
-			var arquivo = await _repository.arquivo.DownloadFileById(Id, trackChanges);
+			var arquivo = await _repository.arquivo.GetFileById(Id, trackChanges);
 
 			if (arquivo is null)
 				throw new MensagemHtmlNotFoundException(Id);
@@ -102,7 +122,7 @@ internal sealed class ArquivoService : IArquivoService
 			var content = new System.IO.MemoryStream(arquivo.DataFiles);
 			var path = Path.Combine(
 			   Directory.GetCurrentDirectory(), "StaticFiles", "Images",
-			   arquivo.Nome);
+			   arquivo.Id.ToString()+arquivo.Nome);
 
 			await CopyStream(content, path);
 		}

@@ -30,6 +30,12 @@ public class ArquivoController : ControllerBase
 		return Ok(pagedResult.arquivos);
 	}
 
+	[HttpGet("{id:guid}", Name = "ArquivoById")]
+	public async Task<IActionResult> GetMensagem(Guid id)
+	{
+		var mensagem = await _service.ArquivoService.GetFileById(id, trackChanges: false);
+		return Ok(mensagem);
+	}
 	/// <summary>
 	/// Single File Upload
 	/// </summary>
@@ -107,6 +113,14 @@ public class ArquivoController : ControllerBase
 		{
 			throw;
 		}
+	}
+
+	[HttpDelete("{id:guid}")]
+	public async Task<IActionResult> DeleteArquivo(Guid id)
+	{
+		await _service.ArquivoService.DeleteArquivoAsync(id, trackChanges: false);
+
+		return NoContent();
 	}
 
 }

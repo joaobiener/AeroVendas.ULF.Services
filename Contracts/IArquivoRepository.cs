@@ -10,12 +10,9 @@ public interface IArquivoRepository
 	Task<PagedList<Arquivo>> GetAllArquivosAsync(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges);
 	void CreateArquivo(Arquivo arquivo);
 
+	Task<Arquivo> GetFileById(Guid Id, bool trackChanges);
 
-
-
-    Task<Arquivo> DownloadFileById(Guid Id, bool trackChanges);
-
-
+	public void DeleteArquivo(Arquivo arquivo);
 
 
 }

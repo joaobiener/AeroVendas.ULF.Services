@@ -17,6 +17,12 @@ public interface IArquivoService
 
 	Task DownloadFileById(Guid Id, bool trackChanges);
 
+	Task<Arquivo> GetFileById(Guid ArquivoId, bool trackChanges);
+
+//	Task GetFileById(Guid Id, bool trackChanges);
+
+	Task DeleteArquivoAsync(Guid arquivoId, bool trackChanges);
+
 
 
 

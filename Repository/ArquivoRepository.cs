@@ -23,8 +23,8 @@ internal sealed class ArquivoRepository : RepositoryBase<Arquivo>, IArquivoRepos
 
 	public void CreateArquivo(Arquivo arquivo) => Create(arquivo);
 
-
-	public async Task<Arquivo> DownloadFileById(Guid Id, bool trackChanges)
+	
+	public async Task<Arquivo> GetFileById(Guid Id, bool trackChanges)
 	{ 
 	
 		var arquivo = await FindByCondition(c => c.Id.Equals(Id), trackChanges)
@@ -52,4 +52,6 @@ internal sealed class ArquivoRepository : RepositoryBase<Arquivo>, IArquivoRepos
 							viewAeroVendasParameters.PageNumber,
 							viewAeroVendasParameters.PageSize);
 	}
+
+	public void DeleteArquivo(Arquivo arquivo) => Delete(arquivo);
 }
