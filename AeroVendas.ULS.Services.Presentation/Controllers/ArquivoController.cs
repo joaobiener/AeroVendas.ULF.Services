@@ -106,8 +106,8 @@ public class ArquivoController : ControllerBase
 
 		try
 		{
-			await _service.ArquivoService.DownloadFileById(id, trackChanges: false);
-			return Ok();
+			string path = await _service.ArquivoService.DownloadFileById(id, trackChanges: false);
+			return Ok(path);
 		}
 		catch (Exception)
 		{

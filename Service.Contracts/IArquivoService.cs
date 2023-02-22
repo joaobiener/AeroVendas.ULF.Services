@@ -15,7 +15,8 @@ public interface IArquivoService
 
 	Task PostMultiFileAsync(List<FileUploadModel> fileData);
 
-	Task DownloadFileById(Guid Id, bool trackChanges);
+	Task<string> DownloadFileById(Guid Id, bool trackChanges);
+
 
 	Task<Arquivo> GetFileById(Guid ArquivoId, bool trackChanges);
 

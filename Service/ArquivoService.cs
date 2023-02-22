@@ -109,7 +109,7 @@ internal sealed class ArquivoService : IArquivoService
 		return arquivo;
 	}
 
-	public async Task DownloadFileById(Guid Id, bool trackChanges)
+	public async Task<string> DownloadFileById(Guid Id, bool trackChanges)
 	{
 		try
 		{
@@ -125,6 +125,8 @@ internal sealed class ArquivoService : IArquivoService
 			   arquivo.Id.ToString()+arquivo.Nome);
 
 			await CopyStream(content, path);
+
+			return string.Concat("StaticFiles/","Images/", arquivo.Id.ToString() + arquivo.Nome);
 		}
 		catch (Exception)
 		{
