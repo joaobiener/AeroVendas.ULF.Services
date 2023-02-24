@@ -24,10 +24,14 @@ public class AeroSolicitacaoEmail
 	[Column("CRIADO")]
 	public DateTime CriadoEm { get; set; }
 
-	public ICollection<AeroEnvioEmail> AeroEnvioEmails { get; set; }
-
-	[ForeignKey(nameof(MensagemHtml))] //Foreign key para Texto da Mensagem
+	//Foreign key para Texto da Mensagem
+	[ForeignKey(nameof(MensagemHtml))] 
 	public Guid MensagemHtmlId { get; set; }
 	public MensagemHtml? MensagemHtml { get; set; }
+
+
+	public ICollection<AeroEnvioEmail> AeroEnvioEmails { get; set; }
+
+	public ICollection<AeroStatusLogging> AeroStatusLoggings { get; set; }
 
 }

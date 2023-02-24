@@ -58,10 +58,6 @@ public class AeroEnvioEmail
 	[Column("MENSAGEM_EMAIL_HTML")]
 	public string? MensagemEmailHtml { get; set; }
 
-	[Required(ErrorMessage = "Company address is a required field.")]
-	[MaxLength(60, ErrorMessage = "Maximum length for the Address is 60 characters.")]
-	[Column("TOTAL_ENVIO")]
-	public int? TotalEnviado { get; set; }
 
 	[Column("DATA_ENVIO")]
 	public DateTime? DataEnvio { get; set; }
@@ -72,6 +68,9 @@ public class AeroEnvioEmail
 	[ForeignKey(nameof(AeroSolicitacaoEmail))] 
 	public int AeroSolicitacaoEmailRefId { get; set; }
 	public AeroSolicitacaoEmail AeroSolicitacaoEmail { get; set; }
+
+	public ICollection<AeroStatusLogging> AeroStatusLoggings { get; set; }
+	//Foreign key para AeroStatusLoggin
 
 
 }
