@@ -16,6 +16,8 @@ public class AeroEnvioEmail
 	[Column("AERO_ENVIO_EMAIL_ID")]
 	[Key]
 	public Guid Id { get; set; }
+	[Column("CIDADE")]
+	public string? Cidade { get; set; }
 	[Column("CODIGO_CONTRATO")]
 	public string? CodigoContrato { get; set; }
 
@@ -31,20 +33,19 @@ public class AeroEnvioEmail
 	[Column("PREMIO_ATUAL")]
 	public double PremioAtual { get; set; }
 
-	[Column("CIDADE")]
-	public string? Cidade { get; set; }
+	
 
 	[Column("NUMERO_DEPENDENTES")]
 	public int? NumeroDependentes { get; set; }
 
-	[Column("STATUS_ENVIO")]
-	/* Campo utilizado para verificar o status do Envio
-	 * 1. Por Enviar
-	 * 2. Enviando
-	 * 3. Enviado
-	 * 4. Erro de Envio
-	 */
-	public string? StatusEnvio { get; set; } = "Por Enviar";
+	//[Column("STATUS_ENVIO")]
+	///* Campo utilizado para verificar o status do Envio
+	// * 1. Por Enviar
+	// * 2. Enviando
+	// * 3. Enviado
+	// * 4. Erro de Envio
+	// */
+	//public string? StatusEnvio { get; set; } = "Por Enviar";
 
 	[Column("RESPOSTA_ENVIO")]
 	/* Campo utilizado para verificar o status do Envio
@@ -54,13 +55,15 @@ public class AeroEnvioEmail
 	 */
 	public string? RespostaEnvio { get; set; } = "Sem Resposta";
 
+
+	[Column("NUMERO_PROTOCOLO")]
+	public long? NumProtocolo { get; set; }
+
 	[Required(ErrorMessage = "A Mensagem é obrigatória!")]
 	[Column("MENSAGEM_EMAIL_HTML")]
 	public string? MensagemEmailHtml { get; set; }
 
 
-	[Column("DATA_ENVIO")]
-	public DateTime? DataEnvio { get; set; }
 
 	[Column("CRIADO")]
 	public DateTime CriadoEm { get; set; }
