@@ -65,7 +65,8 @@ public class AeroEnvioEmail
 	[Column("CRIADO")]
 	public DateTime CriadoEm { get; set; }
 
-	[ForeignKey(nameof(AeroSolicitacaoEmail))] 
+	[ForeignKey(nameof(AeroSolicitacaoEmail))]
+	[Column("AERO_SOLICITACAO_EMAIL_REFID")]
 	public int AeroSolicitacaoEmailRefId { get; set; }
 	public AeroSolicitacaoEmail AeroSolicitacaoEmail { get; set; }
 

@@ -21,3 +21,105 @@ alter table UNIMEDLF.MENSAGEM_FILES
   pctfree 10
   initrans 2
   maxtrans 255;
+
+
+-- Create table
+create table UNIMEDLF.AERO_SOLICITACAO_EMAIL
+(
+  aero_solicitacao_email_id RAW(32) default SYS_GUID() not null,
+  cidade                    VARCHAR2(100) not null,
+  total_envio               LONG not null,
+  criado                    DATE default SYSDATE,
+  mensagemhtml_refid        RAW(32)
+)
+tablespace INFOMED_DADOS
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the columns 
+comment on column UNIMEDLF.AERO_SOLICITACAO_EMAIL.aero_solicitacao_email_id
+  is 'ID e PK da tabela AERO_SOLICITACAO_EMAIL';
+comment on column UNIMEDLF.AERO_SOLICITACAO_EMAIL.cidade
+  is 'Cidade da Solicitaçao';
+comment on column UNIMEDLF.AERO_SOLICITACAO_EMAIL.total_envio
+  is 'Numero de Emails';
+comment on column UNIMEDLF.AERO_SOLICITACAO_EMAIL.criado
+  is 'Data da Criação';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table UNIMEDLF.AERO_SOLICITACAO_EMAIL
+  add constraint PK_AERO_SOLICITACAO_EMAIL primary key (AERO_SOLICITACAO_EMAIL_ID)
+  using index 
+  tablespace INFOMED_DADOS
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+alter table UNIMEDLF.AERO_SOLICITACAO_EMAIL
+  add constraint FK_MENSAGEMHTML foreign key (MENSAGEMHTML_REFID)
+  references UNIMEDLF.MENSAGEM_HTML (MENSAGEM_HTML_ID) on delete cascade;
+
+
+  -- Create table
+create table UNIMEDLF.AERO_ENVIO_EMAIL
+(
+  aero_envio_email_id          RAW(32) default SYS_GUID() not null,
+  cidade                       VARCHAR2(100) not null,
+  codigo_contrato              VARCHAR2(20) not null,
+  codigo_beneficiario          VARCHAR2(20) not null,
+  nome_beneficiario            VARCHAR2(100) not null,
+  email_beneficiario           VARCHAR2(150) not null,
+  premio_atual                 NUMBER not null,
+  numero_dependentes           LONG not null,
+  resposta_envio               VARCHAR2(20) not null,
+  mensagem_email_html          CLOB not null,
+  criado                       DATE default SYSDATE not null,
+  aero_solicitacao_email_refid RAW(32) not null,
+  numero_protocolo             NUMBER(22)
+)
+tablespace INFOMED_DADOS
+  pctfree 10
+  initrans 1
+  maxtrans 255;
+-- Add comments to the columns 
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.aero_envio_email_id
+  is 'ID PK';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.cidade
+  is 'Cidade';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.codigo_contrato
+  is 'Codigo Contrato';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.codigo_beneficiario
+  is 'Carteirinha';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.nome_beneficiario
+  is 'Nome do Beneficiario';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.email_beneficiario
+  is 'Email do Beneficiario (Titular)';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.premio_atual
+  is 'Premio Atual';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.numero_dependentes
+  is 'Numero Dependentes';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.resposta_envio
+  is 'Resposta de Envio';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.mensagem_email_html
+  is 'Mensagem do Email';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.criado
+  is 'Data criação';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.aero_solicitacao_email_refid
+  is 'FK para Aero_Solicitacao';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.numero_protocolo
+  is 'NumeroProtocolo';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table UNIMEDLF.AERO_ENVIO_EMAIL
+  add constraint PK_AERO_ENVIO_EMAIL primary key (AERO_ENVIO_EMAIL_ID)
+  using index 
+  tablespace INFOMED_DADOS
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+alter table UNIMEDLF.AERO_ENVIO_EMAIL
+  add constraint FK_AERO_SOLICITACAO_EMAIL_REFID foreign key (AERO_SOLICITACAO_EMAIL_REFID)
+  references UNIMEDLF.AERO_SOLICITACAO_EMAIL (AERO_SOLICITACAO_EMAIL_ID) on delete cascade;
