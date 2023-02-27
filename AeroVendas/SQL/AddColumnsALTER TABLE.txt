@@ -8,3 +8,8 @@ ADD("RefreshToken"      NVARCHAR2(2000),
 "RefreshTokenExpiryTime" TIMESTAMP(7) WITH TIME ZONE not null);
 
 
+alter table UNIMEDLF.AERO_ENVIO_EMAIL
+ADD("ULTIMO_STATUS"      VARCHAR2(50) not null);
+
+alter table UNIMEDLF.AERO_SOLICITACAO_EMAIL
+ADD("ULTIMO_STATUS"      VARCHAR2(50) not null);

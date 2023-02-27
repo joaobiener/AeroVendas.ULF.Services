@@ -62,8 +62,8 @@ public class AeroEnvioEmail
 	[Required(ErrorMessage = "A Mensagem é obrigatória!")]
 	[Column("MENSAGEM_EMAIL_HTML")]
 	public string? MensagemEmailHtml { get; set; }
-
-
+	[Column("ULTIMO_STATUS")]
+	public string? UltimoStatus { get; set; }
 
 	[Column("CRIADO")]
 	public DateTime CriadoEm { get; set; }

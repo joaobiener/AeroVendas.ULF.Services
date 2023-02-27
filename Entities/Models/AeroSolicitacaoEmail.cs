@@ -21,6 +21,9 @@ public class AeroSolicitacaoEmail
 	[Column("TOTAL_ENVIO")]
 	public int? TotalEnviado { get; set; }
 
+	[Column("ULTIMO_STATUS")]
+	public string? UltimoStatus { get; set; }
+
 	[Column("CRIADO")]
 	public DateTime CriadoEm { get; set; }
 
