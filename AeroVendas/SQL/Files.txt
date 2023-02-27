@@ -28,7 +28,7 @@ create table UNIMEDLF.AERO_SOLICITACAO_EMAIL
 (
   aero_solicitacao_email_id RAW(32) default SYS_GUID() not null,
   cidade                    VARCHAR2(100) not null,
-  total_envio               LONG not null,
+  total_envio               NUMBER(7) not null,
   ultimo_status             VARCHAR2(50) not null,
   criado                    DATE default SYSDATE,
   mensagemhtml_refid        RAW(32)
@@ -65,23 +65,23 @@ alter table UNIMEDLF.AERO_SOLICITACAO_EMAIL
   references UNIMEDLF.MENSAGEM_HTML (MENSAGEM_HTML_ID) on delete cascade;
 
 
-  -- Create table
+-- Create table
 create table UNIMEDLF.AERO_ENVIO_EMAIL
 (
   aero_envio_email_id          RAW(32) default SYS_GUID() not null,
   cidade                       VARCHAR2(100) not null,
-  ultimo_status                VARCHAR2(50) not null,
   codigo_contrato              VARCHAR2(20) not null,
   codigo_beneficiario          VARCHAR2(20) not null,
   nome_beneficiario            VARCHAR2(100) not null,
   email_beneficiario           VARCHAR2(150) not null,
   premio_atual                 NUMBER not null,
-  numero_dependentes           LONG not null,
+  numero_dependentes           NUMBER(3) not null,
   resposta_envio               VARCHAR2(20) not null,
   mensagem_email_html          CLOB not null,
   criado                       DATE default SYSDATE not null,
   aero_solicitacao_email_refid RAW(32) not null,
-  numero_protocolo             NUMBER(22)
+  numero_protocolo             NUMBER(22),
+  ultimo_status                VARCHAR2(50) not null
 )
 tablespace INFOMED_DADOS
   pctfree 10
@@ -125,6 +125,7 @@ alter table UNIMEDLF.AERO_ENVIO_EMAIL
 alter table UNIMEDLF.AERO_ENVIO_EMAIL
   add constraint FK_AERO_SOLICITACAO_EMAIL_REFID foreign key (AERO_SOLICITACAO_EMAIL_REFID)
   references UNIMEDLF.AERO_SOLICITACAO_EMAIL (AERO_SOLICITACAO_EMAIL_ID) on delete cascade;
+
 
 
 -- Create table

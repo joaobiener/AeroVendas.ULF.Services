@@ -12,17 +12,45 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Service;
 
-internal sealed class MessageHTMLService : IMessageHTMLService
+internal sealed class AeroSolicitacaoService : IAeroSolicitacaoService
 {
 	private readonly IRepositoryManager _repository;
 	private readonly ILoggerManager _logger;
 	private readonly IMapper _mapper;
 
-	public MessageHTMLService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+	public AeroSolicitacaoService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
 	{
 		_repository = repository;
 		_logger = logger;
 		_mapper = mapper;
+	}
+
+	public async Task<(IEnumerable<AeroSolicitacaoEmailDto> AeroSolicitacao, MetaData metaData)> GetAllAeroSolicitacaoAsync(
+            ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
+	{
+		var aeroSolicitacaoWithMetaData = await _repository.aeroSolicitacao.GetAllAeroSolicitacaAsync(viewAeroVendasParameters, trackChanges);
+
+		if (aeroSolicitacaoWithMetaData is null)
+			throw new AeroSolicitacaoNotFoundExceptionAll();
+
+		var aeroSolicitacaoDto = _mapper.Map<IEnumerable<AeroSolicitacaoEmailDto>>(aeroSolicitacaoWithMetaData);
+
+		return (mensagensHTML: aeroSolicitacaoDto, metaData: aeroSolicitacaoWithMetaData.MetaData);
+	}
+
+	public Task<AeroSolicitacaoEmailDto> GetAeroSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges)
+	{
+		throw new NotImplementedException();
+	}
+
+	public Task<AeroSolicitacaoEmailDto> CreateAeroSolicitacaoAsync(AeroSolicitacaoEmailForCreationDto aeroSolicitacao)
+	{
+		throw new NotImplementedException();
+	}
+
+	public Task DeleteAeroSolicitacaoAsync(Guid aeroSolicitacaoId, bool trackChanges)
+	{
+		throw new NotImplementedException();
 	}
 
 	public async Task<(IEnumerable<MensagemHtmlDto> mensagensHTML, MetaData metaData)> GetAllMessagesAsync(
@@ -130,4 +158,5 @@ internal sealed class MessageHTMLService : IMessageHTMLService
 
         return mensagemToReturn;
     }
+
 }
