@@ -9,7 +9,7 @@ using System.Diagnostics.Metrics;
 namespace Entities.Models;
 
 
-[Index(nameof(CodigoContrato), nameof(CodigoBeneficiario), "IX_CONTRATO_BENEFICIARIO")]
+
 [Table("AERO_ENVIO_EMAIL", Schema = "UNIMEDLF")]
 public class AeroEnvioEmail
 {
@@ -32,8 +32,6 @@ public class AeroEnvioEmail
 
 	[Column("PREMIO_ATUAL")]
 	public double PremioAtual { get; set; }
-
-	
 
 	[Column("NUMERO_DEPENDENTES")]
 	public int? NumeroDependentes { get; set; }
@@ -68,9 +66,9 @@ public class AeroEnvioEmail
 	[Column("CRIADO")]
 	public DateTime CriadoEm { get; set; }
 
-	[ForeignKey(nameof(AeroSolicitacaoEmail))]
+	[ForeignKey("FK_AERO_SOLICITACAO_EMAIL_REFID")]
 	[Column("AERO_SOLICITACAO_EMAIL_REFID")]
-	public int AeroSolicitacaoEmailRefId { get; set; }
+	public Guid AeroSolicitacaoEmailRefId { get; set; }
 	public AeroSolicitacaoEmail AeroSolicitacaoEmail { get; set; }
 
 	public ICollection<AeroStatusLogging> AeroStatusLoggings { get; set; }

@@ -9,7 +9,7 @@ public interface IAeroSolicitacaoRepository
 {
 	Task<PagedList<AeroSolicitacaoEmail>> GetAllAeroSolicitacaAsync(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges);
 	Task<AeroSolicitacaoEmail> GetAeroSolicitacaAsync(Guid aeroSolicitacaoId, bool trackChanges);
-	void CreateAeroSolicitacao(AeroSolicitacaoEmailForCreationDto aeroSolicitacao);
-	void DeleteAeroSolicitacao(Guid aeroSolicitacaoId);
+	void CreateAeroSolicitacao(AeroSolicitacaoEmail AeroSolicitacaoEmail);
+	void DeleteAeroSolicitacao(AeroSolicitacaoEmail AeroSolicitacaoEmail);
 
 }

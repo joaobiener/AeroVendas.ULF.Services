@@ -9,6 +9,7 @@ public sealed class RepositoryManager : IRepositoryManager
     private readonly Lazy<IMessageHTMLRepository> _mensagemHTMLRepository;
 	private readonly Lazy<IArquivoRepository> _arquivo;
 	private readonly Lazy<IAeroSolicitacaoRepository> _aeroSolicitacaoRepository;
+	private readonly Lazy<IAeroEnvioEmailRepository> _aeroEnvioEmailRepository;
 
 	public RepositoryManager(RepositoryContext repositoryContext)
 	{
@@ -17,6 +18,7 @@ public sealed class RepositoryManager : IRepositoryManager
         _mensagemHTMLRepository = new Lazy<IMessageHTMLRepository>(() => new MessageHTMLRepository(repositoryContext));
 		_arquivo = new Lazy<IArquivoRepository>(() => new ArquivoRepository(repositoryContext));
 		_aeroSolicitacaoRepository = new Lazy<IAeroSolicitacaoRepository>(() => new AeroSolicitacaoRepository(repositoryContext));
+		_aeroEnvioEmailRepository = new Lazy<IAeroEnvioEmailRepository>(() => new AeroEnvioEmailRepository(repositoryContext));
 	}
 
 	public IMessageHTMLRepository mensagemHtml => _mensagemHTMLRepository.Value;
@@ -25,6 +27,8 @@ public sealed class RepositoryManager : IRepositoryManager
 	public IArquivoRepository arquivo => _arquivo.Value;
 
 	public IAeroSolicitacaoRepository aeroSolicitacao => _aeroSolicitacaoRepository.Value;
+
+	public IAeroEnvioEmailRepository aeroEnvioEmail => _aeroEnvioEmailRepository.Value;
 
 	public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
  

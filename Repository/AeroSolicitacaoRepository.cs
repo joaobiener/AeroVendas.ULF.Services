@@ -5,6 +5,7 @@ using Repository.Extensions;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
 using System.Linq.Dynamic.Core;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Repository;
 
@@ -35,15 +36,9 @@ internal sealed class AeroSolicitacaoRepository : RepositoryBase<AeroSolicitacao
 			await FindByCondition(c => c.Id.Equals(aeroSolicitacaoId), trackChanges)
 			.SingleOrDefaultAsync();
 
+	public void CreateAeroSolicitacao(AeroSolicitacaoEmail AeroSolicitacaoEmail) => Create(AeroSolicitacaoEmail);
 
-	public void CreateAeroSolicitacao(AeroSolicitacaoEmailForCreationDto aeroSolicitacao)
-	{
-		throw new NotImplementedException();
-	}
+	public void DeleteAeroSolicitacao(AeroSolicitacaoEmail AeroSolicitacaoEmail) => Delete(AeroSolicitacaoEmail);
 
-	public void DeleteAeroSolicitacao(Guid aeroSolicitacaoId)
-	{
-		throw new NotImplementedException();
-	}
 
 }

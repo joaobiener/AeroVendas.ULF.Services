@@ -28,11 +28,10 @@ public class AeroSolicitacaoEmail
 	public DateTime CriadoEm { get; set; }
 
 	//Foreign key para Texto da Mensagem
-	[ForeignKey(nameof(MensagemHtml))]
+	[ForeignKey("FK_MENSAGEMHTML")]
 	[Column("MENSAGEMHTML_REFID")]
 	public Guid MensagemHtmlRefId { get; set; }
 	public MensagemHtml? MensagemHtml { get; set; }
-
 
 	public ICollection<AeroEnvioEmail> AeroEnvioEmails { get; set; }
 

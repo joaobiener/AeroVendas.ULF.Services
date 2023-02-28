@@ -2,8 +2,10 @@
 
 namespace Shared.DataTransferObjects;
 
-public record AeroSolicitacaoEmailForCreationDto( string? Cidade,
-												int? TotalEnviado,
-												string? UltimoStatus,
-												Guid? MensagemHtmlRefId);
+public record AeroSolicitacaoEmailForCreationDto : AeroSolicitacaoForManipulationDto
+{
+	public IEnumerable<AeroEnvioEmailForCreationDto>? Employees { get; init; }
+}
+
+
 

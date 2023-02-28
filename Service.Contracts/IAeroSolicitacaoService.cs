@@ -16,7 +16,4 @@ public interface IAeroSolicitacaoService
 	Task DeleteAeroSolicitacaoAsync(Guid aeroSolicitacaoId, bool trackChanges);
 	Task UpdateMensagemAsync(Guid aeroSolicitacaoId, MensagemForUpdateDto aeroSolicitacoForUpdate, bool trackChanges);
 
-
-
-
 }

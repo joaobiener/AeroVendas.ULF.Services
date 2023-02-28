@@ -7,5 +7,6 @@ public interface IRepositoryManager
     IMessageHTMLRepository mensagemHtml { get; }
 	IArquivoRepository arquivo { get; }
 	IAeroSolicitacaoRepository aeroSolicitacao{ get; }
+	IAeroEnvioEmailRepository aeroEnvioEmail { get; }
 	Task SaveAsync();
 }

@@ -2,10 +2,12 @@
 
 namespace Shared.DataTransferObjects;
 
-public record AeroSolicitacaoEmailDto(  Guid Id,
-								string? Cidade,
-								int? TotalEnviado,
-								string? UltimoStatus,
-								DateTime? CriadoEm,
-								Guid? MensagemHtmlRefId);
+public record AeroSolicitacaoEmailDto {
+	public Guid Id { get; init; }
+	public string? Cidade { get; init; }
+	public int? TotalEnviado { get; init; }
+	public string? UltimoStatus { get; init; }
+	public DateTime? CriadoEm { get; init; }
+	public Guid? MensagemHtmlRefId { get; init; }
+}
 

@@ -26,6 +26,7 @@ public class RepositoryContext : IdentityDbContext<User>
 	public DbSet<Arquivo>? Arquivos { get; set; }
 	public DbSet<ViewContratoSemAeroVendas>? ViewLogsAeroVendas { get; set; }
 	public DbSet<AeroSolicitacaoEmail>? AeroSolicitacaoEmail { get; set; }
+	public DbSet<AeroEnvioEmail>? AeroEnvioEmail { get; set; }
 
 
 

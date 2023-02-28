@@ -2,13 +2,10 @@
 using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.VisualBasic.FileIO;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
-using System.ComponentModel.Design;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
 
 namespace Service;
 
