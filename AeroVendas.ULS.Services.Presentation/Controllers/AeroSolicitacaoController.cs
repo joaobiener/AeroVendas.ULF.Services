@@ -1,6 +1,4 @@
-﻿using AeroVendas.ULF.Services.Presentation.ActionFilters;
-using AeroVendas.ULF.Services.Presentation.ModelBinders;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
