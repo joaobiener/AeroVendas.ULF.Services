@@ -23,6 +23,6 @@ public record AeroEnvioEmailDto
 	public string? MensagemEmailHtml { get; init; }
 	public string? UltimoStatus { get; init; }
 	public DateTime CriadoEm { get; init; }
-	public int AeroSolicitacaoEmailRefId { get; init; }
+	public int AeroSolicitacaoEmailId { get; init; }
 }
 

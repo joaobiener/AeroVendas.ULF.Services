@@ -55,7 +55,7 @@ public class AeroEnvioEmail
 
 
 	[Column("NUMERO_PROTOCOLO")]
-	public long? NumProtocolo { get; set; }
+	public int? NumProtocolo { get; set; }
 
 	[Required(ErrorMessage = "A Mensagem é obrigatória!")]
 	[Column("MENSAGEM_EMAIL_HTML")]
@@ -65,10 +65,16 @@ public class AeroEnvioEmail
 
 	[Column("CRIADO")]
 	public DateTime CriadoEm { get; set; }
+	[Column("CRIADO_POR")]
+	public string? CriadoPor { get; set; }
+	[Column("MODIFICADO")]
+	public DateTime ModificadoEm { get; set; }
+	[Column("MODIFICADO_POR")]
+	public string? ModificadoPor { get; set; }
 
 	[ForeignKey("FK_AERO_SOLICITACAO_EMAIL_REFID")]
 	[Column("AERO_SOLICITACAO_EMAIL_REFID")]
-	public Guid AeroSolicitacaoEmailRefId { get; set; }
+	public Guid AeroSolicitacaoEmailId { get; set; }
 	public AeroSolicitacaoEmail AeroSolicitacaoEmail { get; set; }
 
 	public ICollection<AeroStatusLogging> AeroStatusLoggings { get; set; }

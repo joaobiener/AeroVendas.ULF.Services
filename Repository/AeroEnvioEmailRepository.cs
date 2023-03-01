@@ -35,12 +35,12 @@ internal sealed class AeroEnvioEmailRepository : RepositoryBase<AeroEnvioEmail>,
 	}
 
 	public async Task<AeroEnvioEmail> GetAeroEnvioEmailAsync(Guid aeroSolicitacaoId, Guid id, bool trackChanges) =>
-		await FindByCondition(e => e.AeroSolicitacaoEmailRefId.Equals(aeroSolicitacaoId) && e.Id.Equals(id), trackChanges)
+		await FindByCondition(e => e.AeroSolicitacaoEmailId.Equals(aeroSolicitacaoId) && e.Id.Equals(id), trackChanges)
 		.SingleOrDefaultAsync();
 
 	public void CreateEnvioEmailForSolicitacao(Guid aeroSolicitacoId, AeroEnvioEmail aeroEnvioEmail)
 	{
-		aeroEnvioEmail.AeroSolicitacaoEmailRefId = aeroSolicitacoId;
+		aeroEnvioEmail.AeroSolicitacaoEmailId = aeroSolicitacoId;
 		Create(aeroEnvioEmail);
 	}
 

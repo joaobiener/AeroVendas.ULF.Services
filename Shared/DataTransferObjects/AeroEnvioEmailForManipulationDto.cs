@@ -18,10 +18,13 @@ public abstract record AeroEnvioEmailForManipulationDto
 	public int? NumeroDependentes { get; init; }
 	public string? RespostaEnvio { get; init; } = "Sem Resposta";
 
-	public long? NumProtocolo { get; init; }
+	public int? NumProtocolo { get; init; }
 	public string? MensagemEmailHtml { get; init; }
-	public string? UltimoStatus { get; init; }
-	public DateTime CriadoEm { get; init; }
-	public int AeroSolicitacaoEmailRefId { get; init; }
+	public string? UltimoStatus { get; init; } = "Por Enviar";
+	public DateTime CriadoEm { get; init; } = DateTime.Now;
+	public string? CriadoPor { get; init; }
+	public DateTime? ModificadoEm { get; init; }
+	public string? ModificadoPor { get; init; }
+
 
 }

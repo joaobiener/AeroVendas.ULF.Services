@@ -4,7 +4,7 @@ namespace Shared.DataTransferObjects;
 
 public record AeroSolicitacaoEmailForCreationDto : AeroSolicitacaoForManipulationDto
 {
-	public IEnumerable<AeroEnvioEmailForCreationDto>? Employees { get; init; }
+	public IEnumerable<AeroEnvioEmailForCreationDto>? AeroEnvioEmails { get; init; }
 }
 
 

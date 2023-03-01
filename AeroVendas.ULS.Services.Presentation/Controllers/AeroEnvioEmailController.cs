@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace AeroVendas.ULF.Services.Controllers;
 
-[Route("api/aerosolicitacao/{aerosolicitacaoId}/aeroenvioemails")]
+[Route("aerosolicitacao/{aerosolicitacaoId}/aeroenvioemails")]
 [ApiController]
 public class AeroEnvioEmailController : ControllerBase
 {
