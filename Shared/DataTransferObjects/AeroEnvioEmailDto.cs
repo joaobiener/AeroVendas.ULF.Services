@@ -19,10 +19,10 @@ public record AeroEnvioEmailDto
 	public int? NumeroDependentes { get; init; }
 	public string? RespostaEnvio { get; init; } = "Sem Resposta";
 
-	public long? NumProtocolo { get; init; }
+	public int? NumProtocolo { get; init; }
 	public string? MensagemEmailHtml { get; init; }
 	public string? UltimoStatus { get; init; }
 	public DateTime CriadoEm { get; init; }
-	public int AeroSolicitacaoEmailId { get; init; }
+	public Guid AeroSolicitacaoEmailId { get; init; }
 }
 
