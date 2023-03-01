@@ -27,23 +27,25 @@ public class AeroEnvioEmailController : ControllerBase
 		return Ok(pagedResult.aeroEnvioEmail);
 	}
 
-	[HttpGet("{id:guid}", Name = "GetEmployeeForCompany")]
-	public async Task<IActionResult> GetEmployeeForCompany(Guid companyId, Guid id)
+	[HttpGet("{id:guid}", Name = "GetAeroEnvioEmailForSolicitacao")]
+	public async Task<IActionResult> GetAeroEnvioEmailForSolicitacao(Guid aeroSolicitacaoId, Guid id)
 	{
-		var employee = await _service.EmployeeService.GetEmployeeAsync(companyId, id, trackChanges: false);
-		return Ok(employee);
+		var aeroEnvioEmail = await _service.AeroEnvioEmailService.GetAeroEnvioEmailAsync(aeroSolicitacaoId, id, trackChanges: false);
+		return Ok(aeroEnvioEmail);
 	}
 
 	[HttpPost]
-	[ServiceFilter(typeof(ValidationFilterAttribute))]
-	public async Task<IActionResult> CreateEmployeeForCompany
-		(Guid companyId, [FromBody] EmployeeForCreationDto employee)
+
+	public async Task<IActionResult> CreateAeroEnvioEmailForSolicitacao
+		(Guid aeroSolicitacaoId, 
+		[FromBody] AeroEnvioEmailForCreationDto aeroEnvioEmail)
 	{
-		var employeeToReturn = await _service.EmployeeService.CreateEmployeeForCompanyAsync(companyId, employee,
+		var aeroEnvioEmailToReturn = await _service.AeroEnvioEmailService.CreateAeroEnvioEmailForSolicitacaoAsync(
+					aeroSolicitacaoId, aeroEnvioEmail,
 			trackChanges: false);
 
-		return CreatedAtRoute("GetEmployeeForCompany", new { companyId, id = employeeToReturn.Id },
-			employeeToReturn);
+		return CreatedAtRoute("GetEmployeeForCompany", new { aeroSolicitacaoId, id = aeroEnvioEmailToReturn.Id },
+			aeroEnvioEmailToReturn);
 	}
 
 	[HttpDelete("{id:guid}")]

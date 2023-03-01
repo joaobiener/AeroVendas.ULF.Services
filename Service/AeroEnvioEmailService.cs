@@ -59,20 +59,12 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		return employeeToReturn;
 	}
 
-	public async Task<AeroSolicitacaoEmailDto> CreateAeroSolicitacaoAsync(AeroSolicitacaoEmailForCreationDto aeroSolicitacao)
-	{
-		throw new NotImplementedException();
-	}
-
 	public async Task DeleteAeroEnvioEmailForSolicitacaoAsync(Guid solicitacaoId, Guid id, bool trackChanges)
 	{
 		throw new NotImplementedException();
 	}
 
-	public async Task DeleteAeroSolicitacaoAsync(Guid aeroSolicitacaoId, bool trackChanges)
-	{
-		throw new NotImplementedException();
-	}
+	
 
 	public async Task<AeroEnvioEmailDto> GetAeroEnvioEmailAsync(Guid aeroSolicitacaoId, Guid id, bool trackChanges)
 	{
@@ -89,15 +81,7 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		throw new NotImplementedException();
 	}
 
-	public async Task<AeroSolicitacaoEmailDto> GetAeroSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges)
-	{
-		throw new NotImplementedException();
-	}
-
-	public async Task<(IEnumerable<AeroSolicitacaoEmailDto> AeroSolicitacao, MetaData metaData)> GetAllAeroSolicitacaoAsync(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
-	{
-		throw new NotImplementedException();
-	}
+	
 
 	public async Task SaveChangesForPatchAsync(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity)
 	{
@@ -109,10 +93,6 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		throw new NotImplementedException();
 	}
 
-	public async Task UpdateMensagemAsync(Guid aeroSolicitacaoId, MensagemForUpdateDto aeroSolicitacoForUpdate, bool trackChanges)
-	{
-		throw new NotImplementedException();
-	}
 
 	private async Task CheckIfSolicitacaoExists(Guid aeroSolicitacaoId, bool trackChanges)
 	{
