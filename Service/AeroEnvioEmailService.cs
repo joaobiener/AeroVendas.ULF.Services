@@ -59,11 +59,6 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		return employeeToReturn;
 	}
 
-	public async Task DeleteAeroEnvioEmailForSolicitacaoAsync(Guid solicitacaoId, Guid id, bool trackChanges)
-	{
-		throw new NotImplementedException();
-	}
-
 	
 
 	public async Task<AeroEnvioEmailDto> GetAeroEnvioEmailAsync(Guid aeroSolicitacaoId, Guid id, bool trackChanges)
@@ -76,21 +71,46 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		return aeroEnvio;
 	}
 
-	public async Task<(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity)> GetAeroEnvioForPatchAsync(Guid solicitacaoId, Guid id, bool solicTrackChanges, bool EnvioTrackChanges)
+	public async Task<(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity)> GetAeroEnvioForPatchAsync(
+		Guid solicitacaoId, Guid id, bool solicTrackChanges, bool envioTrackChanges)
 	{
-		throw new NotImplementedException();
+		await CheckIfSolicitacaoExists(solicitacaoId, solicTrackChanges); 
+
+		var aeroEnvioEmailDb = await GetAeroEnvioEmailForSolicitacaoAndCheckIfItExists(solicitacaoId, id, envioTrackChanges);
+
+		var aeroEnvioEmailToPatch = _mapper.Map<AeroEnvioEmailForUpdateDto>(aeroEnvioEmailDb);
+
+		return (aeroEnvioEmailToPatch: aeroEnvioEmailToPatch, aeroEnvioEntity: aeroEnvioEmailDb);
 	}
 
-	
+	public async Task DeleteAeroEnvioEmailForSolicitacaoAsync(Guid solicitacaoId, Guid id, bool trackChanges)
+	{
+		await CheckIfSolicitacaoExists(solicitacaoId, trackChanges);
+
+		var aeroEnvioEmailDb = await GetAeroEnvioEmailForSolicitacaoAndCheckIfItExists(solicitacaoId, id, trackChanges);
+
+		_repository.aeroEnvioEmail.DeleteAeroSolicitacao(aeroEnvioEmailDb);
+		await _repository.SaveAsync();
+	}
 
 	public async Task SaveChangesForPatchAsync(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity)
 	{
-		throw new NotImplementedException();
+		_mapper.Map(aeroEnvioEmailToPatch, aeroEnvioEntity);
+		await _repository.SaveAsync();
 	}
 
-	public async Task UpdateAeroEnvioEmailForSolicitacaoAsync(Guid solicitacaoId, Guid id, AeroEnvioEmailForUpdateDto aeroEnvioEmailForUpdate, bool solicTrackChanges, bool EnvioTrackChanges)
-	{
-		throw new NotImplementedException();
+
+
+	public async Task UpdateAeroEnvioEmailForSolicitacaoAsync(
+		Guid solicitacaoId, Guid id, AeroEnvioEmailForUpdateDto aeroEnvioEmailForUpdate, bool solicTrackChanges, bool envioTrackChanges)
+{
+		await CheckIfSolicitacaoExists(solicitacaoId, solicTrackChanges);
+
+		var aeroEnvioEmailDb = await GetAeroEnvioEmailForSolicitacaoAndCheckIfItExists(solicitacaoId, id, envioTrackChanges);
+
+
+		_mapper.Map(aeroEnvioEmailForUpdate, aeroEnvioEmailDb);
+		await _repository.SaveAsync();
 	}
 
 

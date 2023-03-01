@@ -49,42 +49,42 @@ public class AeroEnvioEmailController : ControllerBase
 	}
 
 	[HttpDelete("{id:guid}")]
-	public async Task<IActionResult> DeleteEmployeeForCompany(Guid companyId, Guid id)
+	public async Task<IActionResult> DeleteAeroEnvioEmailForSolicitacao(Guid aeroSolicitacaoId, Guid id)
 	{
-		await _service.EmployeeService.DeleteEmployeeForCompanyAsync(companyId, id, trackChanges: false);
+		await _service.AeroEnvioEmailService.DeleteAeroEnvioEmailForSolicitacaoAsync(aeroSolicitacaoId, id, trackChanges: false);
 
 		return NoContent();
 	}
 
 	[HttpPut("{id:guid}")]
-	[ServiceFilter(typeof(ValidationFilterAttribute))]
-	public async Task<IActionResult> UpdateEmployeeForCompany(Guid companyId, Guid id,
-		[FromBody] EmployeeForUpdateDto employee)
+
+	public async Task<IActionResult> UpdateAeroEnvioEmailForSolicitacao(Guid aeroSolicitacaoId, Guid id,
+		[FromBody] AeroEnvioEmailForUpdateDto aeroEnvioEmail)
 	{
-		await _service.EmployeeService.UpdateEmployeeForCompanyAsync(companyId, id, employee,
-			compTrackChanges: false, empTrackChanges: true);
+		await _service.AeroEnvioEmailService.UpdateAeroEnvioEmailForSolicitacaoAsync(aeroSolicitacaoId, id, aeroEnvioEmail,
+			solicTrackChanges: false, envioTrackChanges: true);
 
 		return NoContent();
 	}
 
 	[HttpPatch("{id:guid}")]
-	public async Task<IActionResult> PartiallyUpdateEmployeeForCompany(Guid companyId, Guid id,
-		[FromBody] JsonPatchDocument<EmployeeForUpdateDto> patchDoc)
+	public async Task<IActionResult> PartiallyUpdateAeroEnvioEmailForSolicitacao(Guid aeroSolicitacaoId, Guid id,
+		[FromBody] JsonPatchDocument<AeroEnvioEmailForUpdateDto> patchDoc)
 	{
 		if (patchDoc is null)
-			return BadRequest("patchDoc object sent from client is null.");
+			return BadRequest("patchDoc object enviado pelo cliente é nulo.");
 
-		var result = await _service.EmployeeService.GetEmployeeForPatchAsync(companyId, id,
-			compTrackChanges: false, empTrackChanges: true);
+		var result = await _service.AeroEnvioEmailService.GetAeroEnvioForPatchAsync(aeroSolicitacaoId, id,
+			solicTrackChanges: false, envioTrackChanges: true);
 
-		patchDoc.ApplyTo(result.employeeToPatch, ModelState);
+		//patchDoc.ApplyTo(result.aeroEnvioEmailToPatch, ModelState);
 
-		TryValidateModel(result.employeeToPatch);
+		//ValidateModel(result.aeroEnvioEmailToPatch);
 
 		if (!ModelState.IsValid)
 			return UnprocessableEntity(ModelState);
 
-		await _service.EmployeeService.SaveChangesForPatchAsync(result.employeeToPatch, result.employeeEntity);
+		await _service.AeroEnvioEmailService.SaveChangesForPatchAsync(result.aeroEnvioEmailToPatch, result.aeroEnvioEntity);
 
 		return NoContent();
 	}

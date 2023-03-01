@@ -16,8 +16,8 @@ public interface IAeroEnvioEmailService
 		AeroEnvioEmailForCreationDto aeroEnvioEmailForCreation, bool trackChanges);
 	Task DeleteAeroEnvioEmailForSolicitacaoAsync(Guid solicitacaoId, Guid id, bool trackChanges);
 	Task UpdateAeroEnvioEmailForSolicitacaoAsync(Guid solicitacaoId, Guid id,
-		AeroEnvioEmailForUpdateDto aeroEnvioEmailForUpdate, bool solicTrackChanges, bool EnvioTrackChanges);
+		AeroEnvioEmailForUpdateDto aeroEnvioEmailForUpdate, bool solicTrackChanges, bool envioTrackChanges);
 	Task<(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity)> GetAeroEnvioForPatchAsync(
-		Guid solicitacaoId, Guid id, bool solicTrackChanges, bool EnvioTrackChanges);
+		Guid solicitacaoId, Guid id, bool solicTrackChanges, bool envioTrackChanges);
 	Task SaveChangesForPatchAsync(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity);
 }
