@@ -47,7 +47,16 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 			AeroEnvioEmailForCreationDto aeroEnvioEmailForCreation, 
 			bool trackChanges)
 	{
-		throw new NotImplementedException();
+		await CheckIfSolicitacaoExists(aeroSolicitacaoId, trackChanges);
+
+		var aeroEnvioEmailEntity = _mapper.Map<AeroEnvioEmail>(aeroEnvioEmailForCreation);
+
+		_repository.aeroEnvioEmail.CreateEnvioEmailForSolicitacao(aeroSolicitacaoId, aeroEnvioEmailEntity);
+		await _repository.SaveAsync();
+
+		var employeeToReturn = _mapper.Map<AeroEnvioEmailDto>(aeroEnvioEmailEntity);
+
+		return employeeToReturn;
 	}
 
 	public async Task<AeroSolicitacaoEmailDto> CreateAeroSolicitacaoAsync(AeroSolicitacaoEmailForCreationDto aeroSolicitacao)
@@ -67,7 +76,12 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 
 	public async Task<AeroEnvioEmailDto> GetAeroEnvioEmailAsync(Guid aeroSolicitacaoId, Guid id, bool trackChanges)
 	{
-		throw new NotImplementedException();
+		await CheckIfSolicitacaoExists(aeroSolicitacaoId, trackChanges);
+
+		var aeroEnvioEmailDb = await GetAeroEnvioEmailForSolicitacaoAndCheckIfItExists(aeroSolicitacaoId, id, trackChanges);
+
+		var aeroEnvio = _mapper.Map<AeroEnvioEmailDto>(aeroEnvioEmailDb);
+		return aeroEnvio;
 	}
 
 	public async Task<(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity)> GetAeroEnvioForPatchAsync(Guid solicitacaoId, Guid id, bool solicTrackChanges, bool EnvioTrackChanges)
@@ -107,4 +121,13 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 			throw new AeroSolicitacaoNotFoundException(aeroSolicitacaoId);
 	}
 
+	private async Task<AeroEnvioEmail> GetAeroEnvioEmailForSolicitacaoAndCheckIfItExists
+		(Guid aeroSolicitacaoId, Guid id, bool trackChanges)
+	{
+		var aeroEnvioEmailDb = await _repository.aeroEnvioEmail.GetAeroEnvioEmailAsync(aeroSolicitacaoId, id, trackChanges);
+		if (aeroEnvioEmailDb is null)
+			throw new AeroEnvioEmailNotFoundException(id);
+
+		return aeroEnvioEmailDb;
+	}
 }
