@@ -25,6 +25,7 @@ internal sealed class AeroSolicitacaoService : IAeroSolicitacaoService
 		_mapper = mapper;
 	}
 
+	//Cria a solicitiação para o envio dos emails (Registo Pai)
 	public async Task<(IEnumerable<AeroSolicitacaoEmailDto> AeroSolicitacao, MetaData metaData)> GetAllAeroSolicitacaoAsync(
             ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
 	{
@@ -35,128 +36,38 @@ internal sealed class AeroSolicitacaoService : IAeroSolicitacaoService
 
 		var aeroSolicitacaoDto = _mapper.Map<IEnumerable<AeroSolicitacaoEmailDto>>(aeroSolicitacaoWithMetaData);
 
-		return (mensagensHTML: aeroSolicitacaoDto, metaData: aeroSolicitacaoWithMetaData.MetaData);
+		return (AeroSolicitacao: aeroSolicitacaoDto, metaData: aeroSolicitacaoWithMetaData.MetaData);
 	}
 
-	public Task<AeroSolicitacaoEmailDto> GetAeroSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges)
+	public async Task<AeroSolicitacaoEmailDto> GetAeroSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges)
+	{
+		var aeroSolicitacao = await _repository.aeroSolicitacao.GetAeroSolicitacaAsync(aeroSolicitacaoId, trackChanges);
+		if (aeroSolicitacao is null)
+			throw new AeroSolicitacaoNotFoundException(aeroSolicitacaoId);
+
+		var aeroSolicitacaoDto = _mapper.Map<AeroSolicitacaoEmailDto>(aeroSolicitacao);
+		return aeroSolicitacaoDto;
+	}
+
+	public async Task<AeroSolicitacaoEmailDto> CreateAeroSolicitacaoAsync(AeroSolicitacaoEmailForCreationDto aeroSolicitacao)
+	{
+		var aeroSolicitacaoEntity = _mapper.Map<AeroSolicitacaoEmail>(aeroSolicitacao);
+
+		_repository.aeroSolicitacao.CreateAeroSolicitacao(aeroSolicitacaoEntity);
+		await _repository.SaveAsync();
+
+		var aeroSolicitacaoToReturn = _mapper.Map<AeroSolicitacaoEmailDto>(aeroSolicitacaoEntity);
+
+		return aeroSolicitacaoToReturn;
+	}
+
+	public async Task DeleteAeroSolicitacaoAsync(Guid aeroSolicitacaoId, bool trackChanges)
 	{
 		throw new NotImplementedException();
 	}
 
-	public Task<AeroSolicitacaoEmailDto> CreateAeroSolicitacaoAsync(AeroSolicitacaoEmailForCreationDto aeroSolicitacao)
+	public async Task UpdateMensagemAsync(Guid aeroSolicitacaoId, MensagemForUpdateDto aeroSolicitacoForUpdate, bool trackChanges)
 	{
 		throw new NotImplementedException();
 	}
-
-	public Task DeleteAeroSolicitacaoAsync(Guid aeroSolicitacaoId, bool trackChanges)
-	{
-		throw new NotImplementedException();
-	}
-
-	public async Task<(IEnumerable<MensagemHtmlDto> mensagensHTML, MetaData metaData)> GetAllMessagesAsync(
-		ViewAeroVendasParameters viewAeroVendasParameters,bool trackChanges)
-
-	{
-		var mensagensWithMetaData = await _repository.mensagemHtml.GetAllMessagesAsync(viewAeroVendasParameters, trackChanges);
-
-		if (mensagensWithMetaData is null)
-			throw new MensagemHtmlNotFoundExceptionAll();
-
-		var mensagensDto = _mapper.Map<IEnumerable<MensagemHtmlDto>>(mensagensWithMetaData);
-
-		return (mensagensHTML: mensagensDto, metaData: mensagensWithMetaData.MetaData);
-
-	}
-
-
-	public async Task<MensagemHtmlDto> GetMensagemByIdAsync(Guid mensagemId, bool trackChanges)
-    {
-        var mensagem = await _repository.mensagemHtml.GetMessageAsync(mensagemId, trackChanges);
-        if (mensagem is null)
-            throw new MensagemHtmlNotFoundException(mensagemId);
-
-        var mensagemDto = _mapper.Map<MensagemHtmlDto>(mensagem);
-        return mensagemDto;
-    }
-
-    public async Task<MensagemHtmlDto> CreateCompanyAsync(MensagemHtmlForCreationDto mensagem)
-    {
-        var mensagemEntity = _mapper.Map<MensagemHtml>(mensagem);
-
-        _repository.mensagemHtml.CreateMessage(mensagemEntity);
-        await _repository.SaveAsync();
-
-        var mensagemToReturn = _mapper.Map<MensagemHtmlDto>(mensagemEntity);
-
-        return mensagemToReturn;
-    }
-    public async Task<IEnumerable<MensagemHtmlDto>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges)
-    {
-        if (ids is null)
-            throw new IdParametersBadRequestException();
-
-        var mensagemEntities = await _repository.mensagemHtml.GetByIdsAsync(ids, trackChanges);
-        if (ids.Count() != mensagemEntities.Count())
-            throw new CollectionByIdsBadRequestException();
-
-        var companiesToReturn = _mapper.Map<IEnumerable<MensagemHtmlDto>>(mensagemEntities);
-
-        return companiesToReturn;
-    }
-
-
-    public async Task<(IEnumerable<MensagemHtmlDto> mensagens, string ids)> CreateMensagemCollectionAsync(IEnumerable<MensagemHtmlForCreationDto> mensagemCollection)
-    {
-        if (mensagemCollection is null)
-            throw new MensagemHtmlCollectionBadRequest();
-
-        var mensagemEntities = _mapper.Map<IEnumerable<MensagemHtml>>(mensagemCollection);
-        foreach (var mensagem in mensagemEntities)
-        {
-            _repository.mensagemHtml.CreateMessage(mensagem);
-        }
-
-        await _repository.SaveAsync();
-
-        var mensagemCollectionToReturn = _mapper.Map<IEnumerable<MensagemHtmlDto>>(mensagemEntities);
-
-        var ids = string.Join(",", mensagemCollectionToReturn.Select(c => c.Id));
-
-        return (companies: mensagemCollectionToReturn, ids: ids);
-    }
-
-    public async Task DeleteMensagemAsync(Guid mensagemId, bool trackChanges)
-    {
-        var mensagem = await _repository.mensagemHtml.GetMessageAsync(mensagemId, trackChanges);
-        if (mensagem is null)
-            throw new MensagemHtmlNotFoundException(mensagemId);
-
-        _repository.mensagemHtml.DeleteMessage(mensagem);
-        await _repository.SaveAsync();
-    }
-
-    public async Task UpdateMensagemAsync(Guid mensagemid, MensagemForUpdateDto mensagemForUpdate, bool trackChanges)
-    {
-        var mensagemEntity = await _repository.mensagemHtml.GetMessageAsync(mensagemid, trackChanges);
-        if (mensagemEntity is null)
-            throw new MensagemHtmlNotFoundException(mensagemid);
-
-        _mapper.Map(mensagemForUpdate, mensagemEntity);
-        await _repository.SaveAsync();
-    }
-
-  
-    public async Task<MensagemHtmlDto> CreateMensagemAsync(MensagemHtmlForCreationDto mensagem)
-    {
-        var mensagemEntity = _mapper.Map<MensagemHtml>(mensagem);
-
-        _repository.mensagemHtml.CreateMessage(mensagemEntity);
-
-        await _repository.SaveAsync();
-
-        var mensagemToReturn = _mapper.Map<MensagemHtmlDto>(mensagemEntity);
-
-        return mensagemToReturn;
-    }
-
 }

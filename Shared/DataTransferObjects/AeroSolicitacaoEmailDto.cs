@@ -3,11 +3,15 @@
 namespace Shared.DataTransferObjects;
 
 public record AeroSolicitacaoEmailDto {
-	public Guid Id { get; init; }
-	public string? Cidade { get; init; }
-	public int? TotalEnviado { get; init; }
-	public string? UltimoStatus { get; init; }
-	public DateTime? CriadoEm { get; init; }
-	public Guid? MensagemHtmlRefId { get; init; }
+	public Guid Id { get; set; }
+	public string? Cidade { get; set; }
+	public int? TotalEnviado { get; set; }
+	public string? UltimoStatus { get; set; }
+	public DateTime? CriadoEm { get; set; }
+	public string? CriadoPor { get; set; }
+	public DateTime? ModificadoEm { get; set; }
+	public string? ModificadoPor{ get; set; }
+	public Guid? MensagemHtmlId { get; set; }
+	
 }
 

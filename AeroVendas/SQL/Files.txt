@@ -29,9 +29,13 @@ create table UNIMEDLF.AERO_SOLICITACAO_EMAIL
   aero_solicitacao_email_id RAW(32) default SYS_GUID() not null,
   cidade                    VARCHAR2(100) not null,
   total_envio               NUMBER(7) not null,
+  mensagemhtml_refid        RAW(32),
   ultimo_status             VARCHAR2(50) not null,
-  criado                    DATE default SYSDATE,
-  mensagemhtml_refid        RAW(32)
+  criado                    DATE default SYSDATE not null,
+  criado_por                VARCHAR2(50),
+  modificado                DATE,
+  modificado_por            VARCHAR2(50)
+
 )
 tablespace INFOMED_DADOS
   pctfree 10
@@ -40,6 +44,7 @@ tablespace INFOMED_DADOS
   storage
   (
     initial 64K
+    next 1M
     minextents 1
     maxextents unlimited
   );
@@ -52,6 +57,12 @@ comment on column UNIMEDLF.AERO_SOLICITACAO_EMAIL.total_envio
   is 'Numero de Emails';
 comment on column UNIMEDLF.AERO_SOLICITACAO_EMAIL.criado
   is 'Data da Criação';
+comment on column UNIMEDLF.AERO_SOLICITACAO_EMAIL.mensagemhtml_refid
+  is 'Referenci da Mensagem a enviar';
+comment on column UNIMEDLF.AERO_SOLICITACAO_EMAIL.ultimo_status
+  is 'Ultimo status da Solicitação';
+comment on column UNIMEDLF.AERO_SOLICITACAO_EMAIL.modificado
+  is 'Data da Modificaão';
 -- Create/Recreate primary, unique and foreign key constraints 
 alter table UNIMEDLF.AERO_SOLICITACAO_EMAIL
   add constraint PK_AERO_SOLICITACAO_EMAIL primary key (AERO_SOLICITACAO_EMAIL_ID)
@@ -59,10 +70,19 @@ alter table UNIMEDLF.AERO_SOLICITACAO_EMAIL
   tablespace INFOMED_DADOS
   pctfree 10
   initrans 2
-  maxtrans 255;
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
 alter table UNIMEDLF.AERO_SOLICITACAO_EMAIL
   add constraint FK_MENSAGEMHTML foreign key (MENSAGEMHTML_REFID)
-  references UNIMEDLF.MENSAGEM_HTML (MENSAGEM_HTML_ID) on delete cascade;
+  references UNIMEDLF.MENSAGEM_HTML (MENSAGEM_HTML_ID);
+
+
 
 
 -- Create table
@@ -81,7 +101,10 @@ create table UNIMEDLF.AERO_ENVIO_EMAIL
   criado                       DATE default SYSDATE not null,
   aero_solicitacao_email_refid RAW(32) not null,
   numero_protocolo             NUMBER(22),
-  ultimo_status                VARCHAR2(50) not null
+  ultimo_status                VARCHAR2(50) not null,
+  criado_por                   VARCHAR2(50) not null,
+  modificado                   DATE,
+  modificado_por               VARCHAR2(50)
 )
 tablespace INFOMED_DADOS
   pctfree 10
@@ -114,6 +137,12 @@ comment on column UNIMEDLF.AERO_ENVIO_EMAIL.aero_solicitacao_email_refid
   is 'FK para Aero_Solicitacao';
 comment on column UNIMEDLF.AERO_ENVIO_EMAIL.numero_protocolo
   is 'NumeroProtocolo';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.criado_por
+  is 'Criado Por';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.modificado
+  is 'Data da modificação';
+comment on column UNIMEDLF.AERO_ENVIO_EMAIL.modificado_por
+  is 'Modificado Por';
 -- Create/Recreate primary, unique and foreign key constraints 
 alter table UNIMEDLF.AERO_ENVIO_EMAIL
   add constraint PK_AERO_ENVIO_EMAIL primary key (AERO_ENVIO_EMAIL_ID)
@@ -122,9 +151,7 @@ alter table UNIMEDLF.AERO_ENVIO_EMAIL
   pctfree 10
   initrans 2
   maxtrans 255;
-alter table UNIMEDLF.AERO_ENVIO_EMAIL
-  add constraint FK_AERO_SOLICITACAO_EMAIL_REFID foreign key (AERO_SOLICITACAO_EMAIL_REFID)
-  references UNIMEDLF.AERO_SOLICITACAO_EMAIL (AERO_SOLICITACAO_EMAIL_ID) on delete cascade;
+
 
 
 
@@ -162,7 +189,7 @@ alter table UNIMEDLF.AERO_STATUS_LOGGING
   maxtrans 255;
 alter table UNIMEDLF.AERO_STATUS_LOGGING
   add constraint FK_AERO_ENVIO_EMAIL_LOGGING_REFID foreign key (AERO_ENVIO_EMAIL_REFID)
-  references UNIMEDLF.AERO_ENVIO_EMAIL (AERO_ENVIO_EMAIL_ID) on delete cascade;
+  references UNIMEDLF.AERO_ENVIO_EMAIL (AERO_ENVIO_EMAIL_ID) ;
 alter table UNIMEDLF.AERO_STATUS_LOGGING
   add constraint FK_AERO_SOLICITACAO_EMAIL_LOGGING_REFID foreign key (AERO_SOLICITACAO_EMAIL_REFID)
-  references UNIMEDLF.AERO_SOLICITACAO_EMAIL (AERO_SOLICITACAO_EMAIL_ID) on delete cascade;
+  references UNIMEDLF.AERO_SOLICITACAO_EMAIL (AERO_SOLICITACAO_EMAIL_ID);

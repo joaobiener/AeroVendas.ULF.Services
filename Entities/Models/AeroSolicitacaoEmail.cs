@@ -21,16 +21,29 @@ public class AeroSolicitacaoEmail
 	[Column("TOTAL_ENVIO")]
 	public int? TotalEnviado { get; set; }
 
-	[Column("ULTIMO_STATUS")]
+	[Column("ULTIMO_STATUS")]	
 	public string? UltimoStatus { get; set; }
+	//[Column("STATUS_ENVIO")]
+	///* Campo utilizado para verificar o status do Envio
+	// * 1. Por Enviar
+	// * 2. Enviando
+	// * 3. Enviado
+	// * 4. Erro de Envio
+	// */
 
 	[Column("CRIADO")]
 	public DateTime CriadoEm { get; set; }
+	[Column("CRIADO_POR")]
+	public string? CriadoPor { get; set; }
+	[Column("MODIFICADO")]
+	public DateTime ModificadoEm { get; set; }
+	[Column("MODIFICADO_POR")]
+	public string? ModificadoPor { get; set; }
 
 	//Foreign key para Texto da Mensagem
 	[ForeignKey("FK_MENSAGEMHTML")]
 	[Column("MENSAGEMHTML_REFID")]
-	public Guid MensagemHtmlRefId { get; set; }
+	public Guid MensagemHtmlId { get; set; }
 	public MensagemHtml? MensagemHtml { get; set; }
 
 	public ICollection<AeroEnvioEmail> AeroEnvioEmails { get; set; }

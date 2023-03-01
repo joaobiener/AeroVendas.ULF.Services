@@ -18,6 +18,8 @@ public sealed class ServiceManager : IServiceManager
 	private readonly Lazy<IAuthenticationService> _authenticationService;
     private readonly Lazy<IMessageHTMLService> _mensagemHtmlService;
 	private readonly Lazy<IArquivoService> _arquivo;
+	private readonly Lazy<IAeroSolicitacaoService> _solicitacaoEmail;
+	private readonly Lazy<IAeroEnvioEmailService> _envioEmail;
 
 	public ServiceManager(IRepositoryManager repositoryManager,
 						ILoggerManager logger,
@@ -33,6 +35,10 @@ public sealed class ServiceManager : IServiceManager
                                 new MessageHTMLService(repositoryManager, logger, mapper));
 		_arquivo = new Lazy<IArquivoService>(() =>
 								new ArquivoService(repositoryManager, logger, mapper));
+		_solicitacaoEmail = new Lazy<IAeroSolicitacaoService>(() =>
+									new AeroSolicitacaoService(repositoryManager, logger, mapper));
+		_envioEmail = new Lazy<IAeroEnvioEmailService>(() =>
+							new AeroEnvioEmailService(repositoryManager, logger, mapper));
 
 	}
 
@@ -40,4 +46,7 @@ public sealed class ServiceManager : IServiceManager
 	public IAuthenticationService AuthenticationService => _authenticationService.Value;
 	public IMessageHTMLService MensagemHtmlService => _mensagemHtmlService.Value;
 	public IArquivoService ArquivoService => _arquivo.Value;
+	public IAeroSolicitacaoService AeroSolicitacaoService => _solicitacaoEmail.Value;
+	public IAeroEnvioEmailService AeroEnvioEmailService => _envioEmail.Value;
+
 }

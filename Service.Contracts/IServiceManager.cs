@@ -8,5 +8,9 @@ public interface IServiceManager
     IMessageHTMLService MensagemHtmlService { get; }
 	IArquivoService ArquivoService { get; }
 
+	IAeroSolicitacaoService AeroSolicitacaoService{ get; }
+
+	IAeroEnvioEmailService AeroEnvioEmailService  { get; }
+
 
 }

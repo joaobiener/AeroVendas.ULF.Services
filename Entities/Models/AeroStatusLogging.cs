@@ -17,7 +17,14 @@ public class AeroStatusLogging
 	public Guid Id { get; set; }
 	[Column("STATUS")]
 	public string? Status { get; set; }
-	
+	//[Column("STATUS_")]
+	///* Campo utilizado para verificar o status do Envio
+	// * 1. Por Enviar
+	// * 2. Enviando
+	// * 3. Enviado
+	// * 4. Erro de Envio
+	// */
+
 	[Column("CRIADO")]
 	public DateTime CriadoEm { get; set; }
 

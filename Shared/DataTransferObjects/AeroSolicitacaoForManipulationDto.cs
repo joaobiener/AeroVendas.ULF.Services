@@ -8,7 +8,10 @@ public abstract record AeroSolicitacaoForManipulationDto
 	public string? Cidade { get; init; }
 	public int? TotalEnviado { get; init; }
 	public string? UltimoStatus { get; init; }
-	public DateTime CriadoEm { get; init; }
-	public Guid MensagemHtmlRefId { get; init; }
+	public DateTime? CriadoEm { get; init; } = DateTime.Now;
+	public string? CriadoPor { get; init; }
+	public DateTime? ModificadoEm { get; init; }
+	public string? ModificadoPor { get; init; }
+	public Guid MensagemHtmlId { get; init; }
 
 }
