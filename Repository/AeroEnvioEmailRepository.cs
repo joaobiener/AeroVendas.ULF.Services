@@ -5,6 +5,7 @@ using Repository.Extensions;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
 using System.ComponentModel.Design;
+using System.Diagnostics.Contracts;
 using System.Linq.Dynamic.Core;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -20,12 +21,12 @@ internal sealed class AeroEnvioEmailRepository : RepositoryBase<AeroEnvioEmail>,
 
 	public async Task<PagedList<AeroEnvioEmail>> GetAllAeroEnvioEmailAsync(Guid aeroSolicitacaoId, ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
 	{
-		var aeroEnvioEmail = await FindByCondition(x =>
-				   x.Id != null
-				  , trackChanges)
-				  .Search(viewAeroVendasParameters.SearchTerm)
-				.Sort(viewAeroVendasParameters.OrderBy)
-				.ToListAsync();
+
+
+		var aeroEnvioEmail = await FindByCondition(e => e.AeroSolicitacaoEmailId.Equals(aeroSolicitacaoId) , trackChanges)
+					.Search(viewAeroVendasParameters.SearchTerm)
+					.Sort(viewAeroVendasParameters.OrderBy)
+					.ToListAsync();
 
 		return PagedList<AeroEnvioEmail>
 			   .ToPagedList(aeroEnvioEmail,

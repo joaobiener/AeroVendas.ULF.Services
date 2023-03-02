@@ -71,18 +71,7 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		return aeroEnvio;
 	}
 
-	public async Task<(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity)> GetAeroEnvioForPatchAsync(
-		Guid solicitacaoId, Guid id, bool solicTrackChanges, bool envioTrackChanges)
-	{
-		await CheckIfSolicitacaoExists(solicitacaoId, solicTrackChanges); 
-
-		var aeroEnvioEmailDb = await GetAeroEnvioEmailForSolicitacaoAndCheckIfItExists(solicitacaoId, id, envioTrackChanges);
-
-		var aeroEnvioEmailToPatch = _mapper.Map<AeroEnvioEmailForUpdateDto>(aeroEnvioEmailDb);
-
-		return (aeroEnvioEmailToPatch: aeroEnvioEmailToPatch, aeroEnvioEntity: aeroEnvioEmailDb);
-	}
-
+	
 	public async Task DeleteAeroEnvioEmailForSolicitacaoAsync(Guid solicitacaoId, Guid id, bool trackChanges)
 	{
 		await CheckIfSolicitacaoExists(solicitacaoId, trackChanges);
@@ -93,10 +82,22 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		await _repository.SaveAsync();
 	}
 
+	public async Task<(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity)> GetAeroEnvioForPatchAsync(
+				Guid solicitacaoId, Guid id, bool solicTrackChanges, bool envioTrackChanges)
+	{
+		await CheckIfSolicitacaoExists(solicitacaoId, solicTrackChanges);
+
+		var aeroEnvioEmailDb = await GetAeroEnvioEmailForSolicitacaoAndCheckIfItExists(solicitacaoId, id, envioTrackChanges);
+
+		var aeroEnvioEmailToPatch = _mapper.Map<AeroEnvioEmailForUpdateDto>(aeroEnvioEmailDb);
+
+		return (aeroEnvioEmailToPatch: aeroEnvioEmailToPatch, aeroEnvioEntity: aeroEnvioEmailDb);
+	}
+
 	public async Task SaveChangesForPatchAsync(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity)
 	{
 		_mapper.Map(aeroEnvioEmailToPatch, aeroEnvioEntity);
-		await _repository.SaveAsync();
+		 await _repository.SaveAsync();
 	}
 
 

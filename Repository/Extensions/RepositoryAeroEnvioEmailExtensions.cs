@@ -17,8 +17,10 @@ public static class RepositoryAeroEnvioEmailExtensions
 
 		var lowerCaseTerm = searchTerm.Trim().ToLower();
 
+
 		return aeroEnvioEmail.Where(e => e.Cidade.ToLower().Contains(lowerCaseTerm) || 
-										  e.UltimoStatus.ToLower().Contains(lowerCaseTerm));	
+										  e.UltimoStatus.ToLower().Contains(lowerCaseTerm)
+										  || e.Id != null);	
 	}
 
 	public static IQueryable<AeroEnvioEmail> Sort(this IQueryable<AeroEnvioEmail> aeroEnvioEmail, string orderByQueryString)

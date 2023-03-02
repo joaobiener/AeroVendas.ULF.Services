@@ -63,7 +63,11 @@ internal sealed class AeroSolicitacaoService : IAeroSolicitacaoService
 
 	public async Task DeleteAeroSolicitacaoAsync(Guid aeroSolicitacaoId, bool trackChanges)
 	{
-		throw new NotImplementedException();
+		var aeroSolicitacaoDto = await GetAeroSolicitacaoByIdAsync(aeroSolicitacaoId, trackChanges);
+
+		var aeroSolicitacao = _mapper.Map<AeroSolicitacaoEmail>(aeroSolicitacaoDto);
+		_repository.aeroSolicitacao.DeleteAeroSolicitacao(aeroSolicitacao);
+		await _repository.SaveAsync();
 	}
 
 	public async Task UpdateMensagemAsync(Guid aeroSolicitacaoId, MensagemForUpdateDto aeroSolicitacoForUpdate, bool trackChanges)

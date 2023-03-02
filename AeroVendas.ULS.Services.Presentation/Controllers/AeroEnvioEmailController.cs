@@ -77,9 +77,9 @@ public class AeroEnvioEmailController : ControllerBase
 		var result = await _service.AeroEnvioEmailService.GetAeroEnvioForPatchAsync(aeroSolicitacaoId, id,
 			solicTrackChanges: false, envioTrackChanges: true);
 
-		//patchDoc.ApplyTo(result.aeroEnvioEmailToPatch, ModelState);
+		patchDoc.ApplyTo(result.aeroEnvioEmailToPatch, ModelState);
 
-		//ValidateModel(result.aeroEnvioEmailToPatch);
+		TryValidateModel(result.aeroEnvioEmailToPatch);
 
 		if (!ModelState.IsValid)
 			return UnprocessableEntity(ModelState);
@@ -88,4 +88,5 @@ public class AeroEnvioEmailController : ControllerBase
 
 		return NoContent();
 	}
+
 }

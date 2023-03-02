@@ -29,6 +29,7 @@ namespace AeroVendas.ULF.Services
             CreateMap<MensagemHtml, MensagemHtmlDto>();
 
 			CreateMap<AeroSolicitacaoEmail, AeroSolicitacaoEmailDto>();
+			CreateMap<AeroSolicitacaoEmailDto, AeroSolicitacaoEmail>();
 			CreateMap<AeroSolicitacaoEmailForCreationDto, AeroSolicitacaoEmail>();
 			CreateMap<AeroSolicitacaoEmailForUpdateDto, AeroSolicitacaoEmailForUpdateDto>();
 

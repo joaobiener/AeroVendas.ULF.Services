@@ -33,7 +33,15 @@ builder.Services.ConfigureJWT(builder.Configuration);
 
 builder.Services.AddJwtConfiguration(builder.Configuration);
 
-builder.Services.AddControllers()
+
+
+builder.Services.AddMvc().AddNewtonsoftJson();
+
+builder.Services.AddControllers(config => {
+	config.RespectBrowserAcceptHeader = true;
+	config.ReturnHttpNotAcceptable = true;
+	config.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
+}).AddXmlDataContractSerializerFormatters()
 .AddApplicationPart(typeof(AeroVendas.ULF.Services.Presentation.AssemblyReference).Assembly);
 
 var app = builder.Build();
