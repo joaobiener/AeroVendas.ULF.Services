@@ -7,13 +7,13 @@ namespace Contracts;
 
 public interface IAeroStatusLoggingRepository
 {
-	Task<PagedList<AeroSolicitacaoEmail>> GetAllStatusAsync(
+	Task<PagedList<AeroStatusLogging>> GetAllStatusAsync(
 		ViewAeroVendasParameters viewAeroVendasParameters,
 		bool trackChanges);
 
 	Task<AeroStatusLoggingDto> GetStatusSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges);
 	Task<AeroStatusLoggingDto> GetStatusEnvioEmailByIdAsync(Guid aeroEnvioEmailId, bool trackChanges);
-	Task<AeroStatusLoggingDto> CreateStatusAsync(AeroStatusLoggingForCreationDto aeroStatus);
+	void CreateStatusAsync(AeroStatusLoggingForCreationDto aeroStatus);
 
 
 }

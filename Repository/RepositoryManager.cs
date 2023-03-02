@@ -10,6 +10,7 @@ public sealed class RepositoryManager : IRepositoryManager
 	private readonly Lazy<IArquivoRepository> _arquivo;
 	private readonly Lazy<IAeroSolicitacaoRepository> _aeroSolicitacaoRepository;
 	private readonly Lazy<IAeroEnvioEmailRepository> _aeroEnvioEmailRepository;
+	private readonly Lazy<IAeroStatusLoggingRepository> _aeroStatusLoggingRepository;
 
 	public RepositoryManager(RepositoryContext repositoryContext)
 	{
@@ -19,6 +20,7 @@ public sealed class RepositoryManager : IRepositoryManager
 		_arquivo = new Lazy<IArquivoRepository>(() => new ArquivoRepository(repositoryContext));
 		_aeroSolicitacaoRepository = new Lazy<IAeroSolicitacaoRepository>(() => new AeroSolicitacaoRepository(repositoryContext));
 		_aeroEnvioEmailRepository = new Lazy<IAeroEnvioEmailRepository>(() => new AeroEnvioEmailRepository(repositoryContext));
+		_aeroStatusLoggingRepository= new Lazy<IAeroStatusLoggingRepository>(() => new AeroStatusLoggingRepository(repositoryContext));
 	}
 
 	public IMessageHTMLRepository mensagemHtml => _mensagemHTMLRepository.Value;
@@ -29,6 +31,7 @@ public sealed class RepositoryManager : IRepositoryManager
 	public IAeroSolicitacaoRepository aeroSolicitacao => _aeroSolicitacaoRepository.Value;
 
 	public IAeroEnvioEmailRepository aeroEnvioEmail => _aeroEnvioEmailRepository.Value;
+	public IAeroStatusLoggingRepository aeroStatus => _aeroStatusLoggingRepository.Value;
 
 	public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
  

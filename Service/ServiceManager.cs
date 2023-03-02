@@ -20,6 +20,7 @@ public sealed class ServiceManager : IServiceManager
 	private readonly Lazy<IArquivoService> _arquivo;
 	private readonly Lazy<IAeroSolicitacaoService> _solicitacaoEmail;
 	private readonly Lazy<IAeroEnvioEmailService> _envioEmail;
+	private readonly Lazy<IAeroStatusLoggingService> _status;
 
 	public ServiceManager(IRepositoryManager repositoryManager,
 						ILoggerManager logger,
@@ -39,6 +40,8 @@ public sealed class ServiceManager : IServiceManager
 									new AeroSolicitacaoService(repositoryManager, logger, mapper));
 		_envioEmail = new Lazy<IAeroEnvioEmailService>(() =>
 							new AeroEnvioEmailService(repositoryManager, logger, mapper));
+		_status = new Lazy<IAeroStatusLoggingService>(() =>
+						new AeroStatusLoggingService(repositoryManager, logger, mapper));
 
 	}
 
@@ -48,5 +51,6 @@ public sealed class ServiceManager : IServiceManager
 	public IArquivoService ArquivoService => _arquivo.Value;
 	public IAeroSolicitacaoService AeroSolicitacaoService => _solicitacaoEmail.Value;
 	public IAeroEnvioEmailService AeroEnvioEmailService => _envioEmail.Value;
+	public IAeroStatusLoggingService AeroStatusLoggingService => _status.Value;
 
 }
