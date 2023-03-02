@@ -44,7 +44,7 @@ public class AeroEnvioEmailController : ControllerBase
 					aeroSolicitacaoId, aeroEnvioEmail,
 			trackChanges: false);
 
-		return CreatedAtRoute("GetEmployeeForCompany", new { aeroSolicitacaoId, id = aeroEnvioEmailToReturn.Id },
+		return CreatedAtRoute("GetAeroEnvioEmailForSolicitacao", new { aeroSolicitacaoId, id = aeroEnvioEmailToReturn.Id },
 			aeroEnvioEmailToReturn);
 	}
 

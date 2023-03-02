@@ -30,7 +30,7 @@ public class AeroStatusLogging
 
 	[ForeignKey("FK_AERO_ENVIO_EMAIL_LOGGING_REFID")]
 	[Column("AERO_ENVIO_EMAIL_REFID")]
-	public int AeroEnvioEmailId { get; set; }
+	public Guid AeroEnvioEmailId { get; set; }
 	public AeroEnvioEmail? AeroEnvioEmail { get; set; }
 
 
