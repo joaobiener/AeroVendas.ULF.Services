@@ -8,5 +8,6 @@ public interface IRepositoryManager
 	IArquivoRepository arquivo { get; }
 	IAeroSolicitacaoRepository aeroSolicitacao{ get; }
 	IAeroEnvioEmailRepository aeroEnvioEmail { get; }
+	IAeroStatusLoggingRepository aeroStatusLogging { get; }
 	Task SaveAsync();
 }

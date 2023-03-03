@@ -70,7 +70,7 @@ internal sealed class AeroSolicitacaoService : IAeroSolicitacaoService
 		await _repository.SaveAsync();
 	}
 
-	public async Task UpdateMensagemAsync(Guid aeroSolicitacaoId, MensagemForUpdateDto aeroSolicitacoForUpdate, bool trackChanges)
+	public Task UpdateMensagemAsync(Guid aeroSolicitacaoId, MensagemForUpdateDto aeroSolicitacoForUpdate, bool trackChanges)
 	{
 		throw new NotImplementedException();
 	}

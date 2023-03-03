@@ -25,19 +25,7 @@ internal sealed class AeroStatusLoggingService : IAeroStatusLoggingService
 		_mapper = mapper;
 	}
 
-	//Cria a solicitiação para o envio dos emails (Registo Pai)
-	public async Task<(IEnumerable<AeroSolicitacaoEmailDto> AeroSolicitacao, MetaData metaData)> GetAllAeroSolicitacaoAsync(
-            ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
-	{
-		var aeroSolicitacaoWithMetaData = await _repository.aeroSolicitacao.GetAllAeroSolicitacaAsync(viewAeroVendasParameters, trackChanges);
-
-		if (aeroSolicitacaoWithMetaData is null)
-			throw new AeroSolicitacaoNotFoundExceptionAll();
-
-		var aeroSolicitacaoDto = _mapper.Map<IEnumerable<AeroSolicitacaoEmailDto>>(aeroSolicitacaoWithMetaData);
-
-		return (AeroSolicitacao: aeroSolicitacaoDto, metaData: aeroSolicitacaoWithMetaData.MetaData);
-	}
+	
 
 	public async Task<AeroSolicitacaoEmailDto> GetAeroSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges)
 	{
@@ -70,7 +58,29 @@ internal sealed class AeroStatusLoggingService : IAeroStatusLoggingService
 		await _repository.SaveAsync();
 	}
 
-	public async Task UpdateMensagemAsync(Guid aeroSolicitacaoId, MensagemForUpdateDto aeroSolicitacoForUpdate, bool trackChanges)
+	public async Task<(IEnumerable<AeroStatusLoggingDto> AeroStatus, MetaData metaData)> GetAllStatusAsync(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
+	{
+		var aeroStatusWithMetaData = await _repository.aeroStatusLogging.GetAllStatusAsync(viewAeroVendasParameters, trackChanges);
+
+		if (aeroStatusWithMetaData is null)
+			throw new AeroStatusLoggingNotFoundExceptionAll();
+
+		var aertoStatusDto = _mapper.Map<IEnumerable<AeroStatusLoggingDto>>(aeroStatusWithMetaData);
+
+		return (AeroStatus: aertoStatusDto, metaData: aeroStatusWithMetaData.MetaData);
+	}
+
+	public async Task<AeroStatusLoggingDto> GetStatusSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges)
+	{
+		throw new NotImplementedException();
+	}
+
+	public async Task<AeroStatusLoggingDto> GetStatusEnvioEmailByIdAsync(Guid aeroSolicitacaoId, bool trackChanges)
+	{
+		throw new NotImplementedException();
+	}
+
+	public async Task<AeroStatusLoggingDto> CreateStatusAsync(AeroStatusLoggingForCreationDto aeroStatus)
 	{
 		throw new NotImplementedException();
 	}
