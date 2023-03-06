@@ -11,9 +11,14 @@ public interface IAeroStatusLoggingRepository
 		ViewAeroVendasParameters viewAeroVendasParameters,
 		bool trackChanges);
 
-	Task<AeroStatusLoggingDto> GetStatusSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges);
-	Task<AeroStatusLoggingDto> GetStatusEnvioEmailByIdAsync(Guid aeroEnvioEmailId, bool trackChanges);
-	void CreateStatusAsync(AeroStatusLoggingForCreationDto aeroStatus);
+
+	Task<PagedList<AeroStatusLogging>> GetStatusByIdAsync(
+		Guid aeroSolicitacaoId, 
+		Guid aeroEnvioEmailId, 
+		ViewAeroVendasParameters viewAeroVendasParameters, 
+		bool trackChanges);
+
+	void CreateStatusAsync(AeroStatusLogging aeroStatus);
 
 
 }

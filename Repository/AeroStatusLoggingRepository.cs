@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Repository.Extensions;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
+using System.Diagnostics.Contracts;
 using System.Linq.Dynamic.Core;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -32,14 +33,23 @@ internal sealed class AeroStatusLoggingRepository : RepositoryBase<AeroStatusLog
 							viewAeroVendasParameters.PageSize);
 	}
 
-	public async Task<AeroStatusLogging> GetStatusSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges) =>
-			await FindByCondition(c => c.Id.Equals(aeroSolicitacaoId), trackChanges)
-			.SingleOrDefaultAsync();
-
-	public async Task<AeroStatusLogging> GetStatusEnvioEmailByIdAsync(Guid aeroEnvioEmailId, bool trackChanges) =>
-			await FindByCondition(c => c.Id.Equals(aeroEnvioEmailId), trackChanges)
-			.SingleOrDefaultAsync();
-
+	public async Task<PagedList<AeroStatusLogging>> GetStatusByIdAsync(
+		Guid aeroSolicitacaoId, 
+		Guid aeroEnvioEmailId, 
+		ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
+	{
+		var aeroStatus = await FindByCondition(x =>
+								   (aeroSolicitacaoId == null || x.AeroSolicitacaoEmailId.Equals(aeroSolicitacaoId)) &&
+								   (aeroEnvioEmailId == null || x.AeroEnvioEmailId.Equals(aeroEnvioEmailId)) 
+								   , trackChanges)
+								   .Search(viewAeroVendasParameters.SearchTerm)
+								   .Sort(viewAeroVendasParameters.OrderBy)
+								   .ToListAsync();
+		return PagedList<AeroStatusLogging>
+			   .ToPagedList(aeroStatus,
+							viewAeroVendasParameters.PageNumber,
+							viewAeroVendasParameters.PageSize);
+	}
 
 	public void CreateStatusAsync(AeroStatusLogging aeroStatus) => Create(aeroStatus);
 }

@@ -14,7 +14,7 @@ public abstract record AeroStatusLoggingForManipulationDto
 	// * 4. Erro de Envio
 	// */
 
-	public DateTime CriadoEm { get; set; }
+	public DateTime CriadoEm { get; init; } = DateTime.Now;
 
 	public Guid? AeroEnvioEmailId { get; set; }
 

@@ -31,7 +31,8 @@ public sealed class RepositoryManager : IRepositoryManager
 	public IAeroSolicitacaoRepository aeroSolicitacao => _aeroSolicitacaoRepository.Value;
 
 	public IAeroEnvioEmailRepository aeroEnvioEmail => _aeroEnvioEmailRepository.Value;
-	public IAeroStatusLoggingRepository aeroStatus => _aeroStatusLoggingRepository.Value;
+
+	public IAeroStatusLoggingRepository aeroStatusLogging => _aeroStatusLoggingRepository.Value;
 
 	public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
  

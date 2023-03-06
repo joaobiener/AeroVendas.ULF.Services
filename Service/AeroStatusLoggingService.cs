@@ -8,6 +8,7 @@ using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
 using System.ComponentModel.Design;
+using System.Diagnostics.Contracts;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Service;
@@ -70,18 +71,38 @@ internal sealed class AeroStatusLoggingService : IAeroStatusLoggingService
 		return (AeroStatus: aertoStatusDto, metaData: aeroStatusWithMetaData.MetaData);
 	}
 
-	public async Task<AeroStatusLoggingDto> GetStatusSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges)
+	public async Task<(IEnumerable<AeroStatusLoggingDto> AeroStatus, MetaData metaData)> GetStatusByIdAsync(
+				Guid aeroSolicitacaoId, 
+				Guid aeroEnvioEmailId, 
+				ViewAeroVendasParameters viewAeroVendasParameters, 
+				bool trackChanges)
 	{
-		throw new NotImplementedException();
+		var aeroStatusWithMetaData = await _repository.aeroStatusLogging.GetStatusByIdAsync(
+			aeroSolicitacaoId,
+			aeroEnvioEmailId, 
+			viewAeroVendasParameters, 
+			trackChanges);
+
+		if (aeroStatusWithMetaData is null)
+			throw new ViewAeroVendasNotFoundException();
+
+		var aeroStatusDto = _mapper.Map<IEnumerable<AeroStatusLoggingDto>>(aeroStatusWithMetaData);
+
+		return (AeroStatus: aeroStatusDto, metaData: aeroStatusWithMetaData.MetaData);
 	}
 
-	public async Task<AeroStatusLoggingDto> GetStatusEnvioEmailByIdAsync(Guid aeroSolicitacaoId, bool trackChanges)
-	{
-		throw new NotImplementedException();
-	}
 
 	public async Task<AeroStatusLoggingDto> CreateStatusAsync(AeroStatusLoggingForCreationDto aeroStatus)
 	{
-		throw new NotImplementedException();
+		var aeroStatusEntity = _mapper.Map<AeroStatusLogging>(aeroStatus);
+
+		_repository.aeroStatusLogging.CreateStatusAsync(aeroStatusEntity);
+		await _repository.SaveAsync();
+
+		var aeroStatusToReturn = _mapper.Map<AeroStatusLoggingDto>(aeroStatusEntity);
+
+		return aeroStatusToReturn;
 	}
+
+	
 }

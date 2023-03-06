@@ -9,9 +9,14 @@ public interface IAeroStatusLoggingService
 	Task<(IEnumerable<AeroStatusLoggingDto> AeroStatus, MetaData metaData)>  GetAllStatusAsync(
 		ViewAeroVendasParameters viewAeroVendasParameters,
 		bool trackChanges);
-	
-	Task<AeroStatusLoggingDto> GetStatusSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges);
-	Task<AeroStatusLoggingDto> GetStatusEnvioEmailByIdAsync(Guid aeroSolicitacaoId, bool trackChanges);
+
+	Task<(IEnumerable<AeroStatusLoggingDto> AeroStatus, MetaData metaData)> GetStatusByIdAsync(
+		Guid aeroSolicitacaoId, 
+		Guid aeroEnvioEmailId,
+		ViewAeroVendasParameters viewAeroVendasParameters,
+		bool trackChanges);
+
 	Task<AeroStatusLoggingDto> CreateStatusAsync(AeroStatusLoggingForCreationDto aeroStatus);
+
 
 }
