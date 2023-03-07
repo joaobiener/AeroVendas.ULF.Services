@@ -34,10 +34,12 @@ namespace AeroVendas.ULF.Services
 			CreateMap<AeroSolicitacaoEmailForUpdateDto, AeroSolicitacaoEmailForUpdateDto>();
 
 			CreateMap<AeroEnvioEmail, AeroEnvioEmailDto>();
+			CreateMap<AeroEnvioEmailDto,AeroEnvioEmail>();
 			CreateMap<AeroEnvioEmailForCreationDto, AeroEnvioEmail>();
 			CreateMap<AeroEnvioEmailForUpdateDto, AeroEnvioEmail>().ReverseMap();
 
 			CreateMap<AeroStatusLogging, AeroStatusLoggingDto>();
+			CreateMap<AeroStatusLoggingDto,AeroStatusLogging>();
 			CreateMap<AeroStatusLoggingForCreationDto, AeroStatusLogging>();
 
 

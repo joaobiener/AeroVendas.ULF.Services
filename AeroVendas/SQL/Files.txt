@@ -168,6 +168,7 @@ alter table UNIMEDLF.AERO_ENVIO_EMAIL
   references UNIMEDLF.AERO_SOLICITACAO_EMAIL (AERO_SOLICITACAO_EMAIL_ID) on delete cascade;
 
   -- Create table
+-- Create table
 create table UNIMEDLF.AERO_STATUS_LOGGING
 (
   aero_status_logging_id       RAW(32) default SYS_GUID() not null,
@@ -179,7 +180,14 @@ create table UNIMEDLF.AERO_STATUS_LOGGING
 tablespace INFOMED_DADOS
   pctfree 10
   initrans 1
-  maxtrans 255;
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
 -- Add comments to the columns 
 comment on column UNIMEDLF.AERO_STATUS_LOGGING.aero_status_logging_id
   is 'PK ID';
@@ -191,6 +199,31 @@ comment on column UNIMEDLF.AERO_STATUS_LOGGING.aero_envio_email_refid
   is 'FK AERO_ENVIO_EMAIL';
 comment on column UNIMEDLF.AERO_STATUS_LOGGING.aero_solicitacao_email_refid
   is 'FK_AERO_SOLICITACAO_EMAIL';
+-- Create/Recreate indexes 
+create index UNIMEDLF.IDX_AERO_ENVIO_EMAIL_LOGGING on UNIMEDLF.AERO_STATUS_LOGGING (AERO_ENVIO_EMAIL_REFID)
+  tablespace INFOMED_DADOS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+create index UNIMEDLF.IDX_AERO_SOLICITACAO_LOGGING on UNIMEDLF.AERO_STATUS_LOGGING (AERO_SOLICITACAO_EMAIL_REFID)
+  tablespace INFOMED_DADOS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
 -- Create/Recreate primary, unique and foreign key constraints 
 alter table UNIMEDLF.AERO_STATUS_LOGGING
   add constraint PK_AERO_STATUS_LOGGING primary key (AERO_STATUS_LOGGING_ID)
@@ -198,10 +231,21 @@ alter table UNIMEDLF.AERO_STATUS_LOGGING
   tablespace INFOMED_DADOS
   pctfree 10
   initrans 2
-  maxtrans 255;
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
 alter table UNIMEDLF.AERO_STATUS_LOGGING
   add constraint FK_AERO_ENVIO_EMAIL_LOGGING_REFID foreign key (AERO_ENVIO_EMAIL_REFID)
-  references UNIMEDLF.AERO_ENVIO_EMAIL (AERO_ENVIO_EMAIL_ID) on delete cascade;
+  references UNIMEDLF.AERO_ENVIO_EMAIL (AERO_ENVIO_EMAIL_ID) on delete cascade
+  disable
+  novalidate;
 alter table UNIMEDLF.AERO_STATUS_LOGGING
   add constraint FK_AERO_SOLICITACAO_EMAIL_LOGGING foreign key (AERO_SOLICITACAO_EMAIL_REFID)
-  references UNIMEDLF.AERO_SOLICITACAO_EMAIL (AERO_SOLICITACAO_EMAIL_ID) on delete cascade;
+  references UNIMEDLF.AERO_SOLICITACAO_EMAIL (AERO_SOLICITACAO_EMAIL_ID) on delete cascade
+  disable
+  novalidate;

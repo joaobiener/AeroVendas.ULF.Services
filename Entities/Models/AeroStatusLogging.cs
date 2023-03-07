@@ -28,15 +28,15 @@ public class AeroStatusLogging
 	[Column("CRIADO")]
 	public DateTime CriadoEm { get; set; }
 
+	[ForeignKey("FK_AERO_SOLICITACAO_EMAIL_LOGGING")]
+	[Column("AERO_SOLICITACAO_EMAIL_REFID")]
+	public Guid AeroSolicitacaoEmailId { get; set; }
+
 	[ForeignKey("FK_AERO_ENVIO_EMAIL_LOGGING_REFID")]
 	[Column("AERO_ENVIO_EMAIL_REFID")]
 	public Guid AeroEnvioEmailId { get; set; }
 	public AeroEnvioEmail? AeroEnvioEmail { get; set; }
 
-
-	[ForeignKey("FK_AERO_SOLICITACAO_EMAIL_LOGGING_REFID")]
-	[Column("AERO_SOLICITACAO_EMAIL_REFID")]
-	public Guid AeroSolicitacaoEmailId { get; set; }
 	public AeroSolicitacaoEmail? AeroSolicitacaoEmail { get; set; }
 
 

@@ -2,5 +2,5 @@
 
 public record AeroEnvioEmailForCreationDto : AeroEnvioEmailForManipulationDto
 {
-	public AeroStatusLoggingForCreationDto? AeroStatusLogging { get; init; }
+	public IEnumerable<AeroStatusLoggingForCreationDto>? AeroStatusLoggings { get; init; }
 }
