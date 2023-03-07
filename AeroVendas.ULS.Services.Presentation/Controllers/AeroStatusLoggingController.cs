@@ -24,7 +24,7 @@ public class AeroStatusLoggingController : ControllerBase
 		return Ok(aeroStatus);
 	}
 
-	[HttpGet("solicitacao/{id:guid}", Name = "AeroStatusBySolicitacao")]
+	[HttpGet("solicitacao/{aerosolicitacaoid:guid}", Name = "AeroStatusBySolicitacao")]
 	public async Task<IActionResult> GetAeroStatusBySolicitacao(
 			Guid? AeroSolicitacaoId,
 			[FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
@@ -42,7 +42,7 @@ public class AeroStatusLoggingController : ControllerBase
 	}
 
 
-	[HttpGet("envioEmail/{id:guid}", Name = "AeroStatusByEnvio")]
+	[HttpGet("envioEmail/{aeroenvioemailid:guid}", Name = "AeroStatusByEnvio")]
 	public async Task<IActionResult> GetAeroStatusByEnvio(
 			Guid? AeroEnvioEmailId,
 			[FromQuery] ViewAeroVendasParameters viewAeroVendasParameters)
