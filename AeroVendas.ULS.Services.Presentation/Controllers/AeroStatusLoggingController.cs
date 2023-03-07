@@ -67,5 +67,12 @@ public class AeroStatusLoggingController : ControllerBase
 		return CreatedAtRoute("AeroStatusByEnvio", new { id = createdAeroStatus.Id }, createdAeroStatus);
 	}
 
+	[HttpPost("envioSolicitacao")]
+	public async Task<IActionResult> CreateAeroStatusSolicitacao([FromBody] AeroStatusLoggingForCreationDto aeroStatus)
+	{
+		var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
+
+		return CreatedAtRoute("AeroStatusBySolicitacao", new { id = createdAeroStatus.Id }, createdAeroStatus);
+	}
 
 }
