@@ -34,8 +34,8 @@ internal sealed class AeroStatusLoggingRepository : RepositoryBase<AeroStatusLog
 	}
 
 	public async Task<PagedList<AeroStatusLogging>> GetStatusByIdAsync(
-		Guid aeroSolicitacaoId, 
-		Guid aeroEnvioEmailId, 
+		Guid? aeroSolicitacaoId, 
+		Guid? aeroEnvioEmailId, 
 		ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
 	{
 		var aeroStatus = await FindByCondition(x =>
@@ -52,4 +52,9 @@ internal sealed class AeroStatusLoggingRepository : RepositoryBase<AeroStatusLog
 	}
 
 	public void CreateStatusAsync(AeroStatusLogging aeroStatus) => Create(aeroStatus);
+
+
+	public async Task<AeroStatusLogging> GetAeroStatusByIdAsync(Guid aeroStatusById, bool trackChanges) =>
+			await FindByCondition(c => c.Id.Equals(aeroStatusById), trackChanges)
+			.SingleOrDefaultAsync();
 }

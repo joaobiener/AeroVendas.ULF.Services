@@ -13,10 +13,12 @@ public interface IAeroStatusLoggingRepository
 
 
 	Task<PagedList<AeroStatusLogging>> GetStatusByIdAsync(
-		Guid aeroSolicitacaoId, 
-		Guid aeroEnvioEmailId, 
+		Guid? aeroSolicitacaoId, 
+		Guid? aeroEnvioEmailId, 
 		ViewAeroVendasParameters viewAeroVendasParameters, 
 		bool trackChanges);
+
+	Task<AeroStatusLogging> GetAeroStatusByIdAsync(Guid aeroStatusById, bool trackChanges);
 
 	void CreateStatusAsync(AeroStatusLogging aeroStatus);
 

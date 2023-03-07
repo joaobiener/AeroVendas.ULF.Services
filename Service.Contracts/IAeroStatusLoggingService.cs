@@ -11,11 +11,12 @@ public interface IAeroStatusLoggingService
 		bool trackChanges);
 
 	Task<(IEnumerable<AeroStatusLoggingDto> AeroStatus, MetaData metaData)> GetStatusByIdAsync(
-		Guid aeroSolicitacaoId, 
-		Guid aeroEnvioEmailId,
+		Guid? aeroSolicitacaoId, 
+		Guid? aeroEnvioEmailId,
 		ViewAeroVendasParameters viewAeroVendasParameters,
 		bool trackChanges);
 
+	Task<AeroStatusLoggingDto> GetAeroStatusByIdAsync(Guid aeroStatusId, bool trackChanges);
 	Task<AeroStatusLoggingDto> CreateStatusAsync(AeroStatusLoggingForCreationDto aeroStatus);
 
 

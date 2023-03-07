@@ -28,37 +28,6 @@ internal sealed class AeroStatusLoggingService : IAeroStatusLoggingService
 
 	
 
-	public async Task<AeroSolicitacaoEmailDto> GetAeroSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges)
-	{
-		var aeroSolicitacao = await _repository.aeroSolicitacao.GetAeroSolicitacaAsync(aeroSolicitacaoId, trackChanges);
-		if (aeroSolicitacao is null)
-			throw new AeroSolicitacaoNotFoundException(aeroSolicitacaoId);
-
-		var aeroSolicitacaoDto = _mapper.Map<AeroSolicitacaoEmailDto>(aeroSolicitacao);
-		return aeroSolicitacaoDto;
-	}
-
-	public async Task<AeroSolicitacaoEmailDto> CreateAeroSolicitacaoAsync(AeroSolicitacaoEmailForCreationDto aeroSolicitacao)
-	{
-		var aeroSolicitacaoEntity = _mapper.Map<AeroSolicitacaoEmail>(aeroSolicitacao);
-
-		_repository.aeroSolicitacao.CreateAeroSolicitacao(aeroSolicitacaoEntity);
-		await _repository.SaveAsync();
-
-		var aeroSolicitacaoToReturn = _mapper.Map<AeroSolicitacaoEmailDto>(aeroSolicitacaoEntity);
-
-		return aeroSolicitacaoToReturn;
-	}
-
-	public async Task DeleteAeroSolicitacaoAsync(Guid aeroSolicitacaoId, bool trackChanges)
-	{
-		var aeroSolicitacaoDto = await GetAeroSolicitacaoByIdAsync(aeroSolicitacaoId, trackChanges);
-
-		var aeroSolicitacao = _mapper.Map<AeroSolicitacaoEmail>(aeroSolicitacaoDto);
-		_repository.aeroSolicitacao.DeleteAeroSolicitacao(aeroSolicitacao);
-		await _repository.SaveAsync();
-	}
-
 	public async Task<(IEnumerable<AeroStatusLoggingDto> AeroStatus, MetaData metaData)> GetAllStatusAsync(ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
 	{
 		var aeroStatusWithMetaData = await _repository.aeroStatusLogging.GetAllStatusAsync(viewAeroVendasParameters, trackChanges);
@@ -72,8 +41,8 @@ internal sealed class AeroStatusLoggingService : IAeroStatusLoggingService
 	}
 
 	public async Task<(IEnumerable<AeroStatusLoggingDto> AeroStatus, MetaData metaData)> GetStatusByIdAsync(
-				Guid aeroSolicitacaoId, 
-				Guid aeroEnvioEmailId, 
+				Guid? aeroSolicitacaoId, 
+				Guid? aeroEnvioEmailId, 
 				ViewAeroVendasParameters viewAeroVendasParameters, 
 				bool trackChanges)
 	{
@@ -92,6 +61,8 @@ internal sealed class AeroStatusLoggingService : IAeroStatusLoggingService
 	}
 
 
+
+
 	public async Task<AeroStatusLoggingDto> CreateStatusAsync(AeroStatusLoggingForCreationDto aeroStatus)
 	{
 		var aeroStatusEntity = _mapper.Map<AeroStatusLogging>(aeroStatus);
@@ -104,5 +75,15 @@ internal sealed class AeroStatusLoggingService : IAeroStatusLoggingService
 		return aeroStatusToReturn;
 	}
 
-	
+	public async Task<AeroStatusLoggingDto> GetAeroStatusByIdAsync(Guid aeroStatusId, bool trackChanges)
+	{
+		var aeroStatus = await _repository.aeroStatusLogging.GetAeroStatusByIdAsync(aeroStatusId, trackChanges);
+		if (aeroStatus is null)
+			throw new AeroStatusByIdNotFoundException(aeroStatus.Id);
+
+		var aeroStatusDto = _mapper.Map<AeroStatusLoggingDto>(aeroStatus);
+		return aeroStatusDto;
+	}
+
+
 }
