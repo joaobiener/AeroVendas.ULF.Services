@@ -74,10 +74,10 @@ public class AeroEnvioEmail
 
 	[ForeignKey("FK_AERO_SOLICITACAO_EMAIL_REFID")]
 	[Column("AERO_SOLICITACAO_EMAIL_REFID")]
-	public Guid AeroSolicitacaoEmailId { get; set; }
-	public AeroSolicitacaoEmail AeroSolicitacaoEmail { get; set; }
+	public Guid? AeroSolicitacaoEmailId { get; set; }
+	public AeroSolicitacaoEmail? AeroSolicitacaoEmail { get; set; }
 
-	public ICollection<AeroStatusLogging> AeroStatusLoggings { get; set; }
+	public ICollection<AeroStatusLogging>? AeroStatusLoggings { get; set; }
 	//Foreign key para AeroStatusLoggin
 
 

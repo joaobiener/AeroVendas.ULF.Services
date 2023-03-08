@@ -82,22 +82,24 @@ internal sealed class AeroSolicitacaoService : IAeroSolicitacaoService
 		await _repository.SaveAsync();
 	}
 
-	public async Task SaveChangesForPatchAsync(AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatch, AeroSolicitacaoEmail aeroSolicitacaooEntity)
+	public async Task SaveChangesForPatchAsync(AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatch,
+											  AeroSolicitacaoEmail aeroSolicitacaooEntity)
 	{
 		_mapper.Map(aeroSolicitacaoToPatch, aeroSolicitacaooEntity);
 		await _repository.SaveAsync();
 	}
 
 	public async Task<(AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatch, AeroSolicitacaoEmail aeroSolicitacaoEntity)> GetAeroSolicitacaoForPatchAsync(
-				Guid solicitacaoId,  bool solicTrackChanges)
+				Guid solicitacaoId, 
+				bool solicTrackChanges)
 	{
 
 
 		var aeroSolicitacaoDb = await GetAeroSolicitacaoAndCheckIfItExists(solicitacaoId, solicTrackChanges);
 
-		var aeroSolicitacaoToPatch = _mapper.Map<AeroSolicitacaoEmailForUpdateDto>(aeroSolicitacaoDb);
+		var solicitacaoToPatch = _mapper.Map<AeroSolicitacaoEmailForUpdateDto>(aeroSolicitacaoDb);
 
-		return (aeroSolicitacaoToPatch: aeroSolicitacaoToPatch, aeroEnvioEntity: aeroSolicitacaoDb);
+		return (aeroSolicitacaoToPatch: solicitacaoToPatch, aeroEnvioEntity: aeroSolicitacaoDb);
 	}
 
 	private async Task<AeroSolicitacaoEmail> GetAeroSolicitacaoAndCheckIfItExists

@@ -14,4 +14,3 @@ public record AeroSolicitacaoEmailDto {
 	public Guid? MensagemHtmlId { get; set; }
 	
 }
-

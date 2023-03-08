@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Service.Contracts;
-using Entities.ConfigurationModels;
-using Microsoft.Extensions.Options;
-using System.ComponentModel.Design;
+
 
 namespace Service;
 
