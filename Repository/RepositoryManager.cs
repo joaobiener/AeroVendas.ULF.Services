@@ -1,4 +1,7 @@
 ﻿using Contracts;
+using Entities.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Xml;
 
 namespace Repository;
 
@@ -8,9 +11,9 @@ public sealed class RepositoryManager : IRepositoryManager
     private readonly Lazy<IViewAeroVendasRepository> _viewAeroVendasRepository;
     private readonly Lazy<IMessageHTMLRepository> _mensagemHTMLRepository;
 	private readonly Lazy<IArquivoRepository> _arquivo;
-	private readonly Lazy<IAeroSolicitacaoRepository> _aeroSolicitacaoRepository;
 	private readonly Lazy<IAeroEnvioEmailRepository> _aeroEnvioEmailRepository;
 	private readonly Lazy<IAeroStatusLoggingRepository> _aeroStatusLoggingRepository;
+	private readonly Lazy<IAeroSolicitacaoRepository> _aeroSolicitacaoRepository;
 
 	public RepositoryManager(RepositoryContext repositoryContext)
 	{
@@ -34,7 +37,15 @@ public sealed class RepositoryManager : IRepositoryManager
 
 	public IAeroStatusLoggingRepository aeroStatusLogging => _aeroStatusLoggingRepository.Value;
 
-	public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
+	public async Task SaveAsync()
+	{
+
+
+		bool hasChanges = _repositoryContext.ChangeTracker.HasChanges();
+		
+
+		await _repositoryContext.SaveChangesAsync();
+	} 
  
 
 }

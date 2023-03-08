@@ -28,16 +28,15 @@ namespace AeroVendas.ULF.Services
             CreateMap<ViewContratoSemAeroVendas,ViewAeroVendasDto>();
             CreateMap<MensagemHtml, MensagemHtmlDto>();
 
-			CreateMap<AeroSolicitacaoEmail, AeroSolicitacaoEmailDto>();
-			CreateMap<AeroSolicitacaoEmailDto, AeroSolicitacaoEmail>();
-			CreateMap<AeroSolicitacaoEmailForCreationDto, AeroSolicitacaoEmail>();
-			CreateMap<AeroSolicitacaoEmailForUpdateDto, AeroSolicitacaoEmail>().ReverseMap(); 
-
-
 			CreateMap<AeroEnvioEmail, AeroEnvioEmailDto>();
 			CreateMap<AeroEnvioEmailDto,AeroEnvioEmail>();
 			CreateMap<AeroEnvioEmailForCreationDto, AeroEnvioEmail>();
 			CreateMap<AeroEnvioEmailForUpdateDto, AeroEnvioEmail>().ReverseMap();
+
+			CreateMap<AeroSolicitacaoEmail, AeroSolicitacaoEmailDto>();
+			CreateMap<AeroSolicitacaoEmailDto, AeroSolicitacaoEmail>();
+			CreateMap<AeroSolicitacaoEmailForCreationDto, AeroSolicitacaoEmail>();
+			CreateMap<AeroSolicitacaoEmailForUpdateDto, AeroSolicitacaoEmail>().ReverseMap();
 
 			CreateMap<AeroStatusLogging, AeroStatusLoggingDto>();
 			CreateMap<AeroStatusLoggingDto,AeroStatusLogging>();
@@ -45,8 +44,10 @@ namespace AeroVendas.ULF.Services
 
 
 			CreateMap<UserForRegistrationDto, User>();
+
 			CreateMap<MensagemForUpdateDto, MensagemHtml>();
 			CreateMap<MensagemHtmlForCreationDto, MensagemHtml>();
+
 			CreateMap<Arquivo, FileUploadModel>();
 			CreateMap<FileUploadModel, Arquivo>();
 			CreateMap<Arquivo, ArquivoDto>(); 

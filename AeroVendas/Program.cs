@@ -54,7 +54,6 @@ if (app.Environment.IsProduction())
 app.UseHttpsRedirection();
 
 
-
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.All

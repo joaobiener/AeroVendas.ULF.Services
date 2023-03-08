@@ -2,13 +2,9 @@
 using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.VisualBasic.FileIO;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
-using System.ComponentModel.Design;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Service;
 
@@ -94,7 +90,9 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		return (aeroEnvioEmailToPatch: aeroEnvioEmailToPatch, aeroEnvioEntity: aeroEnvioEmailDb);
 	}
 
-	public async Task SaveChangesForPatchAsync(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity)
+	public async Task SaveChangesForPatchAsync(
+		AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, 
+		AeroEnvioEmail aeroEnvioEntity)
 	{
 		_mapper.Map(aeroEnvioEmailToPatch, aeroEnvioEntity);
 		 await _repository.SaveAsync();

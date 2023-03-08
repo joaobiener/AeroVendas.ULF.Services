@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Diagnostics.Metrics;
+
 
 namespace Entities.Models;
 
@@ -44,7 +41,7 @@ public class AeroSolicitacaoEmail
 	[ForeignKey("FK_MENSAGEMHTML")]
 	[Column("MENSAGEMHTML_REFID")]
 	public Guid MensagemHtmlId { get; set; }
-	public MensagemHtml? MensagemHtml { get; set; }
+	//public MensagemHtml? MensagemHtml { get; set; }
 
 	public ICollection<AeroEnvioEmail>? AeroEnvioEmails { get; set; }
 

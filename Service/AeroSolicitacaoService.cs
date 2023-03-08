@@ -2,13 +2,11 @@
 using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.VisualBasic.FileIO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
-using System.ComponentModel.Design;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Service;
 
@@ -82,12 +80,20 @@ internal sealed class AeroSolicitacaoService : IAeroSolicitacaoService
 		await _repository.SaveAsync();
 	}
 
-	public async Task SaveChangesForPatchAsync(AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatch,
-											  AeroSolicitacaoEmail aeroSolicitacaooEntity)
+
+
+	public async Task SaveChangesForPatchAsync(
+			AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatch,
+			AeroSolicitacaoEmail aeroSolicitacaooEntity)
 	{
-		_mapper.Map(aeroSolicitacaoToPatch, aeroSolicitacaooEntity);
+		AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatchModificado = new AeroSolicitacaoEmailForUpdateDto();
+		aeroSolicitacaoToPatchModificado = aeroSolicitacaoToPatch;
+		aeroSolicitacaoToPatchModificado.ModificadoEm = DateTime.Now;
+
+		_mapper.Map(aeroSolicitacaoToPatchModificado, aeroSolicitacaooEntity);
 		await _repository.SaveAsync();
 	}
+
 
 	public async Task<(AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatch, AeroSolicitacaoEmail aeroSolicitacaoEntity)> GetAeroSolicitacaoForPatchAsync(
 				Guid solicitacaoId, 

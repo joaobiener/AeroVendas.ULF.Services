@@ -2,7 +2,4 @@
 
 namespace Shared.DataTransferObjects;
 
-public record AeroSolicitacaoEmailForUpdateDto : AeroSolicitacaoForManipulationDto
-{
-
-}
+public record AeroSolicitacaoEmailForUpdateDto: AeroSolicitacaoForManipulationDto;

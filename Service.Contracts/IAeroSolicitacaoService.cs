@@ -16,7 +16,7 @@ public interface IAeroSolicitacaoService
 	Task<(AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatch, AeroSolicitacaoEmail aeroSolicitacaoEntity)> GetAeroSolicitacaoForPatchAsync(
 				Guid solicitacaoId, bool solicTrackChanges);
 	
-		Task DeleteAeroSolicitacaoAsync(Guid aeroSolicitacaoId, bool trackChanges);
+	Task DeleteAeroSolicitacaoAsync(Guid aeroSolicitacaoId, bool trackChanges);
 	Task UpdateAeroSolcitacaoAsync(Guid aeroSolicitacaoId, AeroSolicitacaoEmailForUpdateDto aeroSolicitacoForUpdate, bool trackChanges);
 	Task SaveChangesForPatchAsync(AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatch, AeroSolicitacaoEmail aeroSolicitacaooEntity);
 }

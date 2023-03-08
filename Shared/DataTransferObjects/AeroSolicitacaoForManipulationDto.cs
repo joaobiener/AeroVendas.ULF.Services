@@ -10,8 +10,8 @@ public abstract record AeroSolicitacaoForManipulationDto
 	public string? UltimoStatus { get; init; }
 	public DateTime? CriadoEm { get; init; } = DateTime.Now;
 	public string? CriadoPor { get; init; }
-	public DateTime? ModificadoEm { get; init; }
+	public DateTime? ModificadoEm { get; set ; }
 	public string? ModificadoPor { get; init; }
-	public Guid MensagemHtmlId { get; init; }
+	public Guid? MensagemHtmlId { get; init; }
 
 }
