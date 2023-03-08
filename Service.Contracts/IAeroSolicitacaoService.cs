@@ -13,7 +13,10 @@ public interface IAeroSolicitacaoService
 	
 	Task<AeroSolicitacaoEmailDto> GetAeroSolicitacaoByIdAsync(Guid aeroSolicitacaoId, bool trackChanges);
 	Task<AeroSolicitacaoEmailDto> CreateAeroSolicitacaoAsync(AeroSolicitacaoEmailForCreationDto aeroSolicitacao);
-	Task DeleteAeroSolicitacaoAsync(Guid aeroSolicitacaoId, bool trackChanges);
-	Task UpdateMensagemAsync(Guid aeroSolicitacaoId, MensagemForUpdateDto aeroSolicitacoForUpdate, bool trackChanges);
-
+	Task<(AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatch, AeroSolicitacaoEmail aeroSolicitacaoEntity)> GetAeroSolicitacaoForPatchAsync(
+				Guid solicitacaoId, bool solicTrackChanges);
+	
+		Task DeleteAeroSolicitacaoAsync(Guid aeroSolicitacaoId, bool trackChanges);
+	Task UpdateAeroSolcitacaoAsync(Guid aeroSolicitacaoId, AeroSolicitacaoEmailForUpdateDto aeroSolicitacoForUpdate, bool trackChanges);
+	Task SaveChangesForPatchAsync(AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatch, AeroSolicitacaoEmail aeroSolicitacaooEntity);
 }

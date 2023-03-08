@@ -59,20 +59,13 @@ public class AeroStatusLoggingController : ControllerBase
 	}
 
 	
-	[HttpPost("envioEmail")]
-	public async Task<IActionResult> CreateAeroStatusEnvio([FromBody] AeroStatusLoggingForCreationDto aeroStatus)
+	[HttpPost]
+	public async Task<IActionResult> CreateAeroStatus([FromBody] AeroStatusLoggingForCreationDto aeroStatus)
 	{
 		var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
 
 		return CreatedAtRoute("AeroStatusByEnvio", new { id = createdAeroStatus.Id }, createdAeroStatus);
 	}
 
-	[HttpPost("envioSolicitacao")]
-	public async Task<IActionResult> CreateAeroStatusSolicitacao([FromBody] AeroStatusLoggingForCreationDto aeroStatus)
-	{
-		var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
-
-		return CreatedAtRoute("AeroStatusBySolicitacao", new { id = createdAeroStatus.Id }, createdAeroStatus);
-	}
 
 }

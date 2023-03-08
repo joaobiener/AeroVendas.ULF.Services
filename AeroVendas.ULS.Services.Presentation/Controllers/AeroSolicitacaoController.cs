@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
@@ -35,6 +36,42 @@ public class AeroSolicitacaoController : ControllerBase
 		var createdAeroSolicitacao = await _service.AeroSolicitacaoService.CreateAeroSolicitacaoAsync(aeroSolicitacao);
 
 		return CreatedAtRoute("AeroSolicitacaoById", new { id = createdAeroSolicitacao.Id }, createdAeroSolicitacao);
+	}
+
+	[HttpPut("{id:guid}")]
+	public async Task<IActionResult> UpdateAeroSolicitacao(Guid id, [FromBody] AeroSolicitacaoEmailForUpdateDto aeroSolictacaoDto)
+	{
+		if (aeroSolictacaoDto is null)
+			return BadRequest("aeroSolictacaoDto é nulo");
+
+		if (!ModelState.IsValid)
+			return UnprocessableEntity(ModelState);
+
+		await _service.AeroSolicitacaoService.UpdateAeroSolcitacaoAsync(id, aeroSolictacaoDto, trackChanges: true);
+
+		return NoContent();
+	}
+
+	[HttpPatch("{id:guid}")]
+	public async Task<IActionResult> PartiallyUpdateAeroSolicitacao(Guid aeroSolicitacaoId, 
+		[FromBody] JsonPatchDocument<AeroSolicitacaoEmailForUpdateDto> patchDoc)
+	{
+		if (patchDoc is null)
+			return BadRequest("patchDoc object enviado pelo cliente é nulo.");
+
+		var result = await _service.AeroSolicitacaoService.GetAeroSolicitacaoForPatchAsync(aeroSolicitacaoId,
+			solicTrackChanges: false);
+
+		patchDoc.ApplyTo(result.aeroSolicitacaoToPatch, ModelState);
+
+		TryValidateModel(result.aeroSolicitacaoToPatch);
+
+		if (!ModelState.IsValid)
+			return UnprocessableEntity(ModelState);
+
+		await _service.AeroSolicitacaoService.SaveChangesForPatchAsync(result.aeroSolicitacaoToPatch, result.aeroSolicitacaoEntity);
+
+		return NoContent();
 	}
 
 	[HttpDelete("{id:guid}")]
