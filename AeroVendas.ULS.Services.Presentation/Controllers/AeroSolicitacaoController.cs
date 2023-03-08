@@ -52,7 +52,7 @@ public class AeroSolicitacaoController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpPatch("{id:guid}")]
+	[HttpPatch("{aeroSolicitacaoId:guid}")]
 	public async Task<IActionResult> PartiallyUpdateAeroSolicitacao(Guid aeroSolicitacaoId, 
 		[FromBody] JsonPatchDocument<AeroSolicitacaoEmailForUpdateDto> patchDoc)
 	{
