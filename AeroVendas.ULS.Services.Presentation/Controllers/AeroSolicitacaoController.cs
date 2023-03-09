@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -51,6 +52,14 @@ public class AeroSolicitacaoController : ControllerBase
 
 		await _service.AeroSolicitacaoService.UpdateAeroSolcitacaoAsync(id, aeroSolictacaoDto, trackChanges: true);
 
+		AeroStatusLoggingForCreationDto aeroStatus = new AeroStatusLoggingForCreationDto()
+		{
+			AeroSolicitacaoEmailId = id,
+			CriadoEm = DateTime.Now,
+			Status = aeroSolictacaoDto.UltimoStatus
+		};
+		var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
+
 		return NoContent();
 	}
 
@@ -71,7 +80,24 @@ public class AeroSolicitacaoController : ControllerBase
 		if (!ModelState.IsValid)
 			return UnprocessableEntity(ModelState);
 
+		string beforeStatus = result.aeroSolicitacaoEntity.UltimoStatus;
+
 		await _service.AeroSolicitacaoService.SaveChangesForPatchAsync(result.aeroSolicitacaoToPatch, result.aeroSolicitacaoEntity);
+
+		//Caso a alteração seja no UltimoStatus inclui registro na tabela de status
+		AeroStatusLoggingForCreationDto aeroStatus = new AeroStatusLoggingForCreationDto()
+		{
+			AeroSolicitacaoEmailId = aeroSolicitacaoId,
+			CriadoEm = DateTime.Now,
+			Status = result.aeroSolicitacaoToPatch.UltimoStatus
+		};
+
+
+		if (result.aeroSolicitacaoToPatch.UltimoStatus != beforeStatus)
+		{
+			var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
+
+		}
 
 		return NoContent();
 	}

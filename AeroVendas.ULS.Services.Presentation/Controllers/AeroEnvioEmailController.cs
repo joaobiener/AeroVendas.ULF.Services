@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Entities.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
@@ -44,6 +45,17 @@ public class AeroEnvioEmailController : ControllerBase
 					aeroSolicitacaoId, aeroEnvioEmail,
 			trackChanges: false);
 
+		AeroStatusLoggingForCreationDto aeroStatus = new AeroStatusLoggingForCreationDto()
+		{
+			AeroSolicitacaoEmailId = aeroSolicitacaoId,
+			AeroEnvioEmailId = aeroEnvioEmailToReturn.Id,
+			CriadoEm = aeroEnvioEmailToReturn.CriadoEm,
+			Status = aeroEnvioEmail.UltimoStatus
+
+		};
+		var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
+
+
 		return CreatedAtRoute("GetAeroEnvioEmailForSolicitacao", new { aeroSolicitacaoId, id = aeroEnvioEmailToReturn.Id },
 			aeroEnvioEmailToReturn);
 	}
@@ -64,6 +76,14 @@ public class AeroEnvioEmailController : ControllerBase
 		await _service.AeroEnvioEmailService.UpdateAeroEnvioEmailForSolicitacaoAsync(aeroSolicitacaoId, id, aeroEnvioEmail,
 			solicTrackChanges: false, envioTrackChanges: true);
 
+		AeroStatusLoggingForCreationDto aeroStatus = new AeroStatusLoggingForCreationDto()
+		{
+			AeroSolicitacaoEmailId = aeroSolicitacaoId,
+			AeroEnvioEmailId = id,
+			CriadoEm = DateTime.Now,
+			Status = aeroEnvioEmail.UltimoStatus
+		};
+		var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
 		return NoContent();
 	}
 
@@ -84,7 +104,25 @@ public class AeroEnvioEmailController : ControllerBase
 		if (!ModelState.IsValid)
 			return UnprocessableEntity(ModelState);
 
+		string beforeStatus = result.aeroEnvioEntity.UltimoStatus;
+
 		await _service.AeroEnvioEmailService.SaveChangesForPatchAsync(result.aeroEnvioEmailToPatch, result.aeroEnvioEntity);
+
+		//Caso a alteração seja no UltimoStatus inclui registro na tabela de status
+		AeroStatusLoggingForCreationDto aeroStatus = new AeroStatusLoggingForCreationDto()
+		{
+			AeroSolicitacaoEmailId = aeroSolicitacaoId,
+			AeroEnvioEmailId = id,
+			CriadoEm = DateTime.Now,
+			Status = result.aeroEnvioEmailToPatch.UltimoStatus
+		};
+		
+
+		if (result.aeroEnvioEmailToPatch.UltimoStatus != beforeStatus)
+		{
+			var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
+
+		}
 
 		return NoContent();
 	}
