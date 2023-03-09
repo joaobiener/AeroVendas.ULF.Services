@@ -57,4 +57,6 @@ internal sealed class AeroStatusLoggingRepository : RepositoryBase<AeroStatusLog
 	public async Task<AeroStatusLogging> GetAeroStatusByIdAsync(Guid aeroStatusById, bool trackChanges) =>
 			await FindByCondition(c => c.Id.Equals(aeroStatusById), trackChanges)
 			.SingleOrDefaultAsync();
+
+	public void bulkInsertEnvioEmailLogs(IEnumerable<AeroStatusLogging> contratosSemAero) => BulkInsert(contratosSemAero);
 }

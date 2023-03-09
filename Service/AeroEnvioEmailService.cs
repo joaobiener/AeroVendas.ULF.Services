@@ -5,6 +5,7 @@ using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Contracts;
 
 namespace Service;
@@ -146,15 +147,22 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 
 		var listViewAeroVendasDto = _mapper.Map<IEnumerable<ViewAeroVendasDto>>(viewAeroVendasWithMetaData);
 
+		//Lista de Envio de emails para incluir na tabela
 		List<AeroEnvioEmail> lstEnvioEmail = new List<AeroEnvioEmail>();
+		//Lista de Status de Envio para incluir na tabela de Status Logging
+		List<AeroStatusLogging> lstStatus = new List<AeroStatusLogging>();
 
 		var mensagem = await _repository.mensagemHtml.GetMessageAsync(aeroSolicitacao.MensagemHtmlId, trackChanges: false);
 
 		foreach (ViewAeroVendasDto itemViewAeroVendas in listViewAeroVendasDto)
 
 		{
+			Guid novoId = Guid.NewGuid();
+			DateTime dtCriacao = DateTime.Now;
 			lstEnvioEmail.Add(new AeroEnvioEmail()
 			{
+
+				Id = novoId,
 				CodigoContrato = itemViewAeroVendas.Contrato,
 				CodigoBeneficiario = itemViewAeroVendas.CodigoBeneficiario,
 				NomeBeneficiario = itemViewAeroVendas.NomeBeneficiario,
@@ -164,12 +172,24 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 				NumeroDependentes = itemViewAeroVendas.NumeroDependentes,
 				UltimoStatus = nameof(Status.PorEnviar),
 				AeroSolicitacaoEmailId = aeroSolicitacao.Id,
+				CriadoPor = aeroSolicitacao.CriadoPor,
+				CriadoEm = dtCriacao,
 				MensagemEmailHtml = mensagem.TemplateEmailHtml
 
-			});;
-
+			});
+			lstStatus.Add(new AeroStatusLogging()
+			{
+				AeroEnvioEmailId = novoId,
+				AeroSolicitacaoEmailId = aeroSolicitacao.Id,
+				Status = nameof(Status.PorEnviar),
+				CriadoEm = dtCriacao
+			});
 		}
+
+		//Bulk insere na tabela de envio de emails
 		_repository.aeroEnvioEmail.bulkInsertEnvioEmailForSolicitacao(lstEnvioEmail);
+		// Bulk insere na tabela de Logs de Status
+		_repository.aeroStatusLogging.bulkInsertEnvioEmailLogs(lstStatus);
 	
 	}
 }

@@ -22,6 +22,7 @@ public interface IAeroStatusLoggingRepository
 
 	void CreateStatusAsync(AeroStatusLogging aeroStatus);
 
+	void bulkInsertEnvioEmailLogs(IEnumerable<AeroStatusLogging> contratosSemAero);
 
 }
 
