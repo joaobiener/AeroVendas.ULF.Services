@@ -14,6 +14,6 @@ public interface IAeroEnvioEmailRepository
 	void CreateEnvioEmailForSolicitacao(Guid aeroSolicitacoId, AeroEnvioEmail aeroEnvioEmail);
 	void DeleteAeroSolicitacao(AeroEnvioEmail aeroEnvioEmail);
 
-	void bulkInsertEnvioEmailForSolicitacao(Guid aeroSolicitacaoId, IEnumerable<AeroEnvioEmail> contratosSemAero);
+	void bulkInsertEnvioEmailForSolicitacao( IEnumerable<AeroEnvioEmail> contratosSemAero);
 
 }

@@ -19,7 +19,7 @@ public class AeroSolicitacaoEmail
 	public int? TotalEnviado { get; set; }
 
 	[Column("ULTIMO_STATUS")]	
-	public string? UltimoStatus { get; set; }
+	public string? UltimoStatus { get; set; } 
 	//[Column("STATUS_ENVIO")]
 	///* Campo utilizado para verificar o status do Envio
 	// * 1. Por Enviar

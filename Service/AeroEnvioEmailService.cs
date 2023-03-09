@@ -147,7 +147,10 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		var listViewAeroVendasDto = _mapper.Map<IEnumerable<ViewAeroVendasDto>>(viewAeroVendasWithMetaData);
 
 		List<AeroEnvioEmail> lstEnvioEmail = new List<AeroEnvioEmail>();
-		foreach(ViewAeroVendasDto itemViewAeroVendas in listViewAeroVendasDto)
+
+		var mensagem = await _repository.mensagemHtml.GetMessageAsync(aeroSolicitacao.MensagemHtmlId, trackChanges: false);
+
+		foreach (ViewAeroVendasDto itemViewAeroVendas in listViewAeroVendasDto)
 
 		{
 			lstEnvioEmail.Add(new AeroEnvioEmail()
@@ -156,13 +159,17 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 				CodigoBeneficiario = itemViewAeroVendas.CodigoBeneficiario,
 				NomeBeneficiario = itemViewAeroVendas.NomeBeneficiario,
 				PremioAtual = itemViewAeroVendas.PremioAtual,
+				EmailBeneficiario = itemViewAeroVendas.EmailBeneficiario,
 				Cidade = itemViewAeroVendas.Cidade,
 				NumeroDependentes = itemViewAeroVendas.NumeroDependentes,
-				UltimoStatus = nameof(Status.PorEnviar)
+				UltimoStatus = nameof(Status.PorEnviar),
+				AeroSolicitacaoEmailId = aeroSolicitacao.Id,
+				MensagemEmailHtml = mensagem.TemplateEmailHtml
 
-			}); 
-		
+			});;
 
 		}
+		_repository.aeroEnvioEmail.bulkInsertEnvioEmailForSolicitacao(lstEnvioEmail);
+	
 	}
 }

@@ -47,7 +47,7 @@ internal sealed class AeroEnvioEmailRepository : RepositoryBase<AeroEnvioEmail>,
 
 	public async void DeleteAeroSolicitacao(AeroEnvioEmail aeroEnvioEmail)=> Delete(aeroEnvioEmail);
 
-	public void bulkInsertEnvioEmailForSolicitacao(Guid aeroSolicitacaoId, IEnumerable<AeroEnvioEmail> contratosSemAero)
+	public void bulkInsertEnvioEmailForSolicitacao(IEnumerable<AeroEnvioEmail> contratosSemAero)
 	{
 		BulkInsert(contratosSemAero);
 

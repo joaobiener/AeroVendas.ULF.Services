@@ -36,7 +36,7 @@ internal sealed class MessageHTMLRepository : RepositoryBase<MensagemHtml>, IMes
 							viewLogAeroVendasParameters.PageSize);
 	}
 
-	public async Task<MensagemHtml> GetMessageAsync(Guid mensagemId, bool trackChanges) =>
+	public async Task<MensagemHtml> GetMessageAsync(Guid? mensagemId, bool trackChanges) =>
 		await FindByCondition(c => c.Id.Equals(mensagemId), trackChanges)
 		.SingleOrDefaultAsync();
 

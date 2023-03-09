@@ -35,6 +35,8 @@ public class AeroSolicitacaoController : ControllerBase
 	{
 		var createdAeroSolicitacao = await _service.AeroSolicitacaoService.CreateAeroSolicitacaoAsync(aeroSolicitacao);
 
+		await _service.AeroEnvioEmailService.BulkInsertAeroEnvioEmailForSolicitacaoAsync(createdAeroSolicitacao);
+
 		return CreatedAtRoute("AeroSolicitacaoById", new { id = createdAeroSolicitacao.Id }, createdAeroSolicitacao);
 	}
 
