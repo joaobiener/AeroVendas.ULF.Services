@@ -5,6 +5,7 @@ using Entities.Models;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
+using System.Diagnostics.Contracts;
 
 namespace Service;
 
@@ -128,5 +129,40 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 			throw new AeroEnvioEmailNotFoundException(id);
 
 		return aeroEnvioEmailDb;
+	}
+
+	//Fará a busca em todos os contratos com o nome da cidade em AeroVendas sem contrato para
+	//fazer o BulkInsert dos emails a enviar
+	public async Task BulkInsertAeroEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmailDto aeroSolicitacao)
+	{
+		ViewAeroVendasParameters parameters= new ViewAeroVendasParameters();
+		parameters.PageSize = 30000;
+
+		var viewAeroVendasWithMetaData = await _repository.viewAeroVendas.GetViewAeroVendasByAsync(
+								null, null, null, aeroSolicitacao.Cidade, parameters,false);
+
+		if (viewAeroVendasWithMetaData is null)
+			throw new ViewAeroVendasNotFoundException();
+
+		var listViewAeroVendasDto = _mapper.Map<IEnumerable<ViewAeroVendasDto>>(viewAeroVendasWithMetaData);
+
+		List<AeroEnvioEmail> lstEnvioEmail = new List<AeroEnvioEmail>();
+		foreach(ViewAeroVendasDto itemViewAeroVendas in listViewAeroVendasDto)
+
+		{
+			lstEnvioEmail.Add(new AeroEnvioEmail()
+			{
+				CodigoContrato = itemViewAeroVendas.Contrato,
+				CodigoBeneficiario = itemViewAeroVendas.CodigoBeneficiario,
+				NomeBeneficiario = itemViewAeroVendas.NomeBeneficiario,
+				PremioAtual = itemViewAeroVendas.PremioAtual,
+				Cidade = itemViewAeroVendas.Cidade,
+				NumeroDependentes = itemViewAeroVendas.NumeroDependentes,
+				UltimoStatus = nameof(Status.PorEnviar)
+
+			}); 
+		
+
+		}
 	}
 }

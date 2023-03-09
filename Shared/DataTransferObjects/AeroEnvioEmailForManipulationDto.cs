@@ -20,7 +20,7 @@ public abstract record AeroEnvioEmailForManipulationDto
 
 	public int? NumProtocolo { get; init; }
 	public string? MensagemEmailHtml { get; init; }
-	public string? UltimoStatus { get; init; } = "Por Enviar";
+	public string? UltimoStatus { get; init; } = nameof(Status.PorEnviar);
 	public DateTime CriadoEm { get; init; } = DateTime.Now;
 	public string? CriadoPor { get; init; }
 	public DateTime? ModificadoEm { get; init; }

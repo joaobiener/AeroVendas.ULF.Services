@@ -39,13 +39,10 @@ public sealed class RepositoryManager : IRepositoryManager
 
 	public async Task SaveAsync()
 	{
-
-
-		bool hasChanges = _repositoryContext.ChangeTracker.HasChanges();
-		
-
 		await _repositoryContext.SaveChangesAsync();
 	} 
+
+
  
 
 }

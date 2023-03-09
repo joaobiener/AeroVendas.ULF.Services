@@ -31,7 +31,7 @@ public class AeroEnvioEmail
 	public string? EmailBeneficiario { get; set; }
 
 	[Column("PREMIO_ATUAL")]
-	public double PremioAtual { get; set; }
+	public double? PremioAtual { get; set; }
 
 	[Column("NUMERO_DEPENDENTES")]
 	public int? NumeroDependentes { get; set; }

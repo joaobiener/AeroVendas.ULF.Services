@@ -89,6 +89,7 @@ internal sealed class AeroSolicitacaoService : IAeroSolicitacaoService
 		AeroSolicitacaoEmailForUpdateDto aeroSolicitacaoToPatchModificado = new AeroSolicitacaoEmailForUpdateDto();
 		aeroSolicitacaoToPatchModificado = aeroSolicitacaoToPatch;
 		aeroSolicitacaoToPatchModificado.ModificadoEm = DateTime.Now;
+		
 
 		_mapper.Map(aeroSolicitacaoToPatchModificado, aeroSolicitacaooEntity);
 		await _repository.SaveAsync();

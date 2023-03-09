@@ -60,7 +60,7 @@ public class AeroSolicitacaoController : ControllerBase
 			return BadRequest("patchDoc object enviado pelo cliente é nulo.");
 
 		var result = await _service.AeroSolicitacaoService.GetAeroSolicitacaoForPatchAsync(aeroSolicitacaoId,
-			solicTrackChanges: false);
+			solicTrackChanges: true);
 
 		patchDoc.ApplyTo(result.aeroSolicitacaoToPatch, ModelState);
 

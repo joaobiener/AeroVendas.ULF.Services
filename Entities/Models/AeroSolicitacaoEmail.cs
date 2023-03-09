@@ -41,7 +41,7 @@ public class AeroSolicitacaoEmail
 	[ForeignKey("FK_MENSAGEMHTML")]
 	[Column("MENSAGEMHTML_REFID")]
 	public Guid MensagemHtmlId { get; set; }
-	//public MensagemHtml? MensagemHtml { get; set; }
+	public MensagemHtml? MensagemHtml { get; set; }
 
 	public ICollection<AeroEnvioEmail>? AeroEnvioEmails { get; set; }
 

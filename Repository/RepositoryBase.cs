@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Microsoft.EntityFrameworkCore;
+using Shared.DataTransferObjects;
 using System.Linq.Expressions;
 
 namespace Repository;
@@ -31,4 +32,6 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 	public void Update(T entity) => RepositoryContext.Set<T>().Update(entity);
 
 	public void Delete(T entity) => RepositoryContext.Set<T>().Remove(entity);
+
+	public void BulkInsert(IEnumerable<T>  entity) => RepositoryContext.Set<T>().BulkInsert(entity);
 }

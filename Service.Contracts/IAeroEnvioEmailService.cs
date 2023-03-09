@@ -20,4 +20,8 @@ public interface IAeroEnvioEmailService
 	Task<(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity)> GetAeroEnvioForPatchAsync(
 		Guid solicitacaoId, Guid id, bool solicTrackChanges, bool envioTrackChanges);
 	Task SaveChangesForPatchAsync(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity);
+
+	Task BulkInsertAeroEnvioEmailForSolicitacaoAsync(
+						Guid aeroSolicitacaoId,
+						AeroEnvioEmailForCreationDto aeroEnvioEmailForCreation);
 }

@@ -13,7 +13,7 @@ namespace Repository;
 
 internal sealed class AeroEnvioEmailRepository : RepositoryBase<AeroEnvioEmail>, IAeroEnvioEmailRepository
 {
-
+	
 	public AeroEnvioEmailRepository(RepositoryContext repositoryContext)
 		: base(repositoryContext)
 	{
@@ -47,4 +47,9 @@ internal sealed class AeroEnvioEmailRepository : RepositoryBase<AeroEnvioEmail>,
 
 	public async void DeleteAeroSolicitacao(AeroEnvioEmail aeroEnvioEmail)=> Delete(aeroEnvioEmail);
 
+	public void bulkInsertEnvioEmailForSolicitacao(Guid aeroSolicitacaoId, IEnumerable<AeroEnvioEmail> contratosSemAero)
+	{
+		BulkInsert(contratosSemAero);
+
+	}
 }
