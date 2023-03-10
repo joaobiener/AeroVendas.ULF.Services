@@ -38,6 +38,17 @@ public class AeroSolicitacaoController : ControllerBase
 
 		await _service.AeroEnvioEmailService.BulkInsertAeroEnvioEmailForSolicitacaoAsync(createdAeroSolicitacao);
 
+		AeroStatusLoggingForCreationDto aeroStatus = new AeroStatusLoggingForCreationDto()
+		{
+			AeroSolicitacaoEmailId = createdAeroSolicitacao.Id,
+			CriadoEm = DateTime.Now,
+			Status = nameof(Status.PorEnviar)
+		};
+
+
+		var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
+
+
 		return CreatedAtRoute("AeroSolicitacaoById", new { id = createdAeroSolicitacao.Id }, createdAeroSolicitacao);
 	}
 
