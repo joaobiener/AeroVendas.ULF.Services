@@ -33,14 +33,55 @@ internal sealed class AeroStatusLoggingRepository : RepositoryBase<AeroStatusLog
 							viewAeroVendasParameters.PageSize);
 	}
 
+
 	public async Task<PagedList<AeroStatusLogging>> GetStatusByIdAsync(
 		Guid? aeroSolicitacaoId, 
 		Guid? aeroEnvioEmailId, 
 		ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
+
+	
 	{
+		
+		
 		var aeroStatus = await FindByCondition(x =>
 								   (aeroSolicitacaoId == null || x.AeroSolicitacaoEmailId.Equals(aeroSolicitacaoId)) &&
 								   (aeroEnvioEmailId == null || x.AeroEnvioEmailId.Equals(aeroEnvioEmailId)) 
+								   , trackChanges)
+								   .Search(viewAeroVendasParameters.SearchTerm)
+								   .Sort(viewAeroVendasParameters.OrderBy)
+								   .ToListAsync();
+		return PagedList<AeroStatusLogging>
+			   .ToPagedList(aeroStatus,
+							viewAeroVendasParameters.PageNumber,
+							viewAeroVendasParameters.PageSize);
+	}
+
+	public async Task<PagedList<AeroStatusLogging>> GetStatusBySolicitacaoIdAsync(
+						Guid? aeroSolicitacaoId,
+						ViewAeroVendasParameters viewAeroVendasParameters,
+						bool trackChanges)
+	{
+
+		var aeroStatus = await FindByCondition(x =>
+								   (x.AeroSolicitacaoEmailId.Equals(aeroSolicitacaoId)) &&
+								   (x.AeroEnvioEmailId==Guid.Empty)
+								   , trackChanges)
+								   .Search(viewAeroVendasParameters.SearchTerm)
+								   .Sort(viewAeroVendasParameters.OrderBy)
+								   .ToListAsync();
+		return PagedList<AeroStatusLogging>
+			   .ToPagedList(aeroStatus,
+							viewAeroVendasParameters.PageNumber,
+							viewAeroVendasParameters.PageSize);
+	}
+
+	public async Task<PagedList<AeroStatusLogging>> GetStatusByEnvioEmailIdAsync(
+			  Guid? aeroEnvioEmailId,
+			  ViewAeroVendasParameters viewAeroVendasParameters,
+			  bool trackChanges)
+	{
+		var aeroStatus = await FindByCondition(x =>
+								   (x.AeroEnvioEmailId.Equals(aeroEnvioEmailId))
 								   , trackChanges)
 								   .Search(viewAeroVendasParameters.SearchTerm)
 								   .Sort(viewAeroVendasParameters.OrderBy)
@@ -59,4 +100,6 @@ internal sealed class AeroStatusLoggingRepository : RepositoryBase<AeroStatusLog
 			.SingleOrDefaultAsync();
 
 	public void bulkInsertEnvioEmailLogs(IEnumerable<AeroStatusLogging> contratosSemAero) => BulkInsert(contratosSemAero);
+
+	
 }

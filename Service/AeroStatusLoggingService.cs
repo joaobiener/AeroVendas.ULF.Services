@@ -46,11 +46,21 @@ internal sealed class AeroStatusLoggingService : IAeroStatusLoggingService
 				ViewAeroVendasParameters viewAeroVendasParameters, 
 				bool trackChanges)
 	{
-		var aeroStatusWithMetaData = await _repository.aeroStatusLogging.GetStatusByIdAsync(
-			aeroSolicitacaoId,
-			aeroEnvioEmailId, 
-			viewAeroVendasParameters, 
-			trackChanges);
+		PagedList<AeroStatusLogging> aeroStatusWithMetaData=null;
+		
+		if (aeroEnvioEmailId != null) { 
+			 aeroStatusWithMetaData = await _repository.aeroStatusLogging.GetStatusByEnvioEmailIdAsync(
+				aeroEnvioEmailId, 
+				viewAeroVendasParameters, 
+				trackChanges);
+		}
+		else
+		{
+			aeroStatusWithMetaData = await _repository.aeroStatusLogging.GetStatusBySolicitacaoIdAsync(
+			   aeroSolicitacaoId,
+			   viewAeroVendasParameters,
+			   trackChanges);
+		}
 
 		if (aeroStatusWithMetaData is null)
 			throw new ViewAeroVendasNotFoundException();
