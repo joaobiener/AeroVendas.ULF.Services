@@ -42,6 +42,10 @@ public static class ServiceExtensions
 	public static void AddEmailConfiguration(this IServiceCollection services, IConfiguration configuration) { 
 		services.Configure<EmailConfiguration>(configuration.GetSection("EmailSettings"));;
 	}
+
+	public static void ConfigureEmailManager(this IServiceCollection services) =>
+	services.AddScoped<IEmailManager, EmailManager>();
+	
 	public static void ConfigureServiceManager(this IServiceCollection services) =>
 		services.AddScoped<IServiceManager, ServiceManager>();
 

@@ -15,15 +15,20 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 	private readonly IRepositoryManager _repository;
 	private readonly ILoggerManager _logger;
 	private readonly IMapper _mapper;
+	private readonly IEmailManager _emailManager;
+
+
 
 
 	public AeroEnvioEmailService(IRepositoryManager repository,
 								 ILoggerManager logger,
-								 IMapper mapper)
+								 IMapper mapper,
+								 IEmailManager emailManager)
 	{
 		_repository = repository;
 		_logger = logger;
 		_mapper = mapper;
+		_emailManager = emailManager;
 
 	}
 
@@ -221,8 +226,8 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		{
 			if (itemAeroEnvioEmailDto.EmailBeneficiario != null)
 			{
-				//_emailService.Send(itemAeroEnvioEmailDto.EmailBeneficiario, itemAeroEnvioEmailDto.)
-				// .Send("joao.pedro@niteroi.unimed.com.br", mensagem.Titulo, itemAeroEnvioEmailDto.MensagemEmailHtml);
+				//_emailManager.EmailService.Send(itemAeroEnvioEmailDto.EmailBeneficiario, itemAeroEnvioEmailDto.)
+				_emailManager.EmailService.Send("joao.pedro@niteroi.unimed.com.br", mensagem.Titulo, itemAeroEnvioEmailDto.MensagemEmailHtml);
 			}
 
 

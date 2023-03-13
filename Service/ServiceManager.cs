@@ -19,7 +19,7 @@ public sealed class ServiceManager : IServiceManager
 	private readonly Lazy<IAeroSolicitacaoService> _solicitacaoEmail;
 	private readonly Lazy<IAeroEnvioEmailService> _envioEmail;
 	private readonly Lazy<IAeroStatusLoggingService> _status;
-	private readonly Lazy<IEmailService> _emailService;
+
 
 
 	public ServiceManager(IRepositoryManager repositoryManager,
@@ -27,7 +27,7 @@ public sealed class ServiceManager : IServiceManager
 						IMapper mapper,
 						UserManager<User> userManager,
 						IOptions<JwtConfiguration> configuration,
-						IOptions<EmailConfiguration> configurationEmail)
+						IEmailManager emailManager)
 	{
 		_viewAeroVendasService = new Lazy<IViewAeroVendasService>(() =>
 									new ViewAeroVendasService(repositoryManager, logger, mapper));
@@ -40,11 +40,10 @@ public sealed class ServiceManager : IServiceManager
 		_solicitacaoEmail = new Lazy<IAeroSolicitacaoService>(() =>
 									new AeroSolicitacaoService(repositoryManager, logger, mapper));
 		_envioEmail = new Lazy<IAeroEnvioEmailService>(() =>
-							new AeroEnvioEmailService(repositoryManager, logger, mapper));
+							new AeroEnvioEmailService(repositoryManager, logger, mapper, emailManager));
 		_status = new Lazy<IAeroStatusLoggingService>(() =>
 						new AeroStatusLoggingService(repositoryManager, logger, mapper));
-		_emailService  = new Lazy<IEmailService>(() => 
-						new EmailService(logger, configurationEmail));
+	
 
 	}
 
@@ -56,5 +55,4 @@ public sealed class ServiceManager : IServiceManager
 	public IAeroEnvioEmailService AeroEnvioEmailService => _envioEmail.Value;
 	public IAeroStatusLoggingService AeroStatusLoggingService => _status.Value;
 
-	public IEmailService EmailService => _emailService.Value;
 }

@@ -14,7 +14,7 @@ public interface IServiceManager
 
 	IAeroStatusLoggingService AeroStatusLoggingService { get; }
 
-	IEmailService EmailService { get; }
+
 
 
 }

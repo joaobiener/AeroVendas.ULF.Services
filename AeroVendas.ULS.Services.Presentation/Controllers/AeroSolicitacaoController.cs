@@ -23,7 +23,7 @@ public class AeroSolicitacaoController : ControllerBase
 		Response.Headers.Add("X-Pagination",
 					JsonSerializer.Serialize(pagedResult.metaData));
 
-		_service.EmailService.Send("joao.pedro@niteroi.unimed.com.br","Teste apenas","<p>Apenas Teste no corpo</p>");
+		//_service.EmailService.Send("joao.pedro@niteroi.unimed.com.br","Teste apenas","<p>Apenas Teste no corpo</p>");
 		return Ok(pagedResult.AeroSolicitacao);
 	}
 
@@ -96,8 +96,6 @@ public class AeroSolicitacaoController : ControllerBase
 
 		string beforeStatus = result.aeroSolicitacaoEntity.UltimoStatus;
 
-		await _service.AeroSolicitacaoService.SaveChangesForPatchAsync(result.aeroSolicitacaoToPatch, result.aeroSolicitacaoEntity);
-
 		//Caso a alteração seja no UltimoStatus inclui registro na tabela de status
 		AeroStatusLoggingForCreationDto aeroStatus = new AeroStatusLoggingForCreationDto()
 		{
@@ -117,6 +115,10 @@ public class AeroSolicitacaoController : ControllerBase
 			}
 
 		}
+
+		await _service.AeroSolicitacaoService.SaveChangesForPatchAsync(result.aeroSolicitacaoToPatch, result.aeroSolicitacaoEntity);
+
+		
 
 	
 

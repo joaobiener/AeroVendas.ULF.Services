@@ -20,6 +20,8 @@ builder.Services.ConfigureRepositoryManager();
 //Ccongiguraton Email Settings.
 builder.Services.AddEmailConfiguration(builder.Configuration);
 
+builder.Services.ConfigureEmailManager();
+
 builder.Services.ConfigureServiceManager();
 
 builder.Services.ConfigureSqlContext(builder.Configuration);
