@@ -16,24 +16,28 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 	private readonly ILoggerManager _logger;
 	private readonly IMapper _mapper;
 
-	public AeroEnvioEmailService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+
+	public AeroEnvioEmailService(IRepositoryManager repository,
+								 ILoggerManager logger,
+								 IMapper mapper)
 	{
 		_repository = repository;
 		_logger = logger;
 		_mapper = mapper;
+
 	}
 
 	//Busca todos Envios de Email 
 	public async Task<(IEnumerable<AeroEnvioEmailDto> aeroEnvioEmail, MetaData metaData)> GetAllAeroEnvioEmailAsync(
-			Guid aeroSolicitacaoId, 
-			ViewAeroVendasParameters viewAeroVendasParameters, 
+			Guid aeroSolicitacaoId,
+			ViewAeroVendasParameters viewAeroVendasParameters,
 			bool trackChanges
 	)
 	{
 		await CheckIfSolicitacaoExists(aeroSolicitacaoId, trackChanges);
 
 		var aeroEnvioWithMetaData = await _repository.aeroEnvioEmail
-			.GetAllAeroEnvioEmailAsync(aeroSolicitacaoId, viewAeroVendasParameters, trackChanges);
+			.GetAllAeroEnvioEmailAsync(aeroSolicitacaoId, null, viewAeroVendasParameters, trackChanges);
 
 		var aeroEnvioEmailDto = _mapper.Map<IEnumerable<AeroEnvioEmailDto>>(aeroEnvioWithMetaData);
 
@@ -41,8 +45,8 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 	}
 
 
-	public async Task<AeroEnvioEmailDto> CreateAeroEnvioEmailForSolicitacaoAsync(Guid aeroSolicitacaoId, 
-			AeroEnvioEmailForCreationDto aeroEnvioEmailForCreation, 
+	public async Task<AeroEnvioEmailDto> CreateAeroEnvioEmailForSolicitacaoAsync(Guid aeroSolicitacaoId,
+			AeroEnvioEmailForCreationDto aeroEnvioEmailForCreation,
 			bool trackChanges)
 	{
 		await CheckIfSolicitacaoExists(aeroSolicitacaoId, trackChanges);
@@ -57,7 +61,7 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		return employeeToReturn;
 	}
 
-	
+
 
 	public async Task<AeroEnvioEmailDto> GetAeroEnvioEmailAsync(Guid aeroSolicitacaoId, Guid id, bool trackChanges)
 	{
@@ -69,7 +73,7 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		return aeroEnvio;
 	}
 
-	
+
 	public async Task DeleteAeroEnvioEmailForSolicitacaoAsync(Guid solicitacaoId, Guid id, bool trackChanges)
 	{
 		await CheckIfSolicitacaoExists(solicitacaoId, trackChanges);
@@ -93,18 +97,18 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 	}
 
 	public async Task SaveChangesForPatchAsync(
-		AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, 
+		AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch,
 		AeroEnvioEmail aeroEnvioEntity)
 	{
 		_mapper.Map(aeroEnvioEmailToPatch, aeroEnvioEntity);
-		 await _repository.SaveAsync();
+		await _repository.SaveAsync();
 	}
 
 
 
 	public async Task UpdateAeroEnvioEmailForSolicitacaoAsync(
 		Guid solicitacaoId, Guid id, AeroEnvioEmailForUpdateDto aeroEnvioEmailForUpdate, bool solicTrackChanges, bool envioTrackChanges)
-{
+	{
 		await CheckIfSolicitacaoExists(solicitacaoId, solicTrackChanges);
 
 		var aeroEnvioEmailDb = await GetAeroEnvioEmailForSolicitacaoAndCheckIfItExists(solicitacaoId, id, envioTrackChanges);
@@ -136,11 +140,11 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 	//fazer o BulkInsert dos emails a enviar
 	public async Task BulkInsertAeroEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmailDto aeroSolicitacao)
 	{
-		ViewAeroVendasParameters parameters= new ViewAeroVendasParameters();
+		ViewAeroVendasParameters parameters = new ViewAeroVendasParameters();
 		parameters.PageSize = 30000;
 
 		var viewAeroVendasWithMetaData = await _repository.viewAeroVendas.GetViewAeroVendasByAsync(
-								null, null, null, aeroSolicitacao.Cidade, parameters,false);
+								null, null, null, aeroSolicitacao.Cidade, parameters, false);
 
 		if (viewAeroVendasWithMetaData is null)
 			throw new ViewAeroVendasNotFoundException();
@@ -190,6 +194,44 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		_repository.aeroEnvioEmail.bulkInsertEnvioEmailForSolicitacao(lstEnvioEmail);
 		// Bulk insere na tabela de Logs de Status
 		_repository.aeroStatusLogging.bulkInsertEnvioEmailLogs(lstStatus);
-	
+
+	}
+
+	//Processa o envio dos emails Que estão por enviar
+	public async Task ProcessaEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmail aeroSolicitacao)
+	{
+		ViewAeroVendasParameters parameters = new ViewAeroVendasParameters();
+		parameters.PageSize = 30000;
+
+		var envioEmailsWithMetaData = await _repository.aeroEnvioEmail.GetAllAeroEnvioEmailAsync(
+								aeroSolicitacao.Id,
+								aeroSolicitacao.UltimoStatus,
+								parameters,
+								false);
+
+		if (envioEmailsWithMetaData is null)
+			throw new ListaAeroEnvioEmaisNotFoundException();
+
+		var listEnvioEmailDto = _mapper.Map<IEnumerable<AeroEnvioEmailDto>>(envioEmailsWithMetaData);
+
+		var mensagem = await getMessageHtml(aeroSolicitacao.MensagemHtmlId, false);
+
+		foreach (AeroEnvioEmailDto itemAeroEnvioEmailDto in listEnvioEmailDto)
+
+		{
+			if (itemAeroEnvioEmailDto.EmailBeneficiario != null)
+			{
+				//_emailService.Send(itemAeroEnvioEmailDto.EmailBeneficiario, itemAeroEnvioEmailDto.)
+				// .Send("joao.pedro@niteroi.unimed.com.br", mensagem.Titulo, itemAeroEnvioEmailDto.MensagemEmailHtml);
+			}
+
+
+		}
+	}
+
+	private async Task<MensagemHtml> getMessageHtml(Guid? MensagemHtmlId, bool trackChanges)
+	{
+		var mensagem = await _repository.mensagemHtml.GetMessageAsync(MensagemHtmlId, trackChanges: false);
+		return mensagem;
 	}
 }

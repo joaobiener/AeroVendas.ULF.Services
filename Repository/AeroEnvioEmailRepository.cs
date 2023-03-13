@@ -19,11 +19,18 @@ internal sealed class AeroEnvioEmailRepository : RepositoryBase<AeroEnvioEmail>,
 	{
 	}
 
-	public async Task<PagedList<AeroEnvioEmail>> GetAllAeroEnvioEmailAsync(Guid aeroSolicitacaoId, ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges)
+	public async Task<PagedList<AeroEnvioEmail>> GetAllAeroEnvioEmailAsync(
+			Guid aeroSolicitacaoId,
+			string status,
+			ViewAeroVendasParameters viewAeroVendasParameters, 
+			bool trackChanges)
 	{
 
 
-		var aeroEnvioEmail = await FindByCondition(e => e.AeroSolicitacaoEmailId.Equals(aeroSolicitacaoId) , trackChanges)
+		var aeroEnvioEmail = await FindByCondition(e => 
+							e.AeroSolicitacaoEmailId.Equals(aeroSolicitacaoId) && 
+						(e.AeroStatusLoggings == null || e.AeroStatusLoggings.Equals(status)),
+					trackChanges)
 					.Search(viewAeroVendasParameters.SearchTerm)
 					.Sort(viewAeroVendasParameters.OrderBy)
 					.ToListAsync();
@@ -48,4 +55,6 @@ internal sealed class AeroEnvioEmailRepository : RepositoryBase<AeroEnvioEmail>,
 	public async void DeleteAeroSolicitacao(AeroEnvioEmail aeroEnvioEmail)=> Delete(aeroEnvioEmail);
 
 	public void bulkInsertEnvioEmailForSolicitacao(IEnumerable<AeroEnvioEmail> contratosSemAero) =>BulkInsert(contratosSemAero);
+
+
 }

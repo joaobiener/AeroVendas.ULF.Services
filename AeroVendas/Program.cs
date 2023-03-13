@@ -16,7 +16,12 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureRepositoryManager();
+
+//Ccongiguraton Email Settings.
+builder.Services.AddEmailConfiguration(builder.Configuration);
+
 builder.Services.ConfigureServiceManager();
+
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -33,7 +38,7 @@ builder.Services.ConfigureJWT(builder.Configuration);
 
 builder.Services.AddJwtConfiguration(builder.Configuration);
 
-builder.Services.AddEmailConfiguration(builder.Configuration);
+
 
 builder.Services.AddMvc().AddNewtonsoftJson();
 

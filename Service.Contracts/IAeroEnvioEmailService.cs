@@ -22,4 +22,6 @@ public interface IAeroEnvioEmailService
 	Task SaveChangesForPatchAsync(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity);
 
 	Task BulkInsertAeroEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmailDto aeroSolicitacao);
+
+	Task ProcessaEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmail aeroSolicitacao);
 }

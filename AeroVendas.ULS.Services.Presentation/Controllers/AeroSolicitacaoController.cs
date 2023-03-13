@@ -22,6 +22,8 @@ public class AeroSolicitacaoController : ControllerBase
 		var pagedResult =   await _service.AeroSolicitacaoService.GetAllAeroSolicitacaoAsync(viewAeroVendasParameters, trackChanges: false);
 		Response.Headers.Add("X-Pagination",
 					JsonSerializer.Serialize(pagedResult.metaData));
+
+		_service.EmailService.Send("joao.pedro@niteroi.unimed.com.br","Teste apenas","<p>Apenas Teste no corpo</p>");
 		return Ok(pagedResult.AeroSolicitacao);
 	}
 
@@ -51,6 +53,7 @@ public class AeroSolicitacaoController : ControllerBase
 
 		return CreatedAtRoute("AeroSolicitacaoById", new { id = createdAeroSolicitacao.Id }, createdAeroSolicitacao);
 	}
+
 
 	[HttpPut("{id:guid}")]
 	public async Task<IActionResult> UpdateAeroSolicitacao(Guid id, [FromBody] AeroSolicitacaoEmailForUpdateDto aeroSolictacaoDto)
@@ -108,7 +111,14 @@ public class AeroSolicitacaoController : ControllerBase
 		{
 			var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
 
+			if (result.aeroSolicitacaoToPatch.UltimoStatus == nameof(Status.Enviando))
+			{
+				await _service.AeroEnvioEmailService.ProcessaEnvioEmailForSolicitacaoAsync(result.aeroSolicitacaoEntity);
+			}
+
 		}
+
+	
 
 		return NoContent();
 	}

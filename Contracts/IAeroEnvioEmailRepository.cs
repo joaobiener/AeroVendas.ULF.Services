@@ -7,7 +7,7 @@ namespace Contracts;
 
 public interface IAeroEnvioEmailRepository
 {
-	Task<PagedList<AeroEnvioEmail>> GetAllAeroEnvioEmailAsync(Guid aeroSolicitacaoId, 
+	Task<PagedList<AeroEnvioEmail>> GetAllAeroEnvioEmailAsync(Guid aeroSolicitacaoId, string status,
 				ViewAeroVendasParameters viewAeroVendasParameters, bool trackChanges);
 
 	Task<AeroEnvioEmail> GetAeroEnvioEmailAsync(Guid aeroSolicitacaoId, Guid id, bool trackChanges);

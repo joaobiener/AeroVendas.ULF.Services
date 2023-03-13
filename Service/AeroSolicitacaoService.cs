@@ -92,6 +92,8 @@ internal sealed class AeroSolicitacaoService : IAeroSolicitacaoService
 		
 
 		_mapper.Map(aeroSolicitacaoToPatchModificado, aeroSolicitacaooEntity);
+
+		
 		await _repository.SaveAsync();
 	}
 

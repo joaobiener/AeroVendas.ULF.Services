@@ -35,9 +35,13 @@ public static class ServiceExtensions
 	public static void ConfigureLoggerService(this IServiceCollection services) =>
 		services.AddSingleton<ILoggerManager, LoggerManager>();
 
+	
 	public static void ConfigureRepositoryManager(this IServiceCollection services) =>
 		services.AddScoped<IRepositoryManager, RepositoryManager>();
 
+	public static void AddEmailConfiguration(this IServiceCollection services, IConfiguration configuration) { 
+		services.Configure<EmailConfiguration>(configuration.GetSection("EmailSettings"));;
+	}
 	public static void ConfigureServiceManager(this IServiceCollection services) =>
 		services.AddScoped<IServiceManager, ServiceManager>();
 
@@ -89,7 +93,6 @@ public static class ServiceExtensions
 	}
 
 	public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration) =>
-											services.Configure<JwtConfiguration>(configuration.GetSection("JwtSettings"));	public static void AddEmailConfiguration(this IServiceCollection services, IConfiguration configuration) =>
-											services.Configure<JwtConfiguration>(configuration.GetSection("EmailSettings"));
+											services.Configure<JwtConfiguration>(configuration.GetSection("JwtSettings"));
 }
 
