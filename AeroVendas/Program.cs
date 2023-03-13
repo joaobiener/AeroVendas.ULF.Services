@@ -33,7 +33,7 @@ builder.Services.ConfigureJWT(builder.Configuration);
 
 builder.Services.AddJwtConfiguration(builder.Configuration);
 
-
+builder.Services.AddEmailConfiguration(builder.Configuration);
 
 builder.Services.AddMvc().AddNewtonsoftJson();
 

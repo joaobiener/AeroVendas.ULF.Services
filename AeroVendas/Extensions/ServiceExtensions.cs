@@ -89,6 +89,7 @@ public static class ServiceExtensions
 	}
 
 	public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration) =>
-											services.Configure<JwtConfiguration>(configuration.GetSection("JwtSettings"));
+											services.Configure<JwtConfiguration>(configuration.GetSection("JwtSettings"));	public static void AddEmailConfiguration(this IServiceCollection services, IConfiguration configuration) =>
+											services.Configure<JwtConfiguration>(configuration.GetSection("EmailSettings"));
 }
 
