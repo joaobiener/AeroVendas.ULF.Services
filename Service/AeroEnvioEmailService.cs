@@ -228,6 +228,7 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 			{
 				//_emailManager.EmailService.Send(itemAeroEnvioEmailDto.EmailBeneficiario, itemAeroEnvioEmailDto.)
 				_emailManager.EmailService.Send("joao.pedro@niteroi.unimed.com.br", mensagem.Titulo, itemAeroEnvioEmailDto.MensagemEmailHtml);
+				
 			}
 
 
