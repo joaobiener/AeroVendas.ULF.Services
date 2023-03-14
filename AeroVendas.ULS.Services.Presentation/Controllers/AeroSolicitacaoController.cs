@@ -81,6 +81,7 @@ public class AeroSolicitacaoController : ControllerBase
 	public async Task<IActionResult> PartiallyUpdateAeroSolicitacao(Guid aeroSolicitacaoId, 
 		[FromBody] JsonPatchDocument<AeroSolicitacaoEmailForUpdateDto> patchDoc)
 	{
+		int qtdEnvio = 0;
 		if (patchDoc is null)
 			return BadRequest("patchDoc object enviado pelo cliente é nulo.");
 
@@ -108,20 +109,24 @@ public class AeroSolicitacaoController : ControllerBase
 		if (result.aeroSolicitacaoToPatch.UltimoStatus != beforeStatus)
 		{
 			var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
-
-			if (result.aeroSolicitacaoToPatch.UltimoStatus == nameof(Status.Enviando))
-			{
-				await _service.AeroEnvioEmailService.ProcessaEnvioEmailForSolicitacaoAsync(result.aeroSolicitacaoEntity);
-			}
-
 		}
+
+		if (result.aeroSolicitacaoToPatch.UltimoStatus == nameof(Status.Enviando))
+		{
+			qtdEnvio = await _service.AeroEnvioEmailService.ProcessaEnvioEmailForSolicitacaoAsync(result.aeroSolicitacaoEntity);
+		}
+
+		if (qtdEnvio > 0) { 
+			result.aeroSolicitacaoToPatch.TotalEnviado += qtdEnvio;
+			result.aeroSolicitacaoToPatch.UltimoStatus = nameof(Status.Enviado);
+		}
+
 
 		await _service.AeroSolicitacaoService.SaveChangesForPatchAsync(result.aeroSolicitacaoToPatch, result.aeroSolicitacaoEntity);
 
-		
+
 
 	
-
 		return NoContent();
 	}
 

@@ -29,7 +29,7 @@ internal sealed class AeroEnvioEmailRepository : RepositoryBase<AeroEnvioEmail>,
 
 		var aeroEnvioEmail = await FindByCondition(e => 
 							(e.AeroSolicitacaoEmailId.Equals(aeroSolicitacaoId)) && 
-						(e.AeroStatusLoggings == null || e.UltimoStatus == status),
+						    (status == null || e.UltimoStatus == status),
 					trackChanges)
 					.Search(viewAeroVendasParameters.SearchTerm)
 					.Sort(viewAeroVendasParameters.OrderBy)

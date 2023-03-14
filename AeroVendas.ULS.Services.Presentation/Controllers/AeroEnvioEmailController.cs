@@ -104,25 +104,11 @@ public class AeroEnvioEmailController : ControllerBase
 		if (!ModelState.IsValid)
 			return UnprocessableEntity(ModelState);
 
-		string beforeStatus = result.aeroEnvioEntity.UltimoStatus;
+	
 
 		await _service.AeroEnvioEmailService.SaveChangesForPatchAsync(result.aeroEnvioEmailToPatch, result.aeroEnvioEntity);
 
-		//Caso a alteração seja no UltimoStatus inclui registro na tabela de status
-		AeroStatusLoggingForCreationDto aeroStatus = new AeroStatusLoggingForCreationDto()
-		{
-			AeroSolicitacaoEmailId = aeroSolicitacaoId,
-			AeroEnvioEmailId = id,
-			CriadoEm = DateTime.Now,
-			Status = result.aeroEnvioEmailToPatch.UltimoStatus
-		};
-		
-
-		if (result.aeroEnvioEmailToPatch.UltimoStatus != beforeStatus)
-		{
-			var createdAeroStatus = await _service.AeroStatusLoggingService.CreateStatusAsync(aeroStatus);
-
-		}
+	
 
 		return NoContent();
 	}

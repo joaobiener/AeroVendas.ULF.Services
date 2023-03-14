@@ -45,4 +45,9 @@ internal sealed class EmailService : IEmailService
 		smtp.Send(email);
 		smtp.Disconnect(true);
 	}
+
+	public string getLinkPaginaAceite()
+	{
+		return _emailConfiguration.UrlSitePaginaAceiteEmail;
+	}
 }

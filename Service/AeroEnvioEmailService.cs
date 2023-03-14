@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration;
 using Contracts;
 using Entities.Exceptions;
 using Entities.Models;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 using Shared.RequestFeatures;
@@ -105,7 +108,31 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch,
 		AeroEnvioEmail aeroEnvioEntity)
 	{
-		_mapper.Map(aeroEnvioEmailToPatch, aeroEnvioEntity);
+		//Caso a alteração seja no UltimoStatus inclui registro na tabela de status
+		AeroStatusLoggingForCreationDto aeroStatusDto = new AeroStatusLoggingForCreationDto()
+		{
+			AeroSolicitacaoEmailId = aeroEnvioEntity.AeroSolicitacaoEmailId,
+			AeroEnvioEmailId = aeroEnvioEntity.Id,
+			CriadoEm = DateTime.Now,
+			Status = aeroEnvioEmailToPatch.UltimoStatus
+		};
+
+		var aeroStatusEntity = _mapper.Map<AeroStatusLogging>(aeroStatusDto);
+
+		
+		if (aeroEnvioEmailToPatch.UltimoStatus != aeroEnvioEntity.UltimoStatus)
+		{
+			_repository.aeroStatusLogging.CreateStatusAsync(aeroStatusEntity);
+
+		}
+
+		AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatchModificado = new AeroEnvioEmailForUpdateDto();
+		aeroEnvioEmailToPatchModificado = aeroEnvioEmailToPatch;
+		aeroEnvioEmailToPatchModificado.ModificadoEm = DateTime.Now;
+
+
+		_mapper.Map(aeroEnvioEmailToPatchModificado, aeroEnvioEntity);
+		
 		await _repository.SaveAsync();
 	}
 
@@ -203,36 +230,74 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 	}
 
 	//Processa o envio dos emails Que estão por enviar
-	public async Task ProcessaEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmail aeroSolicitacao)
+	public async Task<int> ProcessaEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmail aeroSolicitacao)
 	{
 		ViewAeroVendasParameters parameters = new ViewAeroVendasParameters();
 		parameters.PageSize = 30000;
 
 		var envioEmailsWithMetaData = await _repository.aeroEnvioEmail.GetAllAeroEnvioEmailAsync(
 								aeroSolicitacao.Id,
-								aeroSolicitacao.UltimoStatus,
+								nameof(Status.PorEnviar),
 								parameters,
 								false);
 
 		if (envioEmailsWithMetaData is null)
 			throw new ListaAeroEnvioEmaisNotFoundException();
 
-		var listEnvioEmailDto = _mapper.Map<IEnumerable<AeroEnvioEmailDto>>(envioEmailsWithMetaData);
+		var listEnvioEmail = _mapper.Map<IEnumerable<AeroEnvioEmail>>(envioEmailsWithMetaData);
 
 		var mensagem = await getMessageHtml(aeroSolicitacao.MensagemHtmlId, false);
 
-		foreach (AeroEnvioEmailDto itemAeroEnvioEmailDto in listEnvioEmailDto)
+		foreach (AeroEnvioEmail itemAeroEnvioEmail in listEnvioEmail)
 
 		{
-			if (itemAeroEnvioEmailDto.EmailBeneficiario != null)
+			if (itemAeroEnvioEmail.EmailBeneficiario != null)
 			{
+				string aceiteLinkBenef = $"<a href=\"{_emailManager.EmailService.getLinkPaginaAceite()}{itemAeroEnvioEmail.Id}\"  target=\"_blank\" style=\"color:inherit;text-decoration:inherit;\">{itemAeroEnvioEmail.MensagemEmailHtml}</a>";
 				//_emailManager.EmailService.Send(itemAeroEnvioEmailDto.EmailBeneficiario, itemAeroEnvioEmailDto.)
-				_emailManager.EmailService.Send("joao.pedro@niteroi.unimed.com.br", mensagem.Titulo, itemAeroEnvioEmailDto.MensagemEmailHtml);
-				
+				_emailManager.EmailService.Send("joao.pedro@niteroi.unimed.com.br", mensagem.Titulo, aceiteLinkBenef);
+
+				AtualizaStatus(aeroSolicitacao.Id, itemAeroEnvioEmail.Id, nameof(Status.Enviado), aeroSolicitacao.ModificadoPor, aceiteLinkBenef);
+
 			}
 
 
 		}
+
+		return listEnvioEmail.Count();
+	}
+
+	public async Task AtualizaStatus(Guid solicitacaoId, Guid id,  string status, string user,string mensagemHTML)
+		
+	{
+
+		/*{
+    "op": "replace",
+    "path": "/ultimostatus",
+    "value": "Enviando"
+    },
+    {
+    "op": "replace",
+    "path": "/modificadopor",
+    "value": "Julio"
+    }*/
+		JsonPatchDocument<AeroEnvioEmailForUpdateDto> patchDoc = new JsonPatchDocument<AeroEnvioEmailForUpdateDto>();
+
+
+		patchDoc.Replace(e => e.UltimoStatus, status);
+		patchDoc.Replace(e => e.ModificadoPor, user);
+		patchDoc.Replace(e => e.ModificadoEm, DateTime.Now);
+		patchDoc.Replace(e => e.MensagemEmailHtml, mensagemHTML);
+
+		var result = await GetAeroEnvioForPatchAsync(solicitacaoId, id,
+		solicTrackChanges: false, envioTrackChanges: true);
+
+		patchDoc.ApplyTo(result.aeroEnvioEmailToPatch);
+
+
+		await SaveChangesForPatchAsync(result.aeroEnvioEmailToPatch, result.aeroEnvioEntity);
+
+
 	}
 
 	private async Task<MensagemHtml> getMessageHtml(Guid? MensagemHtmlId, bool trackChanges)
