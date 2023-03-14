@@ -7,4 +7,6 @@ public interface IEmailService
 
 	string getLinkPaginaAceite();
 
+	int getQtdEnvio();
+
 }

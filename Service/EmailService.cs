@@ -50,4 +50,10 @@ internal sealed class EmailService : IEmailService
 	{
 		return _emailConfiguration.UrlSitePaginaAceiteEmail;
 	}
+
+	public int getQtdEnvio()
+	{
+		return _emailConfiguration.QtdEnvio;
+	}
+	
 }

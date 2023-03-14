@@ -170,11 +170,11 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 
 	//Fará a busca em todos os contratos com o nome da cidade em AeroVendas sem contrato para
 	//fazer o BulkInsert dos emails a enviar
-	public async Task BulkInsertAeroEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmailDto aeroSolicitacao)
+	public async Task<int> BulkInsertAeroEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmailDto aeroSolicitacao)
 	{
 		ViewAeroVendasParameters parameters = new ViewAeroVendasParameters();
 		parameters.PageSize = 30000;
-
+		int qtdRegistos = 0;
 		var viewAeroVendasWithMetaData = await _repository.viewAeroVendas.GetViewAeroVendasByAsync(
 								null, null, null, aeroSolicitacao.Cidade, parameters, false);
 
@@ -189,7 +189,7 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		List<AeroStatusLogging> lstStatus = new List<AeroStatusLogging>();
 
 		var mensagem = await _repository.mensagemHtml.GetMessageAsync(aeroSolicitacao.MensagemHtmlId, trackChanges: false);
-
+		qtdRegistos = lstEnvioEmail.Count;
 		foreach (ViewAeroVendasDto itemViewAeroVendas in listViewAeroVendasDto)
 
 		{
@@ -226,6 +226,7 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 		_repository.aeroEnvioEmail.bulkInsertEnvioEmailForSolicitacao(lstEnvioEmail);
 		// Bulk insere na tabela de Logs de Status
 		_repository.aeroStatusLogging.bulkInsertEnvioEmailLogs(lstStatus);
+		return qtdRegistos;
 
 	}
 
@@ -233,7 +234,9 @@ internal sealed class AeroEnvioEmailService : IAeroEnvioEmailService
 	public async Task<int> ProcessaEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmail aeroSolicitacao)
 	{
 		ViewAeroVendasParameters parameters = new ViewAeroVendasParameters();
-		parameters.PageSize = 30000;
+		//numero maximo de proessamento será de 30,000 registros verificar configuracoes em Appsettings->EmailSettings->QtdEnvio
+
+		parameters.PageSize = _emailManager.EmailService.getQtdEnvio();
 
 		var envioEmailsWithMetaData = await _repository.aeroEnvioEmail.GetAllAeroEnvioEmailAsync(
 								aeroSolicitacao.Id,

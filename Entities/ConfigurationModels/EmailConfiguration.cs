@@ -5,6 +5,7 @@ public class EmailConfiguration
 	public string Section { get; set; } = "EmailSettings";
 
 	public string? UrlSitePaginaAceiteEmail { get; set; }
+	public int QtdEnvio { get; set; }
 	public string? NameFrom { get; set; }
 	public string? EmailFrom { get; set; }
 	public string? SmtpHost { get; set; }

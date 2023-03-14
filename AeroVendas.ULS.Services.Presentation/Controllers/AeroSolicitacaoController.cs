@@ -36,9 +36,14 @@ public class AeroSolicitacaoController : ControllerBase
 	[HttpPost]
 	public async Task<IActionResult> CreateAeroSolicitacao([FromBody] AeroSolicitacaoEmailForCreationDto aeroSolicitacao)
 	{
+		
+
+		
 		var createdAeroSolicitacao = await _service.AeroSolicitacaoService.CreateAeroSolicitacaoAsync(aeroSolicitacao);
 
-		await _service.AeroEnvioEmailService.BulkInsertAeroEnvioEmailForSolicitacaoAsync(createdAeroSolicitacao);
+		int qtdEnvio = await _service.AeroEnvioEmailService.BulkInsertAeroEnvioEmailForSolicitacaoAsync(createdAeroSolicitacao);
+	
+
 
 		AeroStatusLoggingForCreationDto aeroStatus = new AeroStatusLoggingForCreationDto()
 		{

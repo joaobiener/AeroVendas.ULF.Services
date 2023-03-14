@@ -21,7 +21,7 @@ public interface IAeroEnvioEmailService
 		Guid solicitacaoId, Guid id, bool solicTrackChanges, bool envioTrackChanges);
 	Task SaveChangesForPatchAsync(AeroEnvioEmailForUpdateDto aeroEnvioEmailToPatch, AeroEnvioEmail aeroEnvioEntity);
 
-	Task BulkInsertAeroEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmailDto aeroSolicitacao);
+	Task<int> BulkInsertAeroEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmailDto aeroSolicitacao);
 
 	Task<int> ProcessaEnvioEmailForSolicitacaoAsync(AeroSolicitacaoEmail aeroSolicitacao);
 }
